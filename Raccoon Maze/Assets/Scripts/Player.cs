@@ -16,6 +16,9 @@ public class Player : MonoBehaviour {
     private Rigidbody2D _rb;
     public BoxCollider2D MoraCollider;
     public int HP;
+    private GameObject _spawnedProjectile;
+    public GameObject Projectile;
+    public GameObject SpawnPoint;
 
     // Use this for initialization
     void Start ()
@@ -32,6 +35,7 @@ public class Player : MonoBehaviour {
 	void Update ()
     {
 
+        _rb.velocity = new Vector3(0, 0, 0);
         if(HP <= 0)
         {
             Destroy(gameObject);
@@ -40,12 +44,15 @@ public class Player : MonoBehaviour {
         {
             _attackTimer += Time.deltaTime;
         }
-        else if(_attack)
+        else
         {
-            _attack = false;
+            if(_attack)
+            {
+                Mora.transform.localPosition = new Vector3(0, 0.3f, 0);
+                Mora.GetComponent<BoxCollider2D>().enabled = false;
+                _attack = false;
+            }
             _inputLock = false;
-            Mora.transform.localPosition = new Vector3(0, 0.3f, 0);
-            Mora.GetComponent<BoxCollider2D>().enabled = false;
         }
         if (!_inputLock)
         {
@@ -82,6 +89,11 @@ public class Player : MonoBehaviour {
         if(Input.GetButtonDown("P" + PlayerNumber + "Attack") && !_inputLock)
         {
             Attack();
+        }
+
+        if (Input.GetButtonDown("P" + PlayerNumber + "Ability") && !_inputLock)
+        {
+            Ability();
         }
 
     }
@@ -138,6 +150,15 @@ public class Player : MonoBehaviour {
         _inputLock = true;
     }
 
+    public void Ability()
+    {
+        _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, Quaternion.identity);
+        AddForceToProjectile(_spawnedProjectile);
+        _attackTimer = 0;
+        //_attack = true;
+        _inputLock = true;
+    }
+
     void OnTriggerEnter2D(Collider2D col)
     {
         if(col.CompareTag("Weapon"))
@@ -147,9 +168,59 @@ public class Player : MonoBehaviour {
                 //Destroy(gameObject);
                 //_rb.AddForce(new Vector2(100, 0));
                 transform.position =transform.position + (transform.position - col.transform.position).normalized * 0.7f;
+                HP = 0;
+                //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
+            }
+        }
+        if (col.CompareTag("Projectile"))
+        {
+            Debug.Log("Tiili");
+            if (col.gameObject != _spawnedProjectile)
+            {
+                Debug.Log("Osuma");
+                Destroy(col.gameObject);
+                //Destroy(gameObject);
+                //_rb.AddForce(new Vector2(100, 0));
+                transform.position = transform.position + (transform.position - col.transform.position).normalized * 0.5f;
                 HP -= 1;
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
+        }
+    }
+
+    public void AddForceToProjectile(GameObject obj)
+    {
+        if(_direction == 0)
+        {
+            obj.GetComponent<Rigidbody2D>().AddForce(_spawnedProjectile.transform.up * 20, ForceMode2D.Impulse);
+        }
+        else if (_direction == 1)
+        {
+            obj.GetComponent<Rigidbody2D>().AddForce(new Vector3(_spawnedProjectile.transform.right.x * -20, _spawnedProjectile.transform.up.y * 20), ForceMode2D.Impulse);
+        }
+        else if (_direction == 2)
+        {
+            obj.GetComponent<Rigidbody2D>().AddForce(_spawnedProjectile.transform.right * -20, ForceMode2D.Impulse);
+        }
+        else if (_direction == 3)
+        {
+            obj.GetComponent<Rigidbody2D>().AddForce(new Vector3(_spawnedProjectile.transform.right.x * -20, _spawnedProjectile.transform.up.y * -20), ForceMode2D.Impulse);
+        }
+        else if (_direction == 4)
+        {
+            obj.GetComponent<Rigidbody2D>().AddForce(_spawnedProjectile.transform.up * -20, ForceMode2D.Impulse);
+        }
+        else if (_direction == 5)
+        {
+            obj.GetComponent<Rigidbody2D>().AddForce(new Vector3(_spawnedProjectile.transform.right.x * 20, _spawnedProjectile.transform.up.y * -20), ForceMode2D.Impulse);
+        }
+        else if (_direction == 6)
+        {
+            obj.GetComponent<Rigidbody2D>().AddForce(_spawnedProjectile.transform.right * 20, ForceMode2D.Impulse);
+        }
+        else if (_direction == 7)
+        {
+            obj.GetComponent<Rigidbody2D>().AddForce(new Vector3(_spawnedProjectile.transform.right.x * 20, _spawnedProjectile.transform.up.y * 20), ForceMode2D.Impulse);
         }
     }
 }
