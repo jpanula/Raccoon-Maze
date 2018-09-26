@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		// Ota ylös aloittavien pelaajien määrä
 		for (int i = 1; i <= _maxPlayers; i++)
 		{
 			if (GameObject.Find("Player" + i))
@@ -25,14 +26,20 @@ public class UIManager : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
+		
+		// Pelaajien UI
 		for (int i = 1; i <= _maxPlayers; i++)
 		{
+			// Haetaan pelaaja ja sen UI
 			GameObject player = GameObject.Find("Player" + i);
 			Text playerUI = GameObject.Find("P" + i + "UI").GetComponent<Text>();
+			
+			// Jos pelaaja on elossa, tai jos pelaaja on ollut pelin alussa olemassa, kirjoitetaan teksti
 			if (player || i <= _startPlayers)
 			{
 				playerUI.text = BuildString(i);
 			}
+			// Muuten jätetään tyhjäksi
 			else
 			{
 				playerUI.text = "";
@@ -40,6 +47,7 @@ public class UIManager : MonoBehaviour
 		}
 	}
 
+	// Rakentaa pelaajan UI:n tekstin
 	string BuildString(int playerNumber)
 	{
 		if (GameObject.Find("Player" + playerNumber))
