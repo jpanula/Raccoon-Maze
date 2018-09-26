@@ -12,7 +12,7 @@ Assets/AssetStoreTools*
 /Assets/TextMesh Pro*
 
 # Exclude rider idea data
-.idea
+.idea/
 
 # Visual Studio cache directory
 .vs/
