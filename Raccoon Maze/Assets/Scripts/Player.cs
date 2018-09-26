@@ -178,13 +178,17 @@ public class Player : MonoBehaviour {
             if (col.gameObject != _spawnedProjectile)
             {
                 Debug.Log("Osuma");
-                Destroy(col.gameObject);
                 //Destroy(gameObject);
                 //_rb.AddForce(new Vector2(100, 0));
                 transform.position = transform.position + (transform.position - col.transform.position).normalized * 0.5f;
                 HP -= 1;
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
+        }
+
+        if (col.CompareTag("Explosion"))
+        {
+            HP -= 1;
         }
     }
 
