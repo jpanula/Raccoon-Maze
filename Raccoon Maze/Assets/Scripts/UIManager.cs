@@ -7,33 +7,45 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 	[SerializeField]
-	private List<int> _activePlayers;
-	[SerializeField]
 	private int _maxPlayers;
+
+	private int _startPlayers = 0;
 	
 	// Use this for initialization
 	void Start ()
 	{
-		// Katotaan mitkä pelaajat on pelissä
-		for (int i = 0; i < _maxPlayers; i++)
+		for (int i = 1; i <= _maxPlayers; i++)
 		{
-			if (GameObject.Find("Player" + (i + 1)))
+			if (GameObject.Find("Player" + i))
 			{
-				_activePlayers.Add(i + 1);
+				_startPlayers++;
 			}
 		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		foreach (var playerNumber in _activePlayers)
+		for (int i = 1; i <= _maxPlayers; i++)
 		{
-			GameObject.Find("P" + playerNumber + "UI").GetComponent<Text>().text = BuildString(playerNumber);
+			GameObject player = GameObject.Find("Player" + i);
+			Text playerUI = GameObject.Find("P" + i + "UI").GetComponent<Text>();
+			if (player || i <= _startPlayers)
+			{
+				playerUI.text = BuildString(i);
+			}
+			else
+			{
+				playerUI.text = "";
+			}
 		}
 	}
 
 	string BuildString(int playerNumber)
 	{
-		return "Player" + playerNumber + "\nHP: " + GameObject.Find("Player" + playerNumber).GetComponent<Player>().HP;
+		if (GameObject.Find("Player" + playerNumber))
+		{
+			return "Player" + playerNumber + "\nHP: " + GameObject.Find("Player" + playerNumber).GetComponent<Player>().HP;
+		}
+		return "Player" + playerNumber + "\nDEAD";
 	}
 }
