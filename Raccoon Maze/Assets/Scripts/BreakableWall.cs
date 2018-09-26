@@ -21,8 +21,10 @@ public class BreakableWall : MonoBehaviour
 		}
 	}
 
+	// Ottaa osuman
 	private void OnTriggerEnter2D(Collider2D other)
 	{
+		// Ottaa osuman projectilesta
 		if (other.CompareTag("Projectile"))
 		{
 			_health--;
