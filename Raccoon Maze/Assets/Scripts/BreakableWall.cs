@@ -24,7 +24,7 @@ public class BreakableWall : MonoBehaviour
 	// Ottaa osuman
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		// Ottaa osuman projectilesta
+		// Ottaa osuman räjähdyksestä
 		if (other.CompareTag("Explosion"))
 		{
 			_health--;
