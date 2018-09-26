@@ -8,6 +8,7 @@ TagManager:
   - Player2
   - Weapon
   - Projectile
+  - Explosion
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - 
   - Player
   - Projectile
-  - 
+  - Explosion
   - 
   - 
   - 

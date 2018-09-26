@@ -7,11 +7,14 @@ public class BreakableWall : MonoBehaviour
 
 	[SerializeField]
 	private int _health;
-	
-	// Use this for initialization
-	void Start ()
+
+    private List<GameObject> _collidedParticles;
+
+    // Use this for initialization
+    void Start ()
 	{
-	}
+        _collidedParticles = new List<GameObject>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -21,13 +24,44 @@ public class BreakableWall : MonoBehaviour
 		}
 	}
 
+    /*
 	// Ottaa osuman
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		// Ottaa osuman projectilesta
 		if (other.CompareTag("Explosion"))
 		{
-			_health--;
-		}
+            if(_collidedOnce == null)
+            {
+                Debug.Log(other);
+                _health--;
+                _collidedOnce = other.gameObject;
+            }
+            else
+            {
+                _collidedOnce = null;
+            }
+        }
 	}
+    */
+
+    void OnParticleCollision(GameObject other)
+    {
+        bool sameExplosion = false;
+        for (int i = 0; i < _collidedParticles.Count; i++)
+        {
+            if (_collidedParticles[i].gameObject == other.gameObject)
+            {
+                sameExplosion = true;
+                Debug.Log(other + " " + _collidedParticles[i]);
+            }
+        }
+        Debug.Log("räjähdys");
+        if (other.gameObject.CompareTag("Explosion") && !sameExplosion)
+        {
+            _health--;
+        }
+        _collidedParticles.Add(other.gameObject);
+
+    }
 }
