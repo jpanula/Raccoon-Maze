@@ -105,6 +105,7 @@ public class Player : MonoBehaviour {
             if(Move.x != 0 && Move.y != 0)
             {
                 Move = new Vector3(Move.x * 0.75f, Move.y * 0.75f, 0);
+
             }
 
             UpdateDirection();
@@ -243,8 +244,7 @@ public class Player : MonoBehaviour {
         if (other.gameObject.CompareTag("Explosion") && !sameExplosion)
         {
             HP--;
+            _collidedParticles.Add(other.gameObject);
         }
-        _collidedParticles.Add(other.gameObject);
-
     }
 }
