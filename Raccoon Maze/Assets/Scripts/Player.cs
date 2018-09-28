@@ -27,17 +27,21 @@ public class Player : MonoBehaviour {
     public GameObject Projectile;
     public GameObject SpawnPoint;
     private List<GameObject> _collidedParticles;
+    private float _intercardinalDirTimer;
+    private Vector3 _intercardinalDir;
 
     // Use this for initialization
     void Start ()
     {
         _direction = 0;
         _attackTimer = 0;
+        _intercardinalDirTimer = 0;
         _ability1Timer = _ability1Cooldown;
         _ability2Timer = _ability2Cooldown;
         _moraPosition = Mora.transform.position;
         _attack = false;
         _inputLock = false;
+        _intercardinalDir = new Vector3(0,0,0);
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _collidedParticles = new List<GameObject>();
     }
@@ -50,7 +54,7 @@ public class Player : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-        if(_attackTimer < 0.2f)
+        if(_attackTimer < 0.1f)
         {
             _attackTimer += Time.deltaTime;
         }
@@ -61,7 +65,16 @@ public class Player : MonoBehaviour {
                 Mora.transform.localPosition = new Vector3(0, 0.3f, 0);
                 Mora.GetComponent<BoxCollider2D>().enabled = false;
                 _attack = false;
+                _inputLock = false;
             }
+        }
+        if (_intercardinalDirTimer < 0.1f)
+        {
+            _intercardinalDirTimer += Time.deltaTime;
+        }
+        else
+        {
+            _intercardinalDir = new Vector3(0,0,0);
         }
 
         if (_ability1Timer < _ability1Cooldown)
@@ -78,11 +91,11 @@ public class Player : MonoBehaviour {
         {
             if (Input.GetAxisRaw("P" + PlayerNumber + "H") < 0)
             {
-                Move = new Vector3(-1, Move.y, 0);
+                Move = new Vector3(-1f, Move.y, 0);
             }
             else if (Input.GetAxisRaw("P" + PlayerNumber + "H") > 0)
             {
-                Move = new Vector3(1, Move.y, 0);
+                Move = new Vector3(1f, Move.y, 0);
             }
             else
             {
@@ -91,11 +104,11 @@ public class Player : MonoBehaviour {
 
             if (Input.GetAxisRaw("P" + PlayerNumber + "V") < 0)
             {
-                Move = new Vector3(Move.x, -1, 0);
+                Move = new Vector3(Move.x, -1f, 0);
             }
             else if (Input.GetAxisRaw("P" + PlayerNumber + "V") > 0)
             {
-                Move = new Vector3(Move.x, 1, 0);
+                Move = new Vector3(Move.x, 1f, 0);
             }
             else
             {
@@ -105,11 +118,26 @@ public class Player : MonoBehaviour {
             if(Move.x != 0 && Move.y != 0)
             {
                 Move = new Vector3(Move.x * 0.75f, Move.y * 0.75f, 0);
-
+                _intercardinalDirTimer = 0;
+                _intercardinalDir = Move;
+                //Debug.Log(_intercardinalDir.x + " " + _intercardinalDir.y);
             }
-
+            /*
+            else if(Move.x == 0 && Move.y == 0)
+            {
+                Debug.Log(Move);
+                CheckIntercardinalDirections();
+            }
+            */
             UpdateDirection();
             transform.position += Move * Speed * Time.deltaTime;
+            if (Input.GetButton("P" + PlayerNumber + "Backward") && !_inputLock && _ability2Timer >= _ability2Cooldown)
+            {
+                //Debug.Log("taakke");
+                _directionVector = _directionVector * -1f;
+                Move = Move * -1f;
+                UpdateDirection();
+            }
         }
 
         if(Input.GetButtonDown("P" + PlayerNumber + "Attack") && !_inputLock)
@@ -125,12 +153,14 @@ public class Player : MonoBehaviour {
         {
             Ability2();
         }
+        
+
         //Destroy(_blinkTrail);
 
     }
     public void UpdateDirection()
     {
-        if(Move.x > 0)
+        if (Move.x > 0)
         {
             if(Move.y > 0)
             {
@@ -180,6 +210,40 @@ public class Player : MonoBehaviour {
         transform.eulerAngles = new Vector3(0, 0, 45 * _direction);
     }
 
+    /*public void CheckIntercardinalDirections()
+    {
+        if (_intercardinalDir.x != 0 && _intercardinalDir.y != 0)
+        {
+            if (_intercardinalDir.x > 0)
+            {
+                if (_intercardinalDir.y > 0)
+                {
+                    _direction = 7;
+                    _directionVector = _intercardinalDir;
+                }
+                else if (_intercardinalDir.y < 0)
+                {
+                    _direction = 5;
+                    _directionVector = _intercardinalDir;
+                }
+            }
+            else if (_intercardinalDir.x < 0)
+            {
+                if (_intercardinalDir.y > 0)
+                {
+                    _direction = 1;
+                    _directionVector = _intercardinalDir;
+                }
+                else if (_intercardinalDir.y < 0)
+                {
+                    _direction = 3;
+                    _directionVector = _intercardinalDir;
+                }
+            }
+        }
+    }
+    */
+
     public void Attack()
     {
         Mora.GetComponent<BoxCollider2D>().enabled = true;
@@ -199,6 +263,8 @@ public class Player : MonoBehaviour {
     {
         Debug.Log("Ability2");
         transform.position += _directionVector * 5;
+
+
         _ability2Timer = 0;
     }
 
