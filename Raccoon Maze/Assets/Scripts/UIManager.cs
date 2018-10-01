@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
@@ -17,7 +18,7 @@ public class UIManager : MonoBehaviour
 		// Ota ylös aloittavien pelaajien määrä
 		for (int i = 1; i <= _maxPlayers; i++)
 		{
-			if (GameObject.Find("Player" + i))
+			if (FindPlayer(i))
 			{
 				_startPlayers++;
 			}
@@ -31,7 +32,7 @@ public class UIManager : MonoBehaviour
 		for (int i = 1; i <= _maxPlayers; i++)
 		{
 			// Haetaan pelaaja ja sen UI
-			GameObject player = GameObject.Find("Player" + i);
+			GameObject player = FindPlayer(i);
 			Text playerUI = GameObject.Find("P" + i + "UI").GetComponent<Text>();
 			
 			// Jos pelaaja on elossa, tai jos pelaaja on ollut pelin alussa olemassa, kirjoitetaan teksti
@@ -50,10 +51,22 @@ public class UIManager : MonoBehaviour
 	// Rakentaa pelaajan UI:n tekstin
 	string BuildString(int playerNumber)
 	{
-		if (GameObject.Find("Player" + playerNumber))
+		GameObject player = FindPlayer(playerNumber);
+		if (player)
 		{
-			return "Player" + playerNumber + "\nHP: " + GameObject.Find("Player" + playerNumber).GetComponent<Player>().HP;
+			float[] cooldowns = player.GetComponent<Player>().GetAbilityTimers();
+			
+			return "Player" + playerNumber +
+			       "\nHP: " + player.GetComponent<Player>().HP + 
+			       "\nA1: " + cooldowns[0].ToString("0.0") +
+			       "\nA2: " + cooldowns[1].ToString("0.0");
 		}
 		return "Player" + playerNumber + "\nDEAD";
+	}
+	
+	// Etsii pelaajan
+	GameObject FindPlayer(int playerNumber)
+	{
+		return GameObject.Find("Player" + playerNumber);
 	}
 }
