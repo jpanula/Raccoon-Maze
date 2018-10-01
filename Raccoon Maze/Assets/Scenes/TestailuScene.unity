@@ -5021,7 +5021,7 @@ MonoBehaviour:
   _direction: 0
   Mora: {fileID: 741245330}
   _ability1Cooldown: 1
-  _ability2Cooldown: 0
+  _ability2Cooldown: 5
   MoraCollider: {fileID: 0}
   HP: 3
   Projectile: {fileID: 1599940713075934, guid: 61e889fd9d0b5554ab6241fd883c7e89, type: 2}
