@@ -7,9 +7,27 @@ public class Projectile : MonoBehaviour {
     public ParticleSystem FireballParticle;
     public ParticleSystem Explosion;
     private ParticleSystem _ps;
+    public string Owner;
+    private float _emissionTimer;
 
+    private void Start()
+    {
+        //var em = FireballParticle.emission;
+        //em.enabled = false;
+        //_emissionTimer = 0;
+    }
     private void Update()
     {
+        /*if(_emissionTimer < 0.07f)
+        {
+            _emissionTimer += Time.deltaTime;
+        }
+        else
+        {
+            var em = FireballParticle.emission;
+            em.enabled = true;
+        }
+        */
         if(_ps != null)
         {
             Debug.Log("moi");
@@ -24,13 +42,17 @@ public class Projectile : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
-        gameObject.GetComponent<CircleCollider2D>().enabled = false;
-        var em = FireballParticle.emission;
-        em.enabled = false;
-        if (_ps == null)
+        if (!col.CompareTag(Owner))
         {
-            _ps = Instantiate(Explosion, transform.position, Quaternion.identity);
+            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
+            gameObject.GetComponent<CircleCollider2D>().enabled = false;
+            var em = FireballParticle.emission;
+            em.enabled = false;
+            if (_ps == null)
+            {
+                _ps = Instantiate(Explosion, transform.position, Quaternion.identity);
+            }
         }
+
     }
 }

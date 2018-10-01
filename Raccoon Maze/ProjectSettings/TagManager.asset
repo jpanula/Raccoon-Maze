@@ -21,8 +21,8 @@ TagManager:
   - Player
   - Projectile
   - Explosion
-  - 
-  - 
+  - OuterWall
+  - InnerWall
   - 
   - 
   - 

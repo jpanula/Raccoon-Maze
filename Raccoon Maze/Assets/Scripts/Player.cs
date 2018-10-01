@@ -29,6 +29,7 @@ public class Player : MonoBehaviour {
     private List<GameObject> _collidedParticles;
     private float _intercardinalDirTimer;
     private Vector3 _intercardinalDir;
+    public string Name;
 
     // Use this for initialization
     void Start ()
@@ -54,7 +55,7 @@ public class Player : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-        if(_attackTimer < 0.1f)
+        if(_attackTimer < 0.2f)
         {
             _attackTimer += Time.deltaTime;
         }
@@ -244,6 +245,8 @@ public class Player : MonoBehaviour {
     }
     */
 
+
+
     public void Attack()
     {
         Mora.GetComponent<BoxCollider2D>().enabled = true;
@@ -256,15 +259,24 @@ public class Player : MonoBehaviour {
     public void Ability1()
     {
         _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, Quaternion.identity);
+        _spawnedProjectile.GetComponent<Projectile>().Owner = Name;
         _spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(_directionVector * 20, ForceMode2D.Impulse);
         _ability1Timer = 0;
     }
     public void Ability2()
     {
         Debug.Log("Ability2");
-        transform.position += _directionVector * 5;
-
-
+        // Bit shift the index of the layer (8) to get a bit mask
+        int layerMask = 1 << 11;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, _directionVector, 5f, layerMask);
+        if (hit.collider != null)
+        {
+            transform.position += _directionVector * (hit.distance * 0.9f);
+        }
+        else
+        {
+            transform.position += _directionVector * 5;
+        }
         _ability2Timer = 0;
     }
 
