@@ -325,4 +325,11 @@ public class Player : MonoBehaviour {
             _collidedParticles.Add(other.gameObject);
         }
     }
+
+    public float[] GetAbilityTimers()
+    {
+        float ability1TimeLeft = _ability1Cooldown - _ability1Timer;
+        float ability2TimeLeft = _ability2Cooldown - _ability2Timer;
+        return new float[] {ability1TimeLeft, ability2TimeLeft};
+    }
 }
