@@ -68,9 +68,9 @@ public class UIManager : MonoBehaviour
 			float[] cooldowns = player.GetComponent<Player>().GetAbilityTimers();
 			
 			return "Player" + playerNumber +
-			       "\nHP: " + player.GetComponent<Player>().HP + 
+			       "\nHP: " + player.GetComponent<Player>().HP/* + 
 			       "\nA1: " + cooldowns[0].ToString("0.0") +
-			       "\nA2: " + cooldowns[1].ToString("0.0");
+			       "\nA2: " + cooldowns[1].ToString("0.0")*/;
 		}
 		return "Player" + playerNumber + "\nDEAD";
 	}
