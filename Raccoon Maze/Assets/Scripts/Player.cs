@@ -138,13 +138,13 @@ public class Player : MonoBehaviour {
                 UpdateDirection();
             }
             transform.position += Move * Speed * Time.deltaTime;
-            if (Input.GetButton("P" + PlayerNumber + "Backward") && !_inputLock && _ability2Timer >= _ability2Cooldown)
+            if (Input.GetButton("P" + PlayerNumber + "Backward"))
             {
                 //Debug.Log("taakke");
 
                 _directionLock = true;
             }
-            else if(Input.GetButtonUp("P" + PlayerNumber + "Backward") && !_inputLock && _ability2Timer >= _ability2Cooldown)
+            if(Input.GetButtonUp("P" + PlayerNumber + "Backward"))
             {
                 //Debug.Log("taakke");
 
@@ -271,7 +271,7 @@ public class Player : MonoBehaviour {
     {
         _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, Quaternion.identity);
         _spawnedProjectile.GetComponent<Projectile>().Owner = Name;
-        _spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(_directionVector * 20, ForceMode2D.Impulse);
+        _spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(_directionVector * 15, ForceMode2D.Impulse);
         _ability1Timer = 0;
     }
     public void Ability2()
@@ -300,7 +300,7 @@ public class Player : MonoBehaviour {
                 //Destroy(gameObject);
                 //_rb.AddForce(new Vector2(100, 0));
                 transform.position =transform.position + (transform.position - col.transform.position).normalized * 0.7f;
-                HP = 0;
+                HP--;
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
         }
@@ -332,10 +332,22 @@ public class Player : MonoBehaviour {
             }
         }
         Debug.Log("räjähdys");
-        if (other.gameObject.CompareTag("Explosion") && !sameExplosion && other.gameObject != _projectileHit.GetComponent<Projectile>().GetPs().gameObject)
+
+        if (other.gameObject.CompareTag("Explosion") && !sameExplosion)
         {
-            HP--;
-            _collidedParticles.Add(other.gameObject);
+            if(_projectileHit != null)
+            {
+                if(other.gameObject != _projectileHit.GetComponent<Projectile>().GetPs().gameObject)
+                {
+                    HP--;
+                    _collidedParticles.Add(other.gameObject);
+                }
+            }
+            else
+            {
+                HP--;
+                _collidedParticles.Add(other.gameObject);
+            }
         }
     }
 
