@@ -16,6 +16,11 @@ public class Projectile : MonoBehaviour {
         //em.enabled = false;
         //_emissionTimer = 0;
     }
+
+    public ParticleSystem GetPs()
+    {
+        return _ps;
+    }
     private void Update()
     {
         /*if(_emissionTimer < 0.07f)

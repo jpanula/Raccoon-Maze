@@ -30,6 +30,8 @@ public class Player : MonoBehaviour {
     private float _intercardinalDirTimer;
     private Vector3 _intercardinalDir;
     public string Name;
+    private bool _directionLock;
+    private GameObject _projectileHit;
 
     // Use this for initialization
     void Start ()
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour {
         _ability1Timer = _ability1Cooldown;
         _ability2Timer = _ability2Cooldown;
         _moraPosition = Mora.transform.position;
+        _directionLock = false;
         _attack = false;
         _inputLock = false;
         _intercardinalDir = new Vector3(0,0,0);
@@ -130,17 +133,22 @@ public class Player : MonoBehaviour {
                 CheckIntercardinalDirections();
             }
             */
-            UpdateDirection();
+            if (!_directionLock)
+            {
+                UpdateDirection();
+            }
             transform.position += Move * Speed * Time.deltaTime;
             if (Input.GetButton("P" + PlayerNumber + "Backward") && !_inputLock && _ability2Timer >= _ability2Cooldown)
             {
                 //Debug.Log("taakke");
-                if(Move != Vector3.zero)
-                {
-                    _directionVector = _directionVector * -1f;
-                }
-                Move = Move * -1f;
-                UpdateDirection();
+
+                _directionLock = true;
+            }
+            else if(Input.GetButtonUp("P" + PlayerNumber + "Backward") && !_inputLock && _ability2Timer >= _ability2Cooldown)
+            {
+                //Debug.Log("taakke");
+
+                _directionLock = false;
             }
         }
 
@@ -305,6 +313,8 @@ public class Player : MonoBehaviour {
                 //Destroy(gameObject);
                 //_rb.AddForce(new Vector2(100, 0));
                 transform.position = transform.position + (transform.position - col.transform.position).normalized * 0.5f;
+                _projectileHit = col.gameObject;
+                HP--;
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
         }
@@ -322,7 +332,7 @@ public class Player : MonoBehaviour {
             }
         }
         Debug.Log("räjähdys");
-        if (other.gameObject.CompareTag("Explosion") && !sameExplosion)
+        if (other.gameObject.CompareTag("Explosion") && !sameExplosion && other.gameObject != _projectileHit.GetComponent<Projectile>().GetPs().gameObject)
         {
             HP--;
             _collidedParticles.Add(other.gameObject);
