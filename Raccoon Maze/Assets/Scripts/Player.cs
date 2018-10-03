@@ -330,6 +330,8 @@ public class Player : MonoBehaviour {
     {
         float ability1TimeLeft = _ability1Cooldown - _ability1Timer;
         float ability2TimeLeft = _ability2Cooldown - _ability2Timer;
-        return new float[] {ability1TimeLeft, ability2TimeLeft};
+        float ability1TimeLeftPercentage = _ability1Timer / _ability1Cooldown;
+        float ability2TimeLeftPercentage = _ability2Timer / _ability2Cooldown;
+        return new float[] {ability1TimeLeft, ability2TimeLeft, ability1TimeLeftPercentage, ability2TimeLeftPercentage};
     }
 }

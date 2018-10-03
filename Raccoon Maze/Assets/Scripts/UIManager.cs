@@ -38,12 +38,23 @@ public class UIManager : MonoBehaviour
 			// Jos pelaaja on elossa, tai jos pelaaja on ollut pelin alussa olemassa, kirjoitetaan teksti
 			if (player || i <= _startPlayers)
 			{
+				if (player)
+				{
+					UpdatePlayerCooldowns(i);
+					EnablePlayerCooldownPies(i, true);
+				}
+				else
+				{
+					EnablePlayerCooldownPies(i, false);
+				}
 				playerUI.text = BuildString(i);
+				
 			}
 			// Muuten jätetään tyhjäksi
 			else
 			{
 				playerUI.text = "";
+				EnablePlayerCooldownPies(i, false);
 			}
 		}
 	}
@@ -68,5 +79,43 @@ public class UIManager : MonoBehaviour
 	GameObject FindPlayer(int playerNumber)
 	{
 		return GameObject.Find("Player" + playerNumber);
+	}
+	
+	// Päivittää pelaajan cooldown-elementit
+	void UpdatePlayerCooldowns(int playerNumber)
+	{
+		GameObject player = FindPlayer(playerNumber);
+		Image a1Circle;
+		Image a2Circle;
+		Text a1Timer;
+		Text a2Timer;
+		
+		if (player)
+		{
+			a1Circle = GameObject.Find("P" + playerNumber + "A1Circle").GetComponent<Image>();
+			a2Circle = GameObject.Find("P" + playerNumber + "A2Circle").GetComponent<Image>();
+			a1Timer = GameObject.Find("P" + playerNumber + "A1Timer").GetComponent<Text>();
+			a2Timer = GameObject.Find("P" + playerNumber + "A2Timer").GetComponent<Text>();
+
+			a1Timer.text = player.GetComponent<Player>().GetAbilityTimers()[0].ToString("0.0");
+			a2Timer.text = player.GetComponent<Player>().GetAbilityTimers()[1].ToString("0.0");
+
+			a1Circle.fillAmount = player.GetComponent<Player>().GetAbilityTimers()[2];
+			a2Circle.fillAmount = player.GetComponent<Player>().GetAbilityTimers()[3];
+
+		}
+		else
+		{
+			Debug.Log("Player" + playerNumber + " cooldown update requested but player could not be found");
+		}
+	}
+	
+	// Piilottaa tai näyttää pelaajan cooldown-pallerot
+	void EnablePlayerCooldownPies(int playerNumber, bool isEnabled)
+	{
+		GameObject.Find("P" + playerNumber + "A1Circle").GetComponent<Image>().enabled = isEnabled;
+		GameObject.Find("P" + playerNumber + "A2Circle").GetComponent<Image>().enabled = isEnabled;
+		GameObject.Find("P" + playerNumber + "A1Timer").GetComponent<Text>().enabled = isEnabled;
+		GameObject.Find("P" + playerNumber + "A2Timer").GetComponent<Text>().enabled = isEnabled;
 	}
 }
