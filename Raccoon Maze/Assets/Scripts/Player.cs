@@ -135,7 +135,10 @@ public class Player : MonoBehaviour {
             if (Input.GetButton("P" + PlayerNumber + "Backward") && !_inputLock && _ability2Timer >= _ability2Cooldown)
             {
                 //Debug.Log("taakke");
-                _directionVector = _directionVector * -1f;
+                if(Move != Vector3.zero)
+                {
+                    _directionVector = _directionVector * -1f;
+                }
                 Move = Move * -1f;
                 UpdateDirection();
             }
