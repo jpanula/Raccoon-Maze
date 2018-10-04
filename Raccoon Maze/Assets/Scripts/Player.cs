@@ -27,28 +27,30 @@ public class Player : MonoBehaviour {
     public GameObject Projectile;
     public GameObject SpawnPoint;
     private List<GameObject> _collidedParticles;
-    private float _intercardinalDirTimer;
-    private Vector3 _intercardinalDir;
     public string Name;
+    private bool _directionLock;
+    private GameObject _projectileHit;
+    private bool _gamepadControl;
 
     // Use this for initialization
     void Start ()
     {
-        _direction = 0;
+        _direction = Mathf.RoundToInt(transform.rotation.z / 45);
         _attackTimer = 0;
-        _intercardinalDirTimer = 0;
         _ability1Timer = _ability1Cooldown;
         _ability2Timer = _ability2Cooldown;
         _moraPosition = Mora.transform.position;
+        _directionLock = false;
         _attack = false;
         _inputLock = false;
-        _intercardinalDir = new Vector3(0,0,0);
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _collidedParticles = new List<GameObject>();
+        _gamepadControl = false;
+        InitializeDirectionVector();
     }
 	
 	// Update is called once per frame
-	void Update ()
+	private void Update ()
     {
         _rb.velocity = new Vector3(0, 0, 0);
         if(HP <= 0)
@@ -69,14 +71,6 @@ public class Player : MonoBehaviour {
                 _inputLock = false;
             }
         }
-        if (_intercardinalDirTimer < 0.1f)
-        {
-            _intercardinalDirTimer += Time.deltaTime;
-        }
-        else
-        {
-            _intercardinalDir = new Vector3(0,0,0);
-        }
 
         if (_ability1Timer < _ability1Cooldown)
         {
@@ -87,10 +81,20 @@ public class Player : MonoBehaviour {
         {
             _ability2Timer += Time.deltaTime;
         }
-
+        InputManager.CheckGamepadConnection();
+        if (InputManager.GetGamepadControl(PlayerNumber) >= 0)
+        {
+            _gamepadControl = true;
+        }
+        else
+        {
+            _gamepadControl = false;
+        }
+        //Debug.Log("P" + PlayerNumber + (_gamepadControl));
         if (!_inputLock)
         {
-            if (Input.GetAxisRaw("P" + PlayerNumber + "H") < 0)
+            /*
+            if (InputManager.GetKey("P" + PlayerNumber + "H") < 0)
             {
                 Move = new Vector3(-1f, Move.y, 0);
             }
@@ -102,25 +106,37 @@ public class Player : MonoBehaviour {
             {
                 Move = new Vector3(0, Move.y, 0);
             }
+            */
 
-            if (Input.GetAxisRaw("P" + PlayerNumber + "V") < 0)
+            //Input.GetJoystickNames().Length >= PlayerNumber
+            if (InputManager.GetKey("P" + PlayerNumber + "Left", _gamepadControl, PlayerNumber.ToString()))
             {
-                Move = new Vector3(Move.x, -1f, 0);
+                Move = new Vector3(-1f, Move.y, 0);
             }
-            else if (Input.GetAxisRaw("P" + PlayerNumber + "V") > 0)
+            else if (InputManager.GetKey("P" + PlayerNumber + "Right", _gamepadControl, PlayerNumber.ToString()))
+            {
+                Move = new Vector3(1f, Move.y, 0);
+            }
+            else
+            {
+                    Move = new Vector3(0, Move.y, 0);
+            }
+            if (InputManager.GetKey("P" + PlayerNumber + "Up", _gamepadControl, PlayerNumber.ToString()))
             {
                 Move = new Vector3(Move.x, 1f, 0);
+            }
+            else if (InputManager.GetKey("P" + PlayerNumber + "Down", _gamepadControl, PlayerNumber.ToString()))
+            {
+                Move = new Vector3(Move.x, -1f, 0);
             }
             else
             {
                 Move = new Vector3(Move.x, 0, 0);
             }
 
-            if(Move.x != 0 && Move.y != 0)
+            if (Move.x != 0 && Move.y != 0)
             {
                 Move = new Vector3(Move.x * 0.75f, Move.y * 0.75f, 0);
-                _intercardinalDirTimer = 0;
-                _intercardinalDir = Move;
                 //Debug.Log(_intercardinalDir.x + " " + _intercardinalDir.y);
             }
             /*
@@ -130,32 +146,39 @@ public class Player : MonoBehaviour {
                 CheckIntercardinalDirections();
             }
             */
-            UpdateDirection();
-            transform.position += Move * Speed * Time.deltaTime;
-            if (Input.GetButton("P" + PlayerNumber + "Backward") && !_inputLock && _ability2Timer >= _ability2Cooldown)
+            if (!_directionLock)
             {
-                //Debug.Log("taakke");
-                if(Move != Vector3.zero)
-                {
-                    _directionVector = _directionVector * -1f;
-                }
-                Move = Move * -1f;
                 UpdateDirection();
             }
-        }
+            
+            transform.position += Move * Speed * Time.deltaTime;
+            if (InputManager.GetKey("P" + PlayerNumber + "DirLock", _gamepadControl, PlayerNumber.ToString()))
+            {
+                //Debug.Log("taakke");
 
-        if(Input.GetButtonDown("P" + PlayerNumber + "Attack") && !_inputLock)
-        {
-            Attack();
-        }
+                _directionLock = true;
+            }
+            if (InputManager.GetKeyUp("P" + PlayerNumber + "DirLock", _gamepadControl, PlayerNumber.ToString()))
+            {
+                //Debug.Log("taakke");
 
-        if (Input.GetButtonDown("P" + PlayerNumber + "Ability1") && !_inputLock && _ability1Timer >= _ability1Cooldown)
-        {
-            Ability1();
+                _directionLock = false;
+            }
         }
-        if (Input.GetButtonDown("P" + PlayerNumber + "Ability2") && !_inputLock && _ability2Timer >= _ability2Cooldown)
+        if (!_inputLock)
         {
-            Ability2();
+            if (InputManager.GetKeyDown("P" + PlayerNumber + "Melee", _gamepadControl, PlayerNumber.ToString()))
+            {
+                Attack();
+            }
+            if (InputManager.GetKeyDown("P" + PlayerNumber + "Ability1", _gamepadControl, PlayerNumber.ToString()) && _ability1Timer >= _ability1Cooldown)
+            {
+                Ability1();
+            }
+            if (InputManager.GetKeyDown("P" + PlayerNumber + "Ability2", _gamepadControl, PlayerNumber.ToString()) && _ability2Timer >= _ability2Cooldown)
+            {
+                Ability2();
+            }
         }
         
 
@@ -214,41 +237,41 @@ public class Player : MonoBehaviour {
         transform.eulerAngles = new Vector3(0, 0, 45 * _direction);
     }
 
-    /*public void CheckIntercardinalDirections()
+    private void InitializeDirectionVector()
     {
-        if (_intercardinalDir.x != 0 && _intercardinalDir.y != 0)
+        if(_direction == 0)
         {
-            if (_intercardinalDir.x > 0)
-            {
-                if (_intercardinalDir.y > 0)
-                {
-                    _direction = 7;
-                    _directionVector = _intercardinalDir;
-                }
-                else if (_intercardinalDir.y < 0)
-                {
-                    _direction = 5;
-                    _directionVector = _intercardinalDir;
-                }
-            }
-            else if (_intercardinalDir.x < 0)
-            {
-                if (_intercardinalDir.y > 0)
-                {
-                    _direction = 1;
-                    _directionVector = _intercardinalDir;
-                }
-                else if (_intercardinalDir.y < 0)
-                {
-                    _direction = 3;
-                    _directionVector = _intercardinalDir;
-                }
-            }
+            _directionVector = new Vector3(0, 1);
+        }
+        else if (_direction == 1)
+        {
+            _directionVector = new Vector3(-1, 1);
+        }
+        else if (_direction == 2)
+        {
+            _directionVector = new Vector3(-1, 0);
+        }
+        else if (_direction == 3)
+        {
+            _directionVector = new Vector3(-1, -1);
+        }
+        else if (_direction == 4)
+        {
+            _directionVector = new Vector3(0, -1);
+        }
+        else if (_direction == 5)
+        {
+            _directionVector = new Vector3(1, -1);
+        }
+        else if (_direction == 6)
+        {
+            _directionVector = new Vector3(1, 0);
+        }
+        else if (_direction == 7)
+        {
+            _directionVector = new Vector3(1, 1);
         }
     }
-    */
-
-
 
     public void Attack()
     {
@@ -261,9 +284,9 @@ public class Player : MonoBehaviour {
 
     public void Ability1()
     {
-        _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, Quaternion.identity);
+        _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, Quaternion.Euler(new Vector3(0, 0, 45 * _direction)));
         _spawnedProjectile.GetComponent<Projectile>().Owner = Name;
-        _spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(_directionVector * 20, ForceMode2D.Impulse);
+        _spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(_directionVector * 15, ForceMode2D.Impulse);
         _ability1Timer = 0;
     }
     public void Ability2()
@@ -292,7 +315,7 @@ public class Player : MonoBehaviour {
                 //Destroy(gameObject);
                 //_rb.AddForce(new Vector2(100, 0));
                 transform.position =transform.position + (transform.position - col.transform.position).normalized * 0.7f;
-                HP = 0;
+                HP--;
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
         }
@@ -305,6 +328,8 @@ public class Player : MonoBehaviour {
                 //Destroy(gameObject);
                 //_rb.AddForce(new Vector2(100, 0));
                 transform.position = transform.position + (transform.position - col.transform.position).normalized * 0.5f;
+                _projectileHit = col.gameObject;
+                HP--;
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
         }
@@ -322,10 +347,22 @@ public class Player : MonoBehaviour {
             }
         }
         Debug.Log("räjähdys");
+
         if (other.gameObject.CompareTag("Explosion") && !sameExplosion)
         {
-            HP--;
-            _collidedParticles.Add(other.gameObject);
+            if(_projectileHit != null)
+            {
+                if(other.gameObject != _projectileHit.GetComponent<Projectile>().GetPs().gameObject)
+                {
+                    HP--;
+                    _collidedParticles.Add(other.gameObject);
+                }
+            }
+            else
+            {
+                HP--;
+                _collidedParticles.Add(other.gameObject);
+            }
         }
     }
 
