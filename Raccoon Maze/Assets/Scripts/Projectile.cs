@@ -50,7 +50,7 @@ public class Projectile : MonoBehaviour {
         if (!col.CompareTag(Owner))
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
-            gameObject.GetComponent<CircleCollider2D>().enabled = false;
+            gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
             var em = FireballParticle.emission;
             em.enabled = false;
             if (_ps == null)
