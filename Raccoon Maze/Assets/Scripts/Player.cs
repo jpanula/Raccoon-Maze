@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    public GameManager Gm;
     public int PlayerNumber;
     public int Speed;
     public Vector3 Move;
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour {
     private bool _directionLock;
     private GameObject _projectileHit;
     private bool _gamepadControl;
+    public bool Invulnerable;
 
     // Use this for initialization
     void Start ()
@@ -46,6 +48,7 @@ public class Player : MonoBehaviour {
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _collidedParticles = new List<GameObject>();
         _gamepadControl = false;
+        Invulnerable = false;
         InitializeDirectionVector();
     }
 	
@@ -55,7 +58,9 @@ public class Player : MonoBehaviour {
         _rb.velocity = new Vector3(0, 0, 0);
         if(HP <= 0)
         {
-            Destroy(gameObject);
+            Gm.KillPlayer(gameObject);
+            gameObject.SetActive(false);
+            //Destroy(gameObject);
         }
         if(_attackTimer < 0.2f)
         {
@@ -291,7 +296,6 @@ public class Player : MonoBehaviour {
     }
     public void Ability2()
     {
-        Debug.Log("Ability2");
         // Bit shift the index of the layer (8) to get a bit mask
         int layerMask = 1 << 11;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, _directionVector, 5f, layerMask);
@@ -321,10 +325,8 @@ public class Player : MonoBehaviour {
         }
         if (col.CompareTag("Projectile"))
         {
-            Debug.Log("Tiili");
             if (col.gameObject != _spawnedProjectile)
             {
-                Debug.Log("Osuma");
                 //Destroy(gameObject);
                 //_rb.AddForce(new Vector2(100, 0));
                 transform.position = transform.position + (transform.position - col.transform.position).normalized * 0.5f;
@@ -343,10 +345,8 @@ public class Player : MonoBehaviour {
             if (_collidedParticles[i].gameObject == other.gameObject)
             {
                 sameExplosion = true;
-                Debug.Log(other + " " + _collidedParticles[i]);
             }
         }
-        Debug.Log("räjähdys");
 
         if (other.gameObject.CompareTag("Explosion") && !sameExplosion)
         {
@@ -354,13 +354,19 @@ public class Player : MonoBehaviour {
             {
                 if(other.gameObject != _projectileHit.GetComponent<Projectile>().GetPs().gameObject)
                 {
-                    HP--;
+                    if(!Invulnerable)
+                    {
+                        HP--;
+                    }
                     _collidedParticles.Add(other.gameObject);
                 }
             }
             else
             {
-                HP--;
+                if (!Invulnerable)
+                {
+                    HP--;
+                }
                 _collidedParticles.Add(other.gameObject);
             }
         }

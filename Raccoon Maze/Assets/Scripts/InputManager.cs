@@ -504,14 +504,14 @@ public static class InputManager
                     //Debug.Log("yes");
                     SetGamepadsConnected(false, i);
                     GamepadControl[j] = -1;
-                    Debug.Log("ohjain irti " + i);
+                    //Debug.Log("ohjain irti " + i);
                 }
                 else
                 {
                     //Debug.Log("no");
                     SetGamepadsConnected(true, i);
                     GamepadControl[j] = i;
-                    Debug.Log("ohjain kiinni " + i);
+                    //Debug.Log("ohjain kiinni " + i);
                 }
                 j++;
 

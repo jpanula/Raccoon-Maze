@@ -56,7 +56,6 @@ public class BreakableWall : MonoBehaviour
                 Debug.Log(other + " " + _collidedParticles[i]);
             }
         }
-        Debug.Log("räjähdys");
         if (other.gameObject.CompareTag("Explosion") && !sameExplosion)
         {
             _health--;
