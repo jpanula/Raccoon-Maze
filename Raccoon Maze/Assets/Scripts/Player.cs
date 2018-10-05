@@ -282,12 +282,24 @@ public class Player : MonoBehaviour {
         _inputLock = true;
     }
 
-    public void Ability1()
+    /*public void Ability1()
     {
         _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, Quaternion.Euler(new Vector3(0, 0, 45 * _direction)));
         _spawnedProjectile.GetComponent<Projectile>().Owner = Name;
         _spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(_directionVector * 15, ForceMode2D.Impulse);
         _ability1Timer = 0;
+    }*/
+
+    public void Ability1()
+    {
+        GameObject spinHitBox = new GameObject();
+        spinHitBox.name = "SpinHitbox";
+        spinHitBox.transform.SetParent(transform);
+        spinHitBox.transform.localPosition = new Vector3(0, 0, 0);
+        spinHitBox.AddComponent<CircleCollider2D>().radius = 0.75f;
+        spinHitBox.GetComponent<CircleCollider2D>().isTrigger = true;
+        spinHitBox.tag = "Weapon";
+        Destroy(spinHitBox, 0.2f);
     }
     public void Ability2()
     {
