@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     private void Update ()
     {
-        if (Players.Count == 1)
+        if (Players.Count <= 1)
         {
             IEnumerator coroutine = WinCheck(1.0f);
             StartCoroutine(coroutine);
@@ -72,8 +72,9 @@ public class GameManager : MonoBehaviour {
             }
             else
             {
+                Players[0].GetComponent<Player>().Invulnerable = true;
                 WinLine.SetActive(true);
-                WinLine.GetComponent<Text>().text = "Player " + Players[0].GetComponent<Player>().PlayerNumber + " wins!";
+                WinLine.GetComponent<Text>().text = "Player " + (PNum + 1) + " wins!";
             }
         }
         else if(Players.Count < 1)

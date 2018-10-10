@@ -5160,7 +5160,7 @@ MonoBehaviour:
   _ability1Cooldown: 3
   _ability2Cooldown: 5
   MoraCollider: {fileID: 0}
-  HP: 1
+  HP: 3
   Projectile: {fileID: 1599940713075934, guid: 61e889fd9d0b5554ab6241fd883c7e89, type: 2}
   SpawnPoint: {fileID: 1313948672}
   Name: Player2
@@ -12636,10 +12636,10 @@ MonoBehaviour:
   Move: {x: 0, y: 0, z: 0}
   _direction: 0
   Mora: {fileID: 28966307}
-  _ability1Cooldown: 0
+  _ability1Cooldown: 3
   _ability2Cooldown: 5
   MoraCollider: {fileID: 0}
-  HP: 1
+  HP: 3
   Projectile: {fileID: 1599940713075934, guid: 61e889fd9d0b5554ab6241fd883c7e89, type: 2}
   SpawnPoint: {fileID: 1051058535}
   Name: Player1
