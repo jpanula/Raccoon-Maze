@@ -8,39 +8,31 @@ public class GameManager : MonoBehaviour {
 
     public List<GameObject> Players;
     public GameObject WinLine;
+    public GameObject[] PlayerPoints;
     public GameInfo GameInfo;
     private bool _winner;
 
     // Use this for initialization
-    void Start ()
+
+    private void Awake()
     {
         _winner = false;
     }
-	
-	// Update is called once per frame
-	void Update ()
+    private void Start ()
     {
-        if (Players.Count <= 1)
+        for(int i = 0; i < Players.Count; i++)
         {
-            if (Players[0] != null)
-            {
-                if (GameInfo.Wins[Players[0].GetComponent<Player>().PlayerNumber - 1] < GameInfo.WinGoal)
-                {
-                    if(!_winner)
-                    {
-                        GameInfo.Wins[Players[0].GetComponent<Player>().PlayerNumber - 1]++;
-                        _winner = true;
-                        Players[0].GetComponent<Player>().Invulnerable = true;
-                        IEnumerator coroutine = NextRound(2.0f);
-                        StartCoroutine(coroutine);
-                    }
-                }
-                else
-                {
-                    WinLine.SetActive(true);
-                    WinLine.GetComponent<Text>().text = "Player " + Players[0].GetComponent<Player>().PlayerNumber + " wins!";
-                }
-            }
+            PlayerPoints[Players[i].GetComponent<Player>().PlayerNumber - 1].GetComponent<Text>().text = "Points: " + GameInfo.Wins[Players[i].GetComponent<Player>().PlayerNumber - 1];
+        }
+    }
+
+    // Update is called once per frame
+    private void Update ()
+    {
+        if (Players.Count == 1)
+        {
+            IEnumerator coroutine = WinCheck(1.0f);
+            StartCoroutine(coroutine);
         }
         if(Input.GetKeyDown("r"))
         {
@@ -52,9 +44,42 @@ public class GameManager : MonoBehaviour {
     private IEnumerator NextRound(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        if(GameInfo.Wins[Players[0].GetComponent<Player>().PlayerNumber - 1] < GameInfo.WinGoal)
+        SceneManager.LoadScene("TestailuScene");
+    }
+
+    private IEnumerator WinCheck(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        if (Players.Count == 1)
         {
-            SceneManager.LoadScene("TestailuScene");
+            int PNum = Players[0].GetComponent<Player>().PlayerNumber - 1;
+            if (GameInfo.Wins[PNum] < GameInfo.WinGoal)
+            {
+                if (!_winner)
+                {
+                    GameInfo.Wins[PNum]++;
+                    PlayerPoints[PNum].GetComponent<Text>().text = "Points: " + GameInfo.Wins[PNum];
+                    _winner = true;
+                    //Players[0].GetComponent<Player>().Invulnerable = true;
+
+                    if (GameInfo.Wins[PNum] < GameInfo.WinGoal)
+                    {
+                        IEnumerator coroutine = NextRound(2.0f);
+                        StartCoroutine(coroutine);
+                    }
+
+                }
+            }
+            else
+            {
+                WinLine.SetActive(true);
+                WinLine.GetComponent<Text>().text = "Player " + Players[0].GetComponent<Player>().PlayerNumber + " wins!";
+            }
+        }
+        else if(Players.Count < 1)
+        {
+            IEnumerator coroutine = NextRound(2.0f);
+            StartCoroutine(coroutine);
         }
     }
 

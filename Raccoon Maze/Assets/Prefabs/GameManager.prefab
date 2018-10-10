@@ -55,4 +55,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   WinLine: {fileID: 0}
+  PlayerPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   GameInfo: {fileID: 11400000, guid: 2d8bf04028052cc48bb2bae1e0f13ae9, type: 2}

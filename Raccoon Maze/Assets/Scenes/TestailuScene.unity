@@ -8489,6 +8489,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 701566361}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &709342319 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1066376341779744, guid: cd3b7e83e615bf34d85fcdc231563c44,
+    type: 2}
+  m_PrefabInternal: {fileID: 1872219184}
 --- !u!1 &711538366
 GameObject:
   m_ObjectHideFlags: 0
@@ -8881,6 +8886,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 721094996}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &728483931 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1367977646905984, guid: cd3b7e83e615bf34d85fcdc231563c44,
+    type: 2}
+  m_PrefabInternal: {fileID: 1872219184}
 --- !u!4 &738223737 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4188598827826688, guid: 6cb06fc3ab6c6874bad812730c577762,
@@ -12732,6 +12742,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1160698540}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1184424816 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1110590637010834, guid: cd3b7e83e615bf34d85fcdc231563c44,
+    type: 2}
+  m_PrefabInternal: {fileID: 1872219184}
 --- !u!1 &1198279199
 GameObject:
   m_ObjectHideFlags: 0
@@ -15910,6 +15925,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1572053325}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1600806299 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1682735611262170, guid: cd3b7e83e615bf34d85fcdc231563c44,
+    type: 2}
+  m_PrefabInternal: {fileID: 1872219184}
 --- !u!1 &1616360234
 GameObject:
   m_ObjectHideFlags: 0
@@ -17607,6 +17627,26 @@ Prefab:
       propertyPath: WinLine
       value: 
       objectReference: {fileID: 1007900021}
+    - target: {fileID: 114502481490046330, guid: fb0fe220defbb734e92ef78a5762669b,
+        type: 2}
+      propertyPath: PlayerPoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 709342319}
+    - target: {fileID: 114502481490046330, guid: fb0fe220defbb734e92ef78a5762669b,
+        type: 2}
+      propertyPath: PlayerPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 728483931}
+    - target: {fileID: 114502481490046330, guid: fb0fe220defbb734e92ef78a5762669b,
+        type: 2}
+      propertyPath: PlayerPoints.Array.data[2]
+      value: 
+      objectReference: {fileID: 1600806299}
+    - target: {fileID: 114502481490046330, guid: fb0fe220defbb734e92ef78a5762669b,
+        type: 2}
+      propertyPath: PlayerPoints.Array.data[3]
+      value: 
+      objectReference: {fileID: 1184424816}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fb0fe220defbb734e92ef78a5762669b, type: 2}
   m_IsPrefabParent: 0

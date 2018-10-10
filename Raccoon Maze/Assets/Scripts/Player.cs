@@ -35,20 +35,25 @@ public class Player : MonoBehaviour {
     public bool Invulnerable;
 
     // Use this for initialization
-    void Start ()
+
+    private void Awake()
     {
-        _direction = Mathf.RoundToInt(transform.rotation.z / 45);
         _attackTimer = 0;
         _ability1Timer = _ability1Cooldown;
         _ability2Timer = _ability2Cooldown;
-        _moraPosition = Mora.transform.position;
         _directionLock = false;
         _attack = false;
         _inputLock = false;
-        _rb = gameObject.GetComponent<Rigidbody2D>();
-        _collidedParticles = new List<GameObject>();
         _gamepadControl = false;
         Invulnerable = false;
+    }
+
+    private void Start ()
+    {
+        _direction = Mathf.RoundToInt(transform.rotation.z / 45);
+        _moraPosition = Mora.transform.position;
+        _rb = gameObject.GetComponent<Rigidbody2D>();
+        _collidedParticles = new List<GameObject>();
         InitializeDirectionVector();
     }
 	
@@ -287,14 +292,14 @@ public class Player : MonoBehaviour {
         _inputLock = true;
     }
 
-    /*public void Ability1()
+    public void Ability1()
     {
         _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, Quaternion.Euler(new Vector3(0, 0, 45 * _direction)));
         _spawnedProjectile.GetComponent<Projectile>().Owner = Name;
         _spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(_directionVector * 15, ForceMode2D.Impulse);
         _ability1Timer = 0;
-    }*/
-
+    }
+    /*
     public void Ability1()
     {
         GameObject spinHitBox = new GameObject();
@@ -306,6 +311,7 @@ public class Player : MonoBehaviour {
         spinHitBox.tag = "Weapon";
         Destroy(spinHitBox, 0.2f);
     }
+    */
     public void Ability2()
     {
         // Bit shift the index of the layer (8) to get a bit mask
