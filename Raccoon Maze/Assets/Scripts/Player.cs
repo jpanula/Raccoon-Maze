@@ -162,7 +162,7 @@ public class Player : MonoBehaviour {
             }
             
             transform.position += Move * Speed * Time.deltaTime;
-            if (InputManager.GetKey("P" + PlayerNumber + "DirLock", _gamepadControl, PlayerNumber.ToString()))
+            if (InputManager.GetKeyDown("P" + PlayerNumber + "DirLock", _gamepadControl, PlayerNumber.ToString()))
             {
                 //Debug.Log("taakke");
 
@@ -315,15 +315,21 @@ public class Player : MonoBehaviour {
     public void Ability2()
     {
         // Bit shift the index of the layer (8) to get a bit mask
+        Vector3 blinkDirection = Move;
         int layerMask = 1 << 11;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, _directionVector, 5f, layerMask);
+        
+        if (blinkDirection.x == 0 && blinkDirection.y == 0)
+        {
+            blinkDirection = _directionVector;
+        }
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, blinkDirection, 5f, layerMask);
         if (hit.collider != null)
         {
-            transform.position += _directionVector * (hit.distance * 0.9f);
+            transform.position += blinkDirection * (hit.distance * 0.8f);
         }
         else
         {
-            transform.position += _directionVector * 5;
+            transform.position += blinkDirection * 5;
         }
         _ability2Timer = 0;
     }
