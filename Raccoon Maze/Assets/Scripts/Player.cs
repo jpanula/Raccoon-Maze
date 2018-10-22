@@ -129,7 +129,7 @@ public class Player : MonoBehaviour {
             }
             else
             {
-                    Move = new Vector3(0, Move.y, 0);
+                Move = new Vector3(0, Move.y, 0);
             }
             if (InputManager.GetKey("P" + PlayerNumber + "Up", _gamepadControl, PlayerNumber.ToString()))
             {
@@ -314,26 +314,89 @@ public class Player : MonoBehaviour {
     */
     public void Ability2()
     {
-        // Bit shift the index of the layer (8) to get a bit mask
         Vector3 blinkDirection = Move;
-        int layerMask = 1 << 11;
-        
         if (blinkDirection.x == 0 && blinkDirection.y == 0)
         {
             blinkDirection = _directionVector;
         }
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, blinkDirection, 5f, layerMask);
-        if (hit.collider != null)
+        CheckWallsOnBlink(blinkDirection);
+        _ability2Timer = 0;
+    } 
+
+    private void CheckWallsOnBlink(Vector3 blinkDirection)
+    {
+        
+        // Bit shift the index of the layer (8) to get a bit mask
+        int layerMask = 1 << 11;
+
+        RaycastHit2D outerHit = Physics2D.Raycast(transform.position, blinkDirection, 5f, layerMask);
+
+        layerMask = 1 << 12;
+
+        Vector3 blinkPosition = (transform.position + blinkDirection * 5f);
+
+        Collider2D innerHit = Physics2D.OverlapPoint(blinkPosition, layerMask);
+        Debug.Log("Center: " + innerHit);
+        Debug.Log(blinkPosition);
+
+        if (innerHit != null)
         {
-            transform.position += blinkDirection * (hit.distance * 0.8f);
+            innerHit = Physics2D.OverlapPoint(blinkPosition + (RotateVectorNinetyDecreesRight(blinkPosition.normalized) * 0.5f), layerMask);
+            Debug.Log("Second: " + innerHit);
+            Debug.Log(blinkPosition + (RotateVectorNinetyDecreesRight(blinkPosition.normalized) * 0.5f));
+            if (innerHit != null)
+            {
+                innerHit = Physics2D.OverlapPoint(blinkPosition + (RotateVectorNinetyDecreesLeft(blinkPosition.normalized) * 0.5f), layerMask);
+                Debug.Log("Third: " + innerHit);
+                Debug.Log(blinkPosition + (RotateVectorNinetyDecreesLeft(blinkPosition.normalized) * 0.5f));
+                if (innerHit != null)
+                {
+                    //transform.position = blinkPosition - (RotateVectorNinetyDecrees(blinkPosition).normalized * 0.5f);
+                }
+            }
+            else
+            {
+                //transform.position = blinkPosition + (RotateVectorNinetyDecrees(blinkPosition).normalized * 0.5f);
+            }
+
+        }
+        else if (outerHit.collider != null)
+        {
+            //transform.position += blinkDirection * (outerHit.distance * 0.8f);
         }
         else
         {
-            transform.position += blinkDirection * 5;
+            //transform.position += blinkPosition;
         }
-        _ability2Timer = 0;
     }
 
+    private Vector3 RotateVectorNinetyDecreesRight(Vector3 vector)
+    {
+
+        Vector3 result = new Vector3(vector.y, vector.x * -1, 0);
+
+        return result;
+    }
+
+    private Vector3 RotateVectorNinetyDecreesLeft(Vector3 vector)
+    {
+
+        Vector3 result = new Vector3(vector.y * -1, vector.x, 0);
+
+        return result;
+    }
+
+
+    /*
+        0,1 -> 0.5,0
+        1,1 -> -1,1
+        1,0 -> 0,-1
+        1,-1 -> -1,-1
+        0,-1 -> -1,0
+        -1,-1 -> -1,1
+        -1,0 -> 0,1
+        -1,1 -> 1,1
+    */
     void OnTriggerEnter2D(Collider2D col)
     {
         if(col.CompareTag("Weapon"))
