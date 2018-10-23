@@ -33,6 +33,7 @@ public class Player : MonoBehaviour {
     private GameObject _projectileHit;
     private bool _gamepadControl;
     public bool Invulnerable;
+    private List<GameObject> _powerUps;
 
     // Use this for initialization
 
