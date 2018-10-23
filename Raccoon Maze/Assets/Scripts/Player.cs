@@ -325,78 +325,93 @@ public class Player : MonoBehaviour {
 
     private void CheckWallsOnBlink(Vector3 blinkDirection)
     {
-        
+        float blinkDistance = 4f;
         // Bit shift the index of the layer (8) to get a bit mask
         int layerMask = 1 << 11;
 
-        RaycastHit2D outerHit = Physics2D.Raycast(transform.position, blinkDirection, 5f, layerMask);
+        RaycastHit2D outerHit = Physics2D.Raycast(transform.position, blinkDirection, blinkDistance, layerMask);
 
-        layerMask = 1 << 12;
+        Vector3 blinkPosition = (transform.position + (blinkDirection * blinkDistance));
 
-        Vector3 blinkPosition = (transform.position + blinkDirection * 5f);
+        blinkPosition = CheckInnerWallsOnBlink(blinkPosition, blinkDirection, blinkDistance);
+        Debug.Log("Outer: " + outerHit);
+        
+        if (outerHit.collider != null)
+        {
+            blinkPosition = transform.position;
+            blinkPosition += blinkDirection * (outerHit.distance * 0.8f);
+            blinkPosition = CheckInnerWallsOnBlink(blinkPosition, blinkDirection, blinkDistance);
+        }
+        
+        transform.position = blinkPosition;
+    }
+
+    private Vector3 CheckInnerWallsOnBlink(Vector3 blinkPosition, Vector3 blinkDirection, float blinkDistance)
+    {
+        float blinkOffset = 0.51f;
+        int layerMask = (1 << 11) | (1 << 12);
+
+        Vector3 result = blinkPosition;
 
         Collider2D innerHit = Physics2D.OverlapPoint(blinkPosition, layerMask);
+       
         Debug.Log("Center: " + innerHit);
         Debug.Log(blinkPosition);
-
+        
         if (innerHit != null)
         {
-            innerHit = Physics2D.OverlapPoint(blinkPosition + (RotateVectorNinetyDecreesRight(blinkPosition.normalized) * 0.5f), layerMask);
-            Debug.Log("Second: " + innerHit);
-            Debug.Log(blinkPosition + (RotateVectorNinetyDecreesRight(blinkPosition.normalized) * 0.5f));
+            innerHit = Physics2D.OverlapPoint(GetSideVector(blinkPosition, blinkDirection, true, blinkOffset), layerMask);
+            //Debug.Log("Second: " + innerHit);
+            //Debug.Log(GetSideVector(blinkPosition, blinkDirection, true, blinkOffset));
             if (innerHit != null)
             {
-                innerHit = Physics2D.OverlapPoint(blinkPosition + (RotateVectorNinetyDecreesLeft(blinkPosition.normalized) * 0.5f), layerMask);
-                Debug.Log("Third: " + innerHit);
-                Debug.Log(blinkPosition + (RotateVectorNinetyDecreesLeft(blinkPosition.normalized) * 0.5f));
+                innerHit = Physics2D.OverlapPoint(GetSideVector(blinkPosition, blinkDirection, false, blinkOffset), layerMask);
+                //Debug.Log("Third: " + innerHit);
+                //Debug.Log(GetSideVector(blinkPosition, blinkDirection, false, blinkOffset));
                 if (innerHit != null)
                 {
-                    //transform.position = blinkPosition - (RotateVectorNinetyDecrees(blinkPosition).normalized * 0.5f);
+                    blinkOffset = 1f;
+                    innerHit = Physics2D.OverlapPoint(new Vector3(blinkPosition.x - (blinkOffset * blinkDirection.x), blinkPosition.y - (blinkOffset * blinkDirection.y), layerMask));
+                    if (innerHit == null)
+                    {
+                        result = new Vector3(blinkPosition.x - (blinkOffset * blinkDirection.x), blinkPosition.y - (blinkOffset * blinkDirection.y));
+                    }
+                    else
+                    {
+                        result = transform.position;
+                        //result = new Vector3(blinkPosition.x + (blinkOffset * blinkDirection.x), blinkPosition.y + (blinkOffset * blinkDirection.y));
+                    }
+                }
+                else
+                {
+                    result = GetSideVector(blinkPosition, blinkDirection, false, blinkOffset);
+                    
                 }
             }
             else
             {
-                //transform.position = blinkPosition + (RotateVectorNinetyDecrees(blinkPosition).normalized * 0.5f);
+                result = GetSideVector(blinkPosition, blinkDirection, true, blinkOffset);
             }
 
         }
-        else if (outerHit.collider != null)
+        return result;
+    }
+
+    private Vector3 GetSideVector(Vector3 position, Vector3 direction, bool right, float offset)
+    {
+        Vector3 result;
+
+        if (right)
         {
-            //transform.position += blinkDirection * (outerHit.distance * 0.8f);
+            result = new Vector3(position.x + (offset * direction.y), position.y + (offset * direction.x), 0);
         }
         else
         {
-            //transform.position += blinkPosition;
+            result = new Vector3(position.x - (offset * direction.y), position.y - (offset * direction.x), 0);
         }
-    }
-
-    private Vector3 RotateVectorNinetyDecreesRight(Vector3 vector)
-    {
-
-        Vector3 result = new Vector3(vector.y, vector.x * -1, 0);
 
         return result;
     }
-
-    private Vector3 RotateVectorNinetyDecreesLeft(Vector3 vector)
-    {
-
-        Vector3 result = new Vector3(vector.y * -1, vector.x, 0);
-
-        return result;
-    }
-
-
-    /*
-        0,1 -> 0.5,0
-        1,1 -> -1,1
-        1,0 -> 0,-1
-        1,-1 -> -1,-1
-        0,-1 -> -1,0
-        -1,-1 -> -1,1
-        -1,0 -> 0,1
-        -1,1 -> 1,1
-    */
     void OnTriggerEnter2D(Collider2D col)
     {
         if(col.CompareTag("Weapon"))
