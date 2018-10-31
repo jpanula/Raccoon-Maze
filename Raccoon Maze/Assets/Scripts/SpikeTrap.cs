@@ -38,7 +38,7 @@ public class SpikeTrap : MonoBehaviour
 				_triggered = false;
 				_activationTimer = ActivationTime;
 				GetComponent<Renderer>().material = SpikeTrapActiveMaterial;
-				collisions = Physics2D.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y), new Vector2(1, 1), 0);
+				collisions = Physics2D.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y), new Vector2(transform.localScale.x, transform.localScale.y), 0);
 				foreach (Collider2D col in collisions)
 				{
 					if (col.gameObject.GetComponent<Player>())
