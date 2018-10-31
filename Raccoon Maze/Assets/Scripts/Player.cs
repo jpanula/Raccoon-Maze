@@ -15,9 +15,11 @@ public class Player : MonoBehaviour {
     private float _ability1Timer;
     [SerializeField]
     private float _ability1Cooldown;
+    private float _baseAbility1Cooldown;
     private float _ability2Timer;
     [SerializeField]
     private float _ability2Cooldown;
+    private float _baseAbility2Cooldown;
     private Vector3 _moraPosition;
     private bool _attack;
     private bool _inputLock;
@@ -33,12 +35,17 @@ public class Player : MonoBehaviour {
     private GameObject _projectileHit;
     private bool _gamepadControl;
     public bool Invulnerable;
-    private List<GameObject> _powerUps;
+    private List<PowerUpBase> _powerUps;
 
     // Use this for initialization
 
+    
+
     private void Awake()
     {
+
+        _baseAbility1Cooldown = _ability1Cooldown;
+        _baseAbility2Cooldown = _ability2Cooldown;
         _attackTimer = 0;
         _ability1Timer = _ability1Cooldown;
         _ability2Timer = _ability2Cooldown;
@@ -55,12 +62,14 @@ public class Player : MonoBehaviour {
         _moraPosition = Mora.transform.position;
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _collidedParticles = new List<GameObject>();
+        _powerUps = new List<PowerUpBase>();
         InitializeDirectionVector();
     }
 	
 	// Update is called once per frame
 	private void Update ()
     {
+
         _rb.velocity = new Vector3(0, 0, 0);
         if(HP <= 0)
         {
@@ -163,21 +172,7 @@ public class Player : MonoBehaviour {
             }
             
             transform.position += Move * Speed * Time.deltaTime;
-            if (InputManager.GetKeyDown("P" + PlayerNumber + "DirLock", _gamepadControl, PlayerNumber.ToString()))
-            {
-                //Debug.Log("taakke");
 
-                _directionLock = true;
-            }
-            if (InputManager.GetKeyUp("P" + PlayerNumber + "DirLock", _gamepadControl, PlayerNumber.ToString()))
-            {
-                //Debug.Log("taakke");
-
-                _directionLock = false;
-            }
-        }
-        if (!_inputLock)
-        {
             if (InputManager.GetKeyDown("P" + PlayerNumber + "Melee", _gamepadControl, PlayerNumber.ToString()))
             {
                 Attack();
@@ -191,11 +186,37 @@ public class Player : MonoBehaviour {
                 Ability2();
             }
         }
-        
+        if (InputManager.GetKeyDown("P" + PlayerNumber + "DirLock", _gamepadControl, PlayerNumber.ToString()))
+        {
+            //Debug.Log("taakke");
+
+            _directionLock = true;
+        }
+        if (InputManager.GetKeyUp("P" + PlayerNumber + "DirLock", _gamepadControl, PlayerNumber.ToString()))
+        {
+            //Debug.Log("taakke");
+
+            _directionLock = false;
+        }
+
 
         //Destroy(_blinkTrail);
 
     }
+
+    public bool AddPowerUp(PowerUpBase powerUp)
+    {
+        for (int i = 0; i < _powerUps.Count; i++)
+        {
+            if (_powerUps[i].GetPowerUpNum() == powerUp.GetPowerUpNum())
+            {
+                return false;
+            }
+        }
+        _powerUps.Add(powerUp);
+        return true;
+    }
+
     public void UpdateDirection()
     {
         if (Move.x > 0)
@@ -483,4 +504,48 @@ public class Player : MonoBehaviour {
         float ability2TimeLeftPercentage = _ability2Timer / _ability2Cooldown;
         return new float[] {ability1TimeLeft, ability2TimeLeft, ability1TimeLeftPercentage, ability2TimeLeftPercentage};
     }
+
+    public void SetAbility2Cooldown(float value)
+    {
+        if (value >= 0)
+        {
+            _ability2Cooldown = value;
+        }
+    }
+
+    public void SetAbility1Cooldown(float value)
+    {
+        if (value >= 0)
+        {
+            _ability1Cooldown = value;
+        }
+    }
+
+    public void ResetAbility2Cooldown()
+    {
+        if (_ability2Timer >= _ability2Cooldown)
+        {
+            _ability2Cooldown = _baseAbility2Cooldown;
+            _ability2Timer = _ability2Cooldown;
+        }
+        else
+        {
+            _ability2Cooldown = _baseAbility2Cooldown;
+        }
+
+    }
+    public void ResetAbility1Cooldown()
+    {
+        if (_ability1Timer >= _ability1Cooldown)
+        {
+            _ability1Cooldown = _baseAbility1Cooldown;
+            _ability1Timer = _ability1Cooldown;
+        }
+        else
+        {
+            _ability1Cooldown = _baseAbility1Cooldown;
+        }
+
+    }
+
 }
