@@ -11,6 +11,8 @@ TagManager:
   - Explosion
   - DeepPuddle
   - Path
+  - SpikeTrap
+  - SpikeTrapActive
   layers:
   - Default
   - TransparentFX
