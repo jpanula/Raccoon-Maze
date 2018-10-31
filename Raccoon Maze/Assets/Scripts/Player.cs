@@ -471,6 +471,16 @@ public class Player : MonoBehaviour {
         {
             Speed = _initialSpeed * 2;
         }
+
+        if (col.CompareTag("SpikeTrap"))
+        {
+            col.gameObject.GetComponent<SpikeTrap>().TriggerTrap();
+        }
+
+        if (col.CompareTag("SpikeTrapActive"))
+        {
+            HP--;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D col)
