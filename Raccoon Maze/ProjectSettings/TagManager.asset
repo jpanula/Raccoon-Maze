@@ -9,6 +9,7 @@ TagManager:
   - Weapon
   - Projectile
   - Explosion
+  - DeepPuddle
   layers:
   - Default
   - TransparentFX
