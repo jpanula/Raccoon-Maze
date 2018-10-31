@@ -47,7 +47,7 @@ public class Projectile : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (!col.CompareTag(Owner))
+        if (!col.CompareTag(Owner) && !col.CompareTag("Path") && !col.CompareTag("DeepPuddle"))
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
             gameObject.GetComponent<CapsuleCollider2D>().enabled = false;

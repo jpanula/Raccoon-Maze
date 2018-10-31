@@ -7,6 +7,7 @@ public class Player : MonoBehaviour {
     public GameManager Gm;
     public int PlayerNumber;
     public int Speed;
+    private int _initialSpeed;
     public Vector3 Move;
     public int _direction;
     private Vector3 _directionVector;
@@ -44,6 +45,7 @@ public class Player : MonoBehaviour {
 
     private void Awake()
     {
+        _initialSpeed = Speed;
 
         _baseAbility1Cooldown = _ability1Cooldown;
         _baseAbility2Cooldown = _ability2Cooldown;
@@ -430,6 +432,24 @@ public class Player : MonoBehaviour {
                 HP--;
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
+        }
+
+        if (col.CompareTag("DeepPuddle"))
+        {
+            Speed = _initialSpeed / 2;
+        }
+
+        if (col.CompareTag("Path"))
+        {
+            Speed = _initialSpeed * 2;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.CompareTag("DeepPuddle") || col.CompareTag("Path"))
+        {
+            Speed = _initialSpeed;
         }
     }
 
