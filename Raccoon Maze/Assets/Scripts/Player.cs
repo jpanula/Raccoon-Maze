@@ -366,11 +366,16 @@ public class Player : MonoBehaviour {
         {
             Speed = _initialSpeed / 2;
         }
+
+        if (col.CompareTag("Path"))
+        {
+            Speed = _initialSpeed * 2;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D col)
     {
-        if (col.CompareTag("DeepPuddle"))
+        if (col.CompareTag("DeepPuddle") || col.CompareTag("Path"))
         {
             Speed = _initialSpeed;
         }

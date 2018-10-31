@@ -10,6 +10,7 @@ TagManager:
   - Projectile
   - Explosion
   - DeepPuddle
+  - Path
   layers:
   - Default
   - TransparentFX
