@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour {
@@ -9,6 +11,7 @@ public class Projectile : MonoBehaviour {
     private ParticleSystem _ps;
     public string Owner;
     private float _emissionTimer;
+    private string[] _nonCollidingTags = {"Path", "DeepPuddle", "SpikeTrap", "SpikeTrapActive", "OilSlick", "OilSlickFire"};
 
     private void Start()
     {
@@ -47,7 +50,7 @@ public class Projectile : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (!col.CompareTag(Owner) && !col.CompareTag("Path") && !col.CompareTag("DeepPuddle") && !col.CompareTag("SpikeTrap") && !col.CompareTag("SpikeTrapActive"))
+        if (!col.CompareTag(Owner) && !_nonCollidingTags.Contains(col.tag))
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
             gameObject.GetComponent<CapsuleCollider2D>().enabled = false;

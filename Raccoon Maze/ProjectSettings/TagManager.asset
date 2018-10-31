@@ -13,6 +13,8 @@ TagManager:
   - Path
   - SpikeTrap
   - SpikeTrapActive
+  - OilSlick
+  - OilSlickFire
   layers:
   - Default
   - TransparentFX
