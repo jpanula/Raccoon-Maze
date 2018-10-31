@@ -285,6 +285,18 @@ public static class InputManager
         return false;
     }
 
+
+    public static float GetAxis(string keyMap, bool joystickControl, string joystickNum)
+    {
+        if (joystickControl)
+        {
+            if (gamepadMapping[keyMap].Length == 6)
+            {
+                return Input.GetAxis("Joystick" + joystickNum + gamepadMapping[keyMap].Substring(0, 5));
+            }
+        }
+        return 0;
+    }
     public static bool GetKey(string keyMap, bool joystickControl, string joystickNum)
     {
         //Debug.Log(keyMap.Length);

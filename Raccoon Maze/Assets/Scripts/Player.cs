@@ -36,10 +36,11 @@ public class Player : MonoBehaviour {
     private bool _gamepadControl;
     public bool Invulnerable;
     private List<PowerUpBase> _powerUps;
+    public Vector3 DirectionVector;
 
     // Use this for initialization
 
-    
+
 
     private void Awake()
     {
@@ -58,17 +59,19 @@ public class Player : MonoBehaviour {
 
     private void Start ()
     {
+        DirectionVector = new Vector3(0,0,0);
         _direction = Mathf.RoundToInt(transform.rotation.z / 45);
         _moraPosition = Mora.transform.position;
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _collidedParticles = new List<GameObject>();
         _powerUps = new List<PowerUpBase>();
-        InitializeDirectionVector();
+        //InitializeDirectionVector();
     }
 	
 	// Update is called once per frame
 	private void Update ()
     {
+        
 
         _rb.velocity = new Vector3(0, 0, 0);
         if(HP <= 0)
@@ -113,65 +116,27 @@ public class Player : MonoBehaviour {
         //Debug.Log("P" + PlayerNumber + (_gamepadControl));
         if (!_inputLock)
         {
-            /*
-            if (InputManager.GetKey("P" + PlayerNumber + "H") < 0)
-            {
-                Move = new Vector3(-1f, Move.y, 0);
-            }
-            else if (Input.GetAxisRaw("P" + PlayerNumber + "H") > 0)
-            {
-                Move = new Vector3(1f, Move.y, 0);
-            }
-            else
-            {
-                Move = new Vector3(0, Move.y, 0);
-            }
-            */
+            //Player move
+            Move = new Vector3(Input.GetAxis("Joystick" + PlayerNumber + "Axis1"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis2"), 0);
+            Move.Normalize();
 
-            //Input.GetJoystickNames().Length >= PlayerNumber
-            if (InputManager.GetKey("P" + PlayerNumber + "Left", _gamepadControl, PlayerNumber.ToString()))
-            {
-                Move = new Vector3(-1f, Move.y, 0);
-            }
-            else if (InputManager.GetKey("P" + PlayerNumber + "Right", _gamepadControl, PlayerNumber.ToString()))
-            {
-                Move = new Vector3(1f, Move.y, 0);
-            }
-            else
-            {
-                Move = new Vector3(0, Move.y, 0);
-            }
-            if (InputManager.GetKey("P" + PlayerNumber + "Up", _gamepadControl, PlayerNumber.ToString()))
-            {
-                Move = new Vector3(Move.x, 1f, 0);
-            }
-            else if (InputManager.GetKey("P" + PlayerNumber + "Down", _gamepadControl, PlayerNumber.ToString()))
-            {
-                Move = new Vector3(Move.x, -1f, 0);
-            }
-            else
-            {
-                Move = new Vector3(Move.x, 0, 0);
-            }
-
-            if (Move.x != 0 && Move.y != 0)
-            {
-                Move = new Vector3(Move.x * 0.75f, Move.y * 0.75f, 0);
-                //Debug.Log(_intercardinalDir.x + " " + _intercardinalDir.y);
-            }
-            /*
-            else if(Move.x == 0 && Move.y == 0)
-            {
-                Debug.Log(Move);
-                CheckIntercardinalDirections();
-            }
-            */
-            if (!_directionLock)
-            {
-                UpdateDirection();
-            }
-            
             transform.position += Move * Speed * Time.deltaTime;
+
+
+            //Player rotate
+            DirectionVector = new Vector3(Input.GetAxis("Joystick" + PlayerNumber + "Axis3"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis6"), 0);
+            //DirectionVector.Normalize();
+            transform.up = DirectionVector;
+
+            /*
+            float heading = Mathf.Atan2(DirectionVector.x, DirectionVector.y) * Mathf.Rad2Deg;
+
+            Debug.Log(DirectionVector);
+            Debug.Log(heading);
+
+            transform.rotation = Quaternion.AngleAxis(-heading, Vector3.forward);
+            */
+            
 
             if (InputManager.GetKeyDown("P" + PlayerNumber + "Melee", _gamepadControl, PlayerNumber.ToString()))
             {
@@ -216,9 +181,10 @@ public class Player : MonoBehaviour {
         _powerUps.Add(powerUp);
         return true;
     }
-
+    
     public void UpdateDirection()
     {
+        /*
         if (Move.x > 0)
         {
             if(Move.y > 0)
@@ -267,8 +233,10 @@ public class Player : MonoBehaviour {
         }
 
         transform.eulerAngles = new Vector3(0, 0, 45 * _direction);
+        */
     }
 
+    /*
     private void InitializeDirectionVector()
     {
         if(_direction == 0)
@@ -304,6 +272,7 @@ public class Player : MonoBehaviour {
             _directionVector = new Vector3(1, 1);
         }
     }
+    */
 
     public void Attack()
     {
@@ -376,7 +345,10 @@ public class Player : MonoBehaviour {
         Vector3 result = blinkPosition;
 
         Collider2D innerHit = Physics2D.OverlapPoint(blinkPosition, layerMask);
-       
+        /*
+        innerHit = Physics2D.OverlapBox(, new Vector2(transform.localScale.x, transform.localScale.y) *1.1f,);
+        bool isEmpty = innerHit == null;
+       */
         Debug.Log("Center: " + innerHit);
         Debug.Log(blinkPosition);
         
