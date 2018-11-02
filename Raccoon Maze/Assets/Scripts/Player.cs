@@ -65,7 +65,7 @@ public class Player : MonoBehaviour {
 
     private void Start ()
     {
-        DirectionVector = new Vector3(0,0,0);
+        DirectionVector = transform.forward;
         _direction = Mathf.RoundToInt(transform.rotation.z / 45);
         _moraPosition = Mora.transform.position;
         _rb = gameObject.GetComponent<Rigidbody2D>();
@@ -130,11 +130,12 @@ public class Player : MonoBehaviour {
 
 
             //Player rotate
-            DirectionVector = new Vector3(Input.GetAxis("Joystick" + PlayerNumber + "Axis3"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis6"), 0);
-            
-            if(DirectionVector != Vector3.zero)
+            Vector3 HelpVector = new Vector3(Input.GetAxis("Joystick" + PlayerNumber + "Axis3"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis6"), 0);
+
+            if(HelpVector != Vector3.zero)
             {
-                transform.up = DirectionVector;
+                transform.up = HelpVector;
+                DirectionVector = HelpVector;
             }
             //DirectionVector.Normalize();
             /*
@@ -160,19 +161,6 @@ public class Player : MonoBehaviour {
                 Ability2();
             }
         }
-        if (InputManager.GetKeyDown("P" + PlayerNumber + "DirLock", _gamepadControl, PlayerNumber.ToString()))
-        {
-            //Debug.Log("taakke");
-
-            _directionLock = true;
-        }
-        if (InputManager.GetKeyUp("P" + PlayerNumber + "DirLock", _gamepadControl, PlayerNumber.ToString()))
-        {
-            //Debug.Log("taakke");
-
-            _directionLock = false;
-        }
-
 
         //Destroy(_blinkTrail);
 
@@ -196,98 +184,6 @@ public class Player : MonoBehaviour {
         _powerUps.Add(powerUp);
         return true;
     }
-    
-    public void UpdateDirection()
-    {
-        /*
-        if (Move.x > 0)
-        {
-            if(Move.y > 0)
-            {
-                _direction = 7;
-                _directionVector = Move;
-            }
-            else if (Move.y < 0)
-            {
-                _direction = 5;
-                _directionVector = Move;
-            }
-            else
-            {
-                _direction = 6;
-                _directionVector = Move;
-            }
-        }
-        else if(Move.x < 0)
-        {
-            if (Move.y > 0)
-            {
-                _direction = 1;
-                _directionVector = Move;
-            }
-            else if (Move.y < 0)
-            {
-                _direction = 3;
-                _directionVector = Move;
-            }
-            else
-            {
-                _direction = 2;
-                _directionVector = Move;
-            }
-        }
-        else if (Move.y > 0)
-        {
-            _direction = 0;
-            _directionVector = Move;
-        }
-        else if (Move.y < 0)
-        {
-            _direction = 4;
-            _directionVector = Move;
-        }
-
-        transform.eulerAngles = new Vector3(0, 0, 45 * _direction);
-        */
-    }
-
-    /*
-    private void InitializeDirectionVector()
-    {
-        if(_direction == 0)
-        {
-            _directionVector = new Vector3(0, 1);
-        }
-        else if (_direction == 1)
-        {
-            _directionVector = new Vector3(-1, 1);
-        }
-        else if (_direction == 2)
-        {
-            _directionVector = new Vector3(-1, 0);
-        }
-        else if (_direction == 3)
-        {
-            _directionVector = new Vector3(-1, -1);
-        }
-        else if (_direction == 4)
-        {
-            _directionVector = new Vector3(0, -1);
-        }
-        else if (_direction == 5)
-        {
-            _directionVector = new Vector3(1, -1);
-        }
-        else if (_direction == 6)
-        {
-            _directionVector = new Vector3(1, 0);
-        }
-        else if (_direction == 7)
-        {
-            _directionVector = new Vector3(1, 1);
-        }
-    }
-    */
 
     public void Attack()
     {
@@ -300,9 +196,9 @@ public class Player : MonoBehaviour {
 
     public void Ability1()
     {
-        _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, Quaternion.Euler(transform.up));
+        _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, SpawnPoint.transform.rotation);
         _spawnedProjectile.GetComponent<Projectile>().Owner = Name;
-        _spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(_directionVector * 15, ForceMode2D.Impulse);
+        _spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(DirectionVector.normalized * 15, ForceMode2D.Impulse);
         _ability1Timer = 0;
     }
     /*
@@ -320,7 +216,7 @@ public class Player : MonoBehaviour {
     */
     public void Ability2()
     {
-        Vector3 blinkDirection = Move;
+        Vector3 blinkDirection = Move.normalized;
         if (blinkDirection.x == 0 && blinkDirection.y == 0)
         {
             blinkDirection = DirectionVector;
