@@ -127,9 +127,12 @@ public class Player : MonoBehaviour {
 
             //Player rotate
             DirectionVector = new Vector3(Input.GetAxis("Joystick" + PlayerNumber + "Axis3"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis6"), 0);
+            
+            if(DirectionVector != Vector3.zero)
+            {
+                transform.up = DirectionVector;
+            }
             //DirectionVector.Normalize();
-            transform.up = DirectionVector;
-
             /*
             float heading = Mathf.Atan2(DirectionVector.x, DirectionVector.y) * Mathf.Rad2Deg;
 
@@ -287,7 +290,7 @@ public class Player : MonoBehaviour {
 
     public void Ability1()
     {
-        _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, Quaternion.Euler(new Vector3(0, 0, 45 * _direction)));
+        _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, Quaternion.Euler(transform.up));
         _spawnedProjectile.GetComponent<Projectile>().Owner = Name;
         _spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(_directionVector * 15, ForceMode2D.Impulse);
         _ability1Timer = 0;
@@ -310,7 +313,7 @@ public class Player : MonoBehaviour {
         Vector3 blinkDirection = Move;
         if (blinkDirection.x == 0 && blinkDirection.y == 0)
         {
-            blinkDirection = _directionVector;
+            blinkDirection = DirectionVector;
         }
         CheckWallsOnBlink(blinkDirection);
         _ability2Timer = 0;
