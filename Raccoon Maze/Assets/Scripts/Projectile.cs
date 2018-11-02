@@ -6,14 +6,12 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
-    public ParticleSystem FireballParticle;
-    public ParticleSystem Explosion;
-    private ParticleSystem _ps;
+    
+    protected ParticleSystem _ps;
     public string Owner;
-    private float _emissionTimer;
     private string[] _nonCollidingTags = {"Path", "DeepPuddle", "SpikeTrap", "SpikeTrapActive", "OilSlick", "OilSlickFire"};
 
-    private void Start()
+    protected virtual void Start()
     {
         //var em = FireballParticle.emission;
         //em.enabled = false;
@@ -24,24 +22,15 @@ public class Projectile : MonoBehaviour {
     {
         return _ps;
     }
-    private void Update()
+
+    protected virtual void Update()
     {
-        /*if(_emissionTimer < 0.07f)
-        {
-            _emissionTimer += Time.deltaTime;
-        }
-        else
-        {
-            var em = FireballParticle.emission;
-            em.enabled = true;
-        }
-        */
         if(_ps != null)
         {
-            Debug.Log("moi");
+            //Debug.Log("moi");
             if (!_ps.IsAlive())
             {
-                Debug.Log("hei");
+                //Debug.Log("hei");
                 Destroy(_ps.gameObject);
                 Destroy(gameObject);
             }
@@ -50,17 +39,19 @@ public class Projectile : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (!col.CompareTag(Owner) && !_nonCollidingTags.Contains(col.tag))
+        //Debug.Log(col.CompareTag(Owner) + " " + Owner + " " + col.tag);
+        if (!col.CompareTag(Owner) && !_nonCollidingTags.Contains(col.tag) && !col.CompareTag("Weapon"))
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
             gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
-            var em = FireballParticle.emission;
-            em.enabled = false;
-            if (_ps == null)
-            {
-                _ps = Instantiate(Explosion, transform.position, Quaternion.identity);
-            }
+
+            Hit();
         }
+
+    }
+
+    protected virtual void Hit()
+    {
 
     }
 }

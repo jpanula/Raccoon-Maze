@@ -17,11 +17,9 @@ public class Player : MonoBehaviour {
     public GameObject Mora;
     private float _attackTimer;
     private float _ability1Timer;
-    [SerializeField]
     private float _ability1Cooldown;
     private float _baseAbility1Cooldown;
     private float _ability2Timer;
-    [SerializeField]
     private float _ability2Cooldown;
     private float _baseAbility2Cooldown;
     private Vector3 _moraPosition;
@@ -30,7 +28,7 @@ public class Player : MonoBehaviour {
     private Rigidbody2D _rb;
     public BoxCollider2D MoraCollider;
     public int HP;
-    private GameObject _spawnedProjectile;
+    private Projectile _spawnedProjectile;
     public GameObject Projectile;
     public GameObject SpawnPoint;
     private List<GameObject> _collidedParticles;
@@ -39,7 +37,9 @@ public class Player : MonoBehaviour {
     private GameObject _projectileHit;
     private bool _gamepadControl;
     public bool Invulnerable;
-    private List<PowerUpBase> _powerUps;
+    //private List<PowerUpBase> _powerUps;
+    private PowerUpBase _powerUp1;
+    private PowerUpBase _powerUp2;
     public Vector3 DirectionVector;
 
     // Use this for initialization
@@ -65,20 +65,20 @@ public class Player : MonoBehaviour {
 
     private void Start ()
     {
-        DirectionVector = transform.forward;
+        DirectionVector = transform.up;
         _direction = Mathf.RoundToInt(transform.rotation.z / 45);
         _moraPosition = Mora.transform.position;
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _collidedParticles = new List<GameObject>();
-        _powerUps = new List<PowerUpBase>();
+        //_powerUps = new List<PowerUpBase>();
         //InitializeDirectionVector();
     }
 	
 	// Update is called once per frame
 	private void Update ()
     {
-        
 
+        //Debug.Log(_powerUp1);
         _rb.velocity = new Vector3(0, 0, 0);
         if(HP <= 0)
         {
@@ -174,15 +174,19 @@ public class Player : MonoBehaviour {
 
     public bool AddPowerUp(PowerUpBase powerUp)
     {
-        for (int i = 0; i < _powerUps.Count; i++)
+        if(powerUp.GetPowerUpType() == 1 && _powerUp1 == null)
         {
-            if (_powerUps[i].GetPowerUpNum() == powerUp.GetPowerUpNum())
-            {
-                return false;
-            }
+            _powerUp1 = powerUp;
+            _ability1Timer = _ability1Cooldown;
+            return true;
         }
-        _powerUps.Add(powerUp);
-        return true;
+        else if (powerUp.GetPowerUpType() == 2 && _powerUp2 == null)
+        {
+            _powerUp2 = powerUp;
+            _ability2Timer = _ability2Cooldown;
+            return true;
+        }
+        return false;
     }
 
     public void Attack()
@@ -196,10 +200,12 @@ public class Player : MonoBehaviour {
 
     public void Ability1()
     {
-        _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, SpawnPoint.transform.rotation);
-        _spawnedProjectile.GetComponent<Projectile>().Owner = Name;
-        _spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(DirectionVector.normalized * 15, ForceMode2D.Impulse);
-        _ability1Timer = 0;
+        if(_powerUp1 != null)
+        {
+            _powerUp1.Effect();
+            _ability1Timer = 0;
+        }
+        
     }
     /*
     public void Ability1()
@@ -216,13 +222,19 @@ public class Player : MonoBehaviour {
     */
     public void Ability2()
     {
+
+        if (_powerUp2 != null)
+        {
+            _powerUp2.Effect();
+            _ability2Timer = 0;
+        }
+
         Vector3 blinkDirection = Move.normalized;
         if (blinkDirection.x == 0 && blinkDirection.y == 0)
         {
             blinkDirection = DirectionVector;
         }
         CheckWallsOnBlink(blinkDirection);
-        _ability2Timer = 0;
     } 
 
     private void CheckWallsOnBlink(Vector3 blinkDirection)
@@ -332,7 +344,9 @@ public class Player : MonoBehaviour {
         }
         if (col.CompareTag("Projectile"))
         {
-            if (col.gameObject != _spawnedProjectile)
+            Debug.Log(col.gameObject);
+            Debug.Log(_spawnedProjectile);
+            if (col.gameObject != _spawnedProjectile.gameObject)
             {
                 //Destroy(gameObject);
                 //_rb.AddForce(new Vector2(100, 0));
@@ -430,19 +444,34 @@ public class Player : MonoBehaviour {
         return new float[] {ability1TimeLeft, ability2TimeLeft, ability1TimeLeftPercentage, ability2TimeLeftPercentage};
     }
 
-    public void SetAbility2Cooldown(float value)
+    public void SetSpawnedProjectile(Projectile projectile)
     {
-        if (value >= 0)
+        if (projectile != null)
         {
-            _ability2Cooldown = value;
+            _spawnedProjectile = projectile;
         }
     }
 
-    public void SetAbility1Cooldown(float value)
+    public Projectile GetSpawnedProjectile()
+    {
+        return _spawnedProjectile;
+    }
+
+    
+
+    public void SetAbilityCooldown(float value, int type)
     {
         if (value >= 0)
         {
-            _ability1Cooldown = value;
+            if(type == 1)
+            {
+                _ability1Cooldown = value;
+            }
+            else
+            {
+                _ability2Cooldown = value;
+            }
+            
         }
     }
 
