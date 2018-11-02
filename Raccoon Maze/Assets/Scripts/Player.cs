@@ -8,6 +8,9 @@ public class Player : MonoBehaviour {
     public int PlayerNumber;
     public int Speed;
     private int _initialSpeed;
+    public float OilSlickTickTime;
+    private float _oilSlickTimer;
+    private bool _inOilSlickFire;
     public Vector3 Move;
     public int _direction;
     private Vector3 _directionVector;
@@ -46,6 +49,7 @@ public class Player : MonoBehaviour {
     private void Awake()
     {
         _initialSpeed = Speed;
+        _oilSlickTimer = OilSlickTickTime;
 
         _baseAbility1Cooldown = _ability1Cooldown;
         _baseAbility2Cooldown = _ability2Cooldown;
@@ -172,6 +176,12 @@ public class Player : MonoBehaviour {
 
         //Destroy(_blinkTrail);
 
+        _oilSlickTimer -= Time.deltaTime;
+        if (_oilSlickTimer <= 0 && _inOilSlickFire)
+        {
+            HP--;
+            _oilSlickTimer = OilSlickTickTime;
+        }
     }
 
     public bool AddPowerUp(PowerUpBase powerUp)
@@ -437,7 +447,7 @@ public class Player : MonoBehaviour {
             }
         }
 
-        if (col.CompareTag("DeepPuddle"))
+        if (col.CompareTag("DeepPuddle") || col.CompareTag("OilSlick"))
         {
             Speed = _initialSpeed / 2;
         }
@@ -446,13 +456,37 @@ public class Player : MonoBehaviour {
         {
             Speed = _initialSpeed * 2;
         }
+
+        if (col.CompareTag("SpikeTrap"))
+        {
+            col.gameObject.GetComponent<SpikeTrap>().TriggerTrap();
+        }
+
+        if (col.CompareTag("SpikeTrapActive"))
+        {
+            HP--;
+        }
+
+        if (col.CompareTag("OilSlickFire"))
+        {
+            Speed = _initialSpeed / 2;
+            HP--;
+            _inOilSlickFire = true;
+            _oilSlickTimer = OilSlickTickTime;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D col)
     {
-        if (col.CompareTag("DeepPuddle") || col.CompareTag("Path"))
+        if (col.CompareTag("DeepPuddle") || col.CompareTag("Path") || col.CompareTag("OilSlick"))
         {
             Speed = _initialSpeed;
+        }
+
+        if (col.CompareTag("OilSlickFire"))
+        {
+            Speed = _initialSpeed;
+            _inOilSlickFire = false;
         }
     }
 

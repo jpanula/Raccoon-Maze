@@ -11,6 +11,10 @@ TagManager:
   - Explosion
   - DeepPuddle
   - Path
+  - SpikeTrap
+  - SpikeTrapActive
+  - OilSlick
+  - OilSlickFire
   layers:
   - Default
   - TransparentFX
