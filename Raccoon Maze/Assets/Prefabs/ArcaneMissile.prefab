@@ -122,7 +122,7 @@ MonoBehaviour:
   Owner: 
   ArcaneParticle: {fileID: 198999913625258960}
   _speed: 10
-  _rotateSpeed: 150
+  _rotateSpeed: 200
 --- !u!198 &198999913625258960
 ParticleSystem:
   m_ObjectHideFlags: 1
