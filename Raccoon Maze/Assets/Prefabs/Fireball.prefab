@@ -119,8 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c801a49aed6cec489e12fca95e891d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ps: {fileID: 198655987653066698}
   Owner: 
-  FireballParticle: {fileID: 198655987653066698}
   Explosion: {fileID: 198305656108890474, guid: e085fc7a885e1084b9ac534f75bc89d6,
     type: 2}
 --- !u!198 &198655987653066698
