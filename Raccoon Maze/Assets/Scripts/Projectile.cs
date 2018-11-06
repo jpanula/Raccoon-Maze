@@ -6,8 +6,10 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
-    
+    [SerializeField]
     protected ParticleSystem _ps;
+
+    protected ParticleSystem _explosion;
     public string Owner;
     private string[] _nonCollidingTags = {"Path", "DeepPuddle", "SpikeTrap", "SpikeTrapActive", "OilSlick", "OilSlickFire"};
 
@@ -39,7 +41,7 @@ public class Projectile : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        //Debug.Log(col.CompareTag(Owner) + " " + Owner + " " + col.tag);
+        Debug.Log(col.CompareTag(Owner) + " " + Owner + " " + col.tag + " " + col);
         if (!col.CompareTag(Owner) && !_nonCollidingTags.Contains(col.tag) && !col.CompareTag("Weapon"))
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);

@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class Fireball : Projectile {
 
-    public ParticleSystem FireballParticle;
     public ParticleSystem Explosion;
 
     protected override void Hit()
     {
-        var em = FireballParticle.emission;
+        var em = _ps.emission;
         em.enabled = false;
-        if (_ps == null)
+
+        if (_explosion == null)
         {
-            _ps = Instantiate(Explosion, transform.position, Quaternion.identity);
+            _explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
         }
     
     }

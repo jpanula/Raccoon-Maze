@@ -344,9 +344,9 @@ public class Player : MonoBehaviour {
         }
         if (col.CompareTag("Projectile"))
         {
-            Debug.Log(col.gameObject);
-            Debug.Log(_spawnedProjectile);
-            if (col.gameObject != _spawnedProjectile.gameObject)
+            //Debug.Log(col.gameObject);
+            //Debug.Log(_spawnedProjectile);
+            if (_spawnedProjectile == null)
             {
                 //Destroy(gameObject);
                 //_rb.AddForce(new Vector2(100, 0));
@@ -355,6 +355,16 @@ public class Player : MonoBehaviour {
                 HP--;
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
+            else if (col.gameObject != _spawnedProjectile.gameObject)
+            {
+                //Destroy(gameObject);
+                //_rb.AddForce(new Vector2(100, 0));
+                transform.position = transform.position + (transform.position - col.transform.position).normalized * 0.5f;
+                _projectileHit = col.gameObject;
+                HP--;
+                //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
+            }
+
         }
 
         if (col.CompareTag("DeepPuddle") || col.CompareTag("OilSlick"))

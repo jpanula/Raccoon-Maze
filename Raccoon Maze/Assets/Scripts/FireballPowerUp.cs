@@ -7,7 +7,7 @@ public class FireballPowerUp : PowerUpBase
     private Projectile _spawnedProjectile;
     public Projectile Projectile;
     [SerializeField]
-    private int _cooldown;
+    private float _cooldown;
 
     public override void PickUp(GameObject player)
     {
