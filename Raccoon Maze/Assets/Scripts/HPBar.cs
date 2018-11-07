@@ -38,6 +38,7 @@ public class HPBar : MonoBehaviour
 			return parent.GetComponent<Player>().HP;
 		}
 
+		Debug.Log("HPBar: Parent is an unidentified type");
 		return 0;
 	}
 }
