@@ -53,7 +53,7 @@ public class BreakableWall : MonoBehaviour
             if (_collidedParticles[i].gameObject == other.gameObject)
             {
                 sameExplosion = true;
-                Debug.Log(other + " " + _collidedParticles[i]);
+                //Debug.Log(other + " " + _collidedParticles[i]);
             }
         }
         if (other.gameObject.CompareTag("Explosion") && !sameExplosion)

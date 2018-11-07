@@ -9,12 +9,18 @@ public class Projectile : MonoBehaviour {
     [SerializeField]
     protected ParticleSystem _ps;
 
+    private float _particleTimer;
+
+    [SerializeField]
+    private float _particleDestructionTime;
+
     protected ParticleSystem _explosion;
     public string Owner;
     private string[] _nonCollidingTags = {"Path", "DeepPuddle", "SpikeTrap", "SpikeTrapActive", "OilSlick", "OilSlickFire"};
 
     protected virtual void Start()
     {
+        _particleTimer = -1f;
         //var em = FireballParticle.emission;
         //em.enabled = false;
         //_emissionTimer = 0;
@@ -27,21 +33,26 @@ public class Projectile : MonoBehaviour {
 
     protected virtual void Update()
     {
+        //Debug.Log("update");
         if(_ps != null)
         {
-            //Debug.Log("moi");
-            if (!_ps.IsAlive())
+            if (_particleTimer > _particleDestructionTime)
             {
                 //Debug.Log("hei");
-                Destroy(_ps.gameObject);
+                Destroy(_explosion.gameObject);
                 Destroy(gameObject);
             }
+            else if(_particleTimer >= 0)
+            {
+                _particleTimer += Time.deltaTime;
+            }
+            
         }
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log(col.CompareTag(Owner) + " " + Owner + " " + col.tag + " " + col);
+        //Debug.Log(col.CompareTag(Owner) + " " + Owner + " " + col.tag + " " + col);
         if (!col.CompareTag(Owner) && !_nonCollidingTags.Contains(col.tag) && !col.CompareTag("Weapon"))
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
@@ -54,6 +65,6 @@ public class Projectile : MonoBehaviour {
 
     protected virtual void Hit()
     {
-
+        _particleTimer = 0;
     }
 }

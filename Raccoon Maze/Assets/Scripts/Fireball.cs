@@ -8,6 +8,8 @@ public class Fireball : Projectile {
 
     protected override void Hit()
     {
+        base.Hit();
+
         var em = _ps.emission;
         em.enabled = false;
 

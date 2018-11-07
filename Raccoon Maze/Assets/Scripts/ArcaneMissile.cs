@@ -5,7 +5,6 @@ using UnityEngine;
 public class ArcaneMissile : Projectile {
 
     [SerializeField]
-    private GameObject _targetingPoint;
     public ParticleSystem Explosion;
     private GameObject target;
     private Rigidbody2D _rb;
@@ -17,24 +16,32 @@ public class ArcaneMissile : Projectile {
     private int _rotateSpeed;
     private bool _targeting;
     private GameObject _target;
-    private PolygonCollider2D _targetCollider;
-    
+    [SerializeField]
+    private float _targetRadius;
+    [SerializeField]
+    private float _targetAngle;
+
 
     protected void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _targetCollider = _targetingPoint.GetComponent<PolygonCollider2D>();
     }
 
     protected override void Start()
     {
+        base.Start();
         //_player = GameObject.Find("Player2");
         _targeting = true;
-        //_target = SearchForTarget();
+        
     }
 
     protected override void Update()
     {
+        if (_targeting)
+        {
+            _targeting = SearchForTarget();
+        }
+        
         base.Update();
     }
 
@@ -56,6 +63,8 @@ public class ArcaneMissile : Projectile {
 
     protected override void Hit()
     {
+        base.Hit();
+
         var em = _ps.emission;
         em.enabled = false;
         
@@ -65,9 +74,10 @@ public class ArcaneMissile : Projectile {
         }
         
     }
-    /*
-    public void SearchForTarget(GameObject obj)
+    
+    public bool SearchForTarget()
     {
+        /*
         for(int i = 0; i < 2; i++)
         {
             RaycastHit hit;
@@ -90,6 +100,34 @@ public class ArcaneMissile : Projectile {
                 }
             }
         }
+        */
+        int layerMask = 1 << 8;
+        Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, _targetRadius, layerMask);
+        Vector3 characterToCollider;
+        float dot;
+        foreach (Collider2D collider in cols)
+        {
+            //Debug.Log("colldieereja" + collider.gameObject);
+            characterToCollider = (collider.transform.position - transform.position).normalized;
+            //Debug.Log(characterToCollider);
+
+            dot = Vector3.Dot(characterToCollider, transform.forward);
+
+            //Debug.Log("dot: " + dot + " Cos: " + Mathf.Cos(55) + " charToCol: " + characterToCollider);
+            if (dot >= -Mathf.Cos(_targetAngle))
+            {
+                //Debug.Log("colldieereja edessä " + collider.gameObject.GetComponent<Player>().Name + " " + Owner);
+                if (collider.gameObject.GetComponent<Player>().Name != Owner)
+                {
+                    //Debug.Log("Target found! " + collider.gameObject);
+                    _target = collider.gameObject;
+                    return false;
+                }
+                
+            }
+        }
+        //Debug.Log("Target not found!");
+        return true;
     }
-    */
+    
 }

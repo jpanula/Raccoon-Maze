@@ -228,13 +228,14 @@ public class Player : MonoBehaviour {
             _powerUp2.Effect();
             _ability2Timer = 0;
         }
-
+        /*
         Vector3 blinkDirection = Move.normalized;
         if (blinkDirection.x == 0 && blinkDirection.y == 0)
         {
             blinkDirection = DirectionVector;
         }
         CheckWallsOnBlink(blinkDirection);
+        */
     } 
 
     private void CheckWallsOnBlink(Vector3 blinkDirection)
@@ -248,7 +249,7 @@ public class Player : MonoBehaviour {
         Vector3 blinkPosition = (transform.position + (blinkDirection * blinkDistance));
 
         blinkPosition = CheckInnerWallsOnBlink(blinkPosition, blinkDirection, blinkDistance);
-        Debug.Log("Outer: " + outerHit);
+        //Debug.Log("Outer: " + outerHit);
         
         if (outerHit.collider != null)
         {
@@ -272,8 +273,8 @@ public class Player : MonoBehaviour {
         innerHit = Physics2D.OverlapBox(, new Vector2(transform.localScale.x, transform.localScale.y) *1.1f,);
         bool isEmpty = innerHit == null;
        */
-        Debug.Log("Center: " + innerHit);
-        Debug.Log(blinkPosition);
+        //Debug.Log("Center: " + innerHit);
+        //Debug.Log(blinkPosition);
         
         if (innerHit != null)
         {

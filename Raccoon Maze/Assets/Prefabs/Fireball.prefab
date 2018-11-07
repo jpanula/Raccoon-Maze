@@ -121,7 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ps: {fileID: 198655987653066698}
   Owner: 
-  Explosion: {fileID: 198305656108890474, guid: e085fc7a885e1084b9ac534f75bc89d6,
+  Explosion: {fileID: 198972060577872830, guid: 5898ef0a2d4e21840a549aa455f2f147,
     type: 2}
 --- !u!198 &198655987653066698
 ParticleSystem:

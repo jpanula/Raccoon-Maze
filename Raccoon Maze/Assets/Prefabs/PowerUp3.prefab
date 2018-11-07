@@ -116,6 +116,6 @@ MonoBehaviour:
   _timer: 0
   _powerUpNum: 3
   _powerUpType: 1
-  Projectile: {fileID: 114700026669601584, guid: 219cca2fff4c6114c89d772144ad3152,
+  Projectile: {fileID: 114946326121165648, guid: 219cca2fff4c6114c89d772144ad3152,
     type: 2}
   _cooldown: 0.3
