@@ -6,12 +6,7 @@ using UnityEngine;
 public class Path : MonoBehaviour
 {
 
-    public PathNode[] Nodes
-    {
-        get { return GetNodes(); }
-    }
-
-    private PathNode[] GetNodes()
+    public PathNode[] GetNodes()
     {
         return GetComponentsInChildren<PathNode>();
     }
