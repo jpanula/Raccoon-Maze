@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ps: {fileID: 198655987653066698}
+  _particleDestructionTime: 1
   Owner: 
   Explosion: {fileID: 198972060577872830, guid: 5898ef0a2d4e21840a549aa455f2f147,
     type: 2}
