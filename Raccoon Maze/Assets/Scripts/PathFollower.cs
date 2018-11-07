@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography.X509Certificates;
@@ -8,18 +9,52 @@ public class PathFollower : MonoBehaviour
 {
     [SerializeField] private Path _path;
     private PathNode[] _nodes;
-    private float _moveSpeed;
-    private int _currentNode;
+    [SerializeField] private float _moveSpeed;
+    private int _targetNodeIndex;
+    private PathNode _targetNode;
+    private Mode _mode;
+    private Vector3 _lastNodePosition;
+    private PathNode _lastNode;
 
-    private void Start()
+    private enum Mode
     {
+        ClosestNode,
+        NextNode
+    }
+
+    private void Awake()
+    {
+        _targetNodeIndex = 0;
+    }
+
+    private void OnEnable()
+    {
+        _mode = Mode.ClosestNode;
         _nodes = _path.GetNodes();
-        _currentNode = 0;
     }
 
     private void Update()
     {
-        
+        switch (_mode)
+        {
+            case Mode.ClosestNode:
+                
+                
+                if (Vector3.Distance(transform.position, GetClosestNode().GetPosition()) < 0.1f)
+                {
+                    _targetNodeIndex = Array.IndexOf(_nodes, GetClosestNode());
+                    ChangeMode(Mode.NextNode);
+                }
+                   break;
+            
+            case Mode.NextNode:
+                
+                   break;
+            
+            default:
+                
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     private PathNode GetClosestNode()
@@ -41,8 +76,19 @@ public class PathFollower : MonoBehaviour
         return closestNode;
     }
 
-    private void MoveTowardsNextNode()
+    private void MoveTowardsTargetNode(float amount)
     {
-        
+        transform.position = Vector3.Lerp(_lastNodePosition, _nodes[_targetNodeIndex].GetPosition(), amount);
+    }
+
+    private void AcquireNextNode()
+    {
+        _lastNode = _targetNode;
+        _targetNodeIndex++;
+    }
+    
+    private void ChangeMode(Mode newMode)
+    {
+        _mode = newMode;
     }
 }
