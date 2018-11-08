@@ -35,7 +35,14 @@ public class PathFollower : MonoBehaviour
         }
 
         _movementTimer += Time.deltaTime * _moveSpeed / Vector3.Distance(_startPosition, _targetPosition);
-        transform.position = Vector3.Lerp(_startPosition, _targetPosition, _movementTimer);
+        if (_nodes[_targetNodeIndex].Type == NodeType.Straight)
+        {
+            transform.position = Vector3.Lerp(_startPosition, _targetPosition, _movementTimer);
+        }
+        else if (_nodes[_targetNodeIndex].Type == NodeType.Curved)
+        {
+            transform.position = Vector3.Slerp(_startPosition, _targetPosition, _movementTimer);
+        }
     }
 
     private PathNode GetClosestNode()
