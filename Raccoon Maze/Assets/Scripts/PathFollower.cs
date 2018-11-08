@@ -29,7 +29,7 @@ public class PathFollower : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position == _targetPosition)
+        if (_movementTimer >= 1)
         {
             TargetNextNode();
         }
