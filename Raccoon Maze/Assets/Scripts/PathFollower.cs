@@ -11,16 +11,9 @@ public class PathFollower : MonoBehaviour
     private PathNode[] _nodes;
     [SerializeField] private float _moveSpeed;
     private int _targetNodeIndex;
-    private PathNode _targetNode;
-    private Mode _mode;
-    private Vector3 _lastNodePosition;
-    private PathNode _lastNode;
-
-    private enum Mode
-    {
-        ClosestNode,
-        NextNode
-    }
+    private Vector3 _startPosition;
+    private Vector3 _targetPosition;
+    private float _movementTimer;
 
     private void Awake()
     {
@@ -29,32 +22,20 @@ public class PathFollower : MonoBehaviour
 
     private void OnEnable()
     {
-        _mode = Mode.ClosestNode;
         _nodes = _path.GetNodes();
+        TargetClosestNode();
+        _startPosition = transform.position;
     }
 
     private void Update()
     {
-        switch (_mode)
+        if (transform.position == _targetPosition)
         {
-            case Mode.ClosestNode:
-                
-                
-                if (Vector3.Distance(transform.position, GetClosestNode().GetPosition()) < 0.1f)
-                {
-                    _targetNodeIndex = Array.IndexOf(_nodes, GetClosestNode());
-                    ChangeMode(Mode.NextNode);
-                }
-                   break;
-            
-            case Mode.NextNode:
-                
-                   break;
-            
-            default:
-                
-                throw new ArgumentOutOfRangeException();
+            TargetNextNode();
         }
+
+        _movementTimer += Time.deltaTime * _moveSpeed / Vector3.Distance(_startPosition, _targetPosition);
+        transform.position = Vector3.Lerp(_startPosition, _targetPosition, _movementTimer);
     }
 
     private PathNode GetClosestNode()
@@ -76,19 +57,18 @@ public class PathFollower : MonoBehaviour
         return closestNode;
     }
 
-    private void MoveTowardsTargetNode(float amount)
+    private void TargetNextNode()
     {
-        transform.position = Vector3.Lerp(_lastNodePosition, _nodes[_targetNodeIndex].GetPosition(), amount);
+        _movementTimer = 0;
+        _startPosition = transform.position;
+        _targetNodeIndex = (_targetNodeIndex + 1) % _nodes.Length;
+        _targetPosition = _nodes[_targetNodeIndex].GetPosition();
     }
 
-    private void AcquireNextNode()
+    private void TargetClosestNode()
     {
-        _lastNode = _targetNode;
-        _targetNodeIndex++;
+        _targetNodeIndex = _targetNodeIndex = Array.IndexOf(_nodes, GetClosestNode());
+        _targetPosition = GetClosestNode().GetPosition();
     }
-    
-    private void ChangeMode(Mode newMode)
-    {
-        _mode = newMode;
-    }
+
 }
