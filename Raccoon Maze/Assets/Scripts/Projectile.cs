@@ -6,15 +6,21 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
-    public ParticleSystem FireballParticle;
-    public ParticleSystem Explosion;
-    private ParticleSystem _ps;
+    [SerializeField]
+    protected ParticleSystem _ps;
+
+    private float _particleTimer;
+
+    [SerializeField]
+    private float _particleDestructionTime;
+
+    protected ParticleSystem _explosion;
     public string Owner;
-    private float _emissionTimer;
     private string[] _nonCollidingTags = {"Path", "DeepPuddle", "SpikeTrap", "SpikeTrapActive", "OilSlick", "OilSlickFire"};
 
-    private void Start()
+    protected virtual void Start()
     {
+        _particleTimer = -1f;
         //var em = FireballParticle.emission;
         //em.enabled = false;
         //_emissionTimer = 0;
@@ -24,43 +30,41 @@ public class Projectile : MonoBehaviour {
     {
         return _ps;
     }
-    private void Update()
+
+    protected virtual void Update()
     {
-        /*if(_emissionTimer < 0.07f)
-        {
-            _emissionTimer += Time.deltaTime;
-        }
-        else
-        {
-            var em = FireballParticle.emission;
-            em.enabled = true;
-        }
-        */
+        //Debug.Log("update");
         if(_ps != null)
         {
-            Debug.Log("moi");
-            if (!_ps.IsAlive())
+            if (_particleTimer > _particleDestructionTime)
             {
-                Debug.Log("hei");
-                Destroy(_ps.gameObject);
+                //Debug.Log("hei");
+                Destroy(_explosion.gameObject);
                 Destroy(gameObject);
             }
+            else if(_particleTimer >= 0)
+            {
+                _particleTimer += Time.deltaTime;
+            }
+            
         }
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (!col.CompareTag(Owner) && !_nonCollidingTags.Contains(col.tag))
+        //Debug.Log(col.CompareTag(Owner) + " " + Owner + " " + col.tag + " " + col);
+        if (!col.CompareTag(Owner) && !_nonCollidingTags.Contains(col.tag) && !col.CompareTag("Weapon"))
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
             gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
-            var em = FireballParticle.emission;
-            em.enabled = false;
-            if (_ps == null)
-            {
-                _ps = Instantiate(Explosion, transform.position, Quaternion.identity);
-            }
+
+            Hit();
         }
 
+    }
+
+    protected virtual void Hit()
+    {
+        _particleTimer = 0;
     }
 }

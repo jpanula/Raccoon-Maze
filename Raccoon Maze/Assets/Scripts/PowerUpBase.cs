@@ -10,7 +10,9 @@ public class PowerUpBase : MonoBehaviour {
     [SerializeField]
     private float _timer;
     [SerializeField]
-    private int PowerUpNum;
+    private int _powerUpNum;
+    [SerializeField]
+    protected int _powerUpType;
 
     private void Start()
     {
@@ -26,9 +28,8 @@ public class PowerUpBase : MonoBehaviour {
             {
                 _timer += Time.deltaTime;
             }
-            else
+            else if(_duration != -1)
             {
-                Effect(false);
                 Destroy(gameObject);
             }
         }
@@ -48,7 +49,7 @@ public class PowerUpBase : MonoBehaviour {
         {
             _owner = player.GetComponent<Player>();
             Disappear();
-            Effect(true);
+            //Effect(true);
         }
     }
 
@@ -57,17 +58,23 @@ public class PowerUpBase : MonoBehaviour {
         gameObject.GetComponent<MeshRenderer>().enabled = false;
     }
 
-    public virtual void Effect(bool toggle)
+    public virtual void Effect()
     {
-
+        Debug.Log("Väärä paikka");
     }
 
     public int GetPowerUpNum()
     {
-        return PowerUpNum;
+        return _powerUpNum;
     }
 
-    
+    public int GetPowerUpType()
+    {
+        return _powerUpType;
+    }
+
+
+
 
 
 }

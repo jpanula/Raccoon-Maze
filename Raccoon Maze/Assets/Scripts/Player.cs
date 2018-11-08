@@ -17,11 +17,9 @@ public class Player : MonoBehaviour {
     public GameObject Mora;
     private float _attackTimer;
     private float _ability1Timer;
-    [SerializeField]
     private float _ability1Cooldown;
     private float _baseAbility1Cooldown;
     private float _ability2Timer;
-    [SerializeField]
     private float _ability2Cooldown;
     private float _baseAbility2Cooldown;
     private Vector3 _moraPosition;
@@ -30,7 +28,7 @@ public class Player : MonoBehaviour {
     private Rigidbody2D _rb;
     public BoxCollider2D MoraCollider;
     public int HP;
-    private GameObject _spawnedProjectile;
+    private Projectile _spawnedProjectile;
     public GameObject Projectile;
     public GameObject SpawnPoint;
     private List<GameObject> _collidedParticles;
@@ -39,7 +37,9 @@ public class Player : MonoBehaviour {
     private GameObject _projectileHit;
     private bool _gamepadControl;
     public bool Invulnerable;
-    private List<PowerUpBase> _powerUps;
+    //private List<PowerUpBase> _powerUps;
+    private PowerUpBase _powerUp1;
+    private PowerUpBase _powerUp2;
     public Vector3 DirectionVector;
 
     // Use this for initialization
@@ -65,20 +65,20 @@ public class Player : MonoBehaviour {
 
     private void Start ()
     {
-        DirectionVector = new Vector3(0,0,0);
+        DirectionVector = transform.up;
         _direction = Mathf.RoundToInt(transform.rotation.z / 45);
         _moraPosition = Mora.transform.position;
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _collidedParticles = new List<GameObject>();
-        _powerUps = new List<PowerUpBase>();
+        //_powerUps = new List<PowerUpBase>();
         //InitializeDirectionVector();
     }
 	
 	// Update is called once per frame
 	private void Update ()
     {
-        
 
+        //Debug.Log(_powerUp1);
         _rb.velocity = new Vector3(0, 0, 0);
         if(HP <= 0)
         {
@@ -130,10 +130,14 @@ public class Player : MonoBehaviour {
 
 
             //Player rotate
-            DirectionVector = new Vector3(Input.GetAxis("Joystick" + PlayerNumber + "Axis3"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis6"), 0);
-            //DirectionVector.Normalize();
-            transform.up = DirectionVector;
+            Vector3 HelpVector = new Vector3(Input.GetAxis("Joystick" + PlayerNumber + "Axis3"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis6"), 0);
 
+            if(HelpVector != Vector3.zero)
+            {
+                transform.up = HelpVector;
+                DirectionVector = HelpVector;
+            }
+            //DirectionVector.Normalize();
             /*
             float heading = Mathf.Atan2(DirectionVector.x, DirectionVector.y) * Mathf.Rad2Deg;
 
@@ -157,19 +161,6 @@ public class Player : MonoBehaviour {
                 Ability2();
             }
         }
-        if (InputManager.GetKeyDown("P" + PlayerNumber + "DirLock", _gamepadControl, PlayerNumber.ToString()))
-        {
-            //Debug.Log("taakke");
-
-            _directionLock = true;
-        }
-        if (InputManager.GetKeyUp("P" + PlayerNumber + "DirLock", _gamepadControl, PlayerNumber.ToString()))
-        {
-            //Debug.Log("taakke");
-
-            _directionLock = false;
-        }
-
 
         //Destroy(_blinkTrail);
 
@@ -183,108 +174,20 @@ public class Player : MonoBehaviour {
 
     public bool AddPowerUp(PowerUpBase powerUp)
     {
-        for (int i = 0; i < _powerUps.Count; i++)
+        if(powerUp.GetPowerUpType() == 1 && _powerUp1 == null)
         {
-            if (_powerUps[i].GetPowerUpNum() == powerUp.GetPowerUpNum())
-            {
-                return false;
-            }
+            _powerUp1 = powerUp;
+            _ability1Timer = _ability1Cooldown;
+            return true;
         }
-        _powerUps.Add(powerUp);
-        return true;
+        else if (powerUp.GetPowerUpType() == 2 && _powerUp2 == null)
+        {
+            _powerUp2 = powerUp;
+            _ability2Timer = _ability2Cooldown;
+            return true;
+        }
+        return false;
     }
-    
-    public void UpdateDirection()
-    {
-        /*
-        if (Move.x > 0)
-        {
-            if(Move.y > 0)
-            {
-                _direction = 7;
-                _directionVector = Move;
-            }
-            else if (Move.y < 0)
-            {
-                _direction = 5;
-                _directionVector = Move;
-            }
-            else
-            {
-                _direction = 6;
-                _directionVector = Move;
-            }
-        }
-        else if(Move.x < 0)
-        {
-            if (Move.y > 0)
-            {
-                _direction = 1;
-                _directionVector = Move;
-            }
-            else if (Move.y < 0)
-            {
-                _direction = 3;
-                _directionVector = Move;
-            }
-            else
-            {
-                _direction = 2;
-                _directionVector = Move;
-            }
-        }
-        else if (Move.y > 0)
-        {
-            _direction = 0;
-            _directionVector = Move;
-        }
-        else if (Move.y < 0)
-        {
-            _direction = 4;
-            _directionVector = Move;
-        }
-
-        transform.eulerAngles = new Vector3(0, 0, 45 * _direction);
-        */
-    }
-
-    /*
-    private void InitializeDirectionVector()
-    {
-        if(_direction == 0)
-        {
-            _directionVector = new Vector3(0, 1);
-        }
-        else if (_direction == 1)
-        {
-            _directionVector = new Vector3(-1, 1);
-        }
-        else if (_direction == 2)
-        {
-            _directionVector = new Vector3(-1, 0);
-        }
-        else if (_direction == 3)
-        {
-            _directionVector = new Vector3(-1, -1);
-        }
-        else if (_direction == 4)
-        {
-            _directionVector = new Vector3(0, -1);
-        }
-        else if (_direction == 5)
-        {
-            _directionVector = new Vector3(1, -1);
-        }
-        else if (_direction == 6)
-        {
-            _directionVector = new Vector3(1, 0);
-        }
-        else if (_direction == 7)
-        {
-            _directionVector = new Vector3(1, 1);
-        }
-    }
-    */
 
     public void Attack()
     {
@@ -297,10 +200,12 @@ public class Player : MonoBehaviour {
 
     public void Ability1()
     {
-        _spawnedProjectile = Instantiate(Projectile, SpawnPoint.transform.position, Quaternion.Euler(new Vector3(0, 0, 45 * _direction)));
-        _spawnedProjectile.GetComponent<Projectile>().Owner = Name;
-        _spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(_directionVector * 15, ForceMode2D.Impulse);
-        _ability1Timer = 0;
+        if(_powerUp1 != null)
+        {
+            _powerUp1.Effect();
+            _ability1Timer = 0;
+        }
+        
     }
     /*
     public void Ability1()
@@ -317,13 +222,20 @@ public class Player : MonoBehaviour {
     */
     public void Ability2()
     {
-        Vector3 blinkDirection = Move;
+
+        if (_powerUp2 != null)
+        {
+            _powerUp2.Effect();
+            _ability2Timer = 0;
+        }
+        /*
+        Vector3 blinkDirection = Move.normalized;
         if (blinkDirection.x == 0 && blinkDirection.y == 0)
         {
-            blinkDirection = _directionVector;
+            blinkDirection = DirectionVector;
         }
         CheckWallsOnBlink(blinkDirection);
-        _ability2Timer = 0;
+        */
     } 
 
     private void CheckWallsOnBlink(Vector3 blinkDirection)
@@ -337,7 +249,7 @@ public class Player : MonoBehaviour {
         Vector3 blinkPosition = (transform.position + (blinkDirection * blinkDistance));
 
         blinkPosition = CheckInnerWallsOnBlink(blinkPosition, blinkDirection, blinkDistance);
-        Debug.Log("Outer: " + outerHit);
+        //Debug.Log("Outer: " + outerHit);
         
         if (outerHit.collider != null)
         {
@@ -361,8 +273,8 @@ public class Player : MonoBehaviour {
         innerHit = Physics2D.OverlapBox(, new Vector2(transform.localScale.x, transform.localScale.y) *1.1f,);
         bool isEmpty = innerHit == null;
        */
-        Debug.Log("Center: " + innerHit);
-        Debug.Log(blinkPosition);
+        //Debug.Log("Center: " + innerHit);
+        //Debug.Log(blinkPosition);
         
         if (innerHit != null)
         {
@@ -433,7 +345,9 @@ public class Player : MonoBehaviour {
         }
         if (col.CompareTag("Projectile"))
         {
-            if (col.gameObject != _spawnedProjectile)
+            //Debug.Log(col.gameObject);
+            //Debug.Log(_spawnedProjectile);
+            if (_spawnedProjectile == null)
             {
                 //Destroy(gameObject);
                 //_rb.AddForce(new Vector2(100, 0));
@@ -442,6 +356,16 @@ public class Player : MonoBehaviour {
                 HP--;
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
+            else if (col.gameObject != _spawnedProjectile.gameObject)
+            {
+                //Destroy(gameObject);
+                //_rb.AddForce(new Vector2(100, 0));
+                transform.position = transform.position + (transform.position - col.transform.position).normalized * 0.5f;
+                _projectileHit = col.gameObject;
+                HP--;
+                //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
+            }
+
         }
 
         if (col.CompareTag("DeepPuddle") || col.CompareTag("OilSlick"))
@@ -531,19 +455,34 @@ public class Player : MonoBehaviour {
         return new float[] {ability1TimeLeft, ability2TimeLeft, ability1TimeLeftPercentage, ability2TimeLeftPercentage};
     }
 
-    public void SetAbility2Cooldown(float value)
+    public void SetSpawnedProjectile(Projectile projectile)
     {
-        if (value >= 0)
+        if (projectile != null)
         {
-            _ability2Cooldown = value;
+            _spawnedProjectile = projectile;
         }
     }
 
-    public void SetAbility1Cooldown(float value)
+    public Projectile GetSpawnedProjectile()
+    {
+        return _spawnedProjectile;
+    }
+
+    
+
+    public void SetAbilityCooldown(float value, int type)
     {
         if (value >= 0)
         {
-            _ability1Cooldown = value;
+            if(type == 1)
+            {
+                _ability1Cooldown = value;
+            }
+            else
+            {
+                _ability2Cooldown = value;
+            }
+            
         }
     }
 

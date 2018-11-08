@@ -122,20 +122,20 @@ public static class InputManager
             "Axis2+",
             "Axis1-",
             "Axis1+",
-            "Button0",
-            "Button1",
-            "Button2",
             "Button5",
+            "Button7",
+            "Button6",
+            "Button4",
         
             //Player 2
             "Axis2-",
             "Axis2+",
             "Axis1-",
             "Axis1+",
-            "Button0",
-            "Button1",
-            "Button2",
             "Button5",
+            "Button7",
+            "Button6",
+            "Button4",
 
 
             //Player 3
@@ -143,20 +143,20 @@ public static class InputManager
             "Axis2+",
             "Axis1-",
             "Axis1+",
-            "Button0",
-            "Button1",
-            "Button2",
             "Button5",
+            "Button7",
+            "Button6",
+            "Button4",
 
             //Player 4
             "Axis2-",
             "Axis2+",
             "Axis1-",
             "Axis1+",
-            "Button0",
-            "Button1",
-            "Button2",
             "Button5",
+            "Button7",
+            "Button6",
+            "Button4",
 
             //MenuMovement
             "Axis2+",
