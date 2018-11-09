@@ -17,7 +17,6 @@ public class Repeller : MonoBehaviour
     {
         if (other.tag.Contains("Player"))
         {
-            // TODO raycast before pushing player away
             RaycastHit2D rayHit = Physics2D.Raycast(transform.position, other.transform.position - transform.position, _pushDistance, _layerMask);
 
             if (rayHit.collider)
