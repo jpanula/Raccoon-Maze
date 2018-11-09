@@ -29,20 +29,20 @@ public class BlinkPowerUp : PowerUpBase
     {
         float blinkDistance = 4f;
         // Bit shift the index of the layer (8) to get a bit mask
-        int layerMask = 1 << 11;
+        int layerMask = (1 << 11) | (1 << 12);
 
         RaycastHit2D outerHit = Physics2D.Raycast(_owner.transform.position, blinkDirection, blinkDistance, layerMask);
 
         Vector3 blinkPosition = (_owner.transform.position + (blinkDirection * blinkDistance));
 
-        blinkPosition = CheckInnerWallsOnBlink(blinkPosition, blinkDirection, blinkDistance);
+        //blinkPosition = CheckInnerWallsOnBlink(blinkPosition, blinkDirection, blinkDistance);
         Debug.Log("Outer: " + outerHit);
 
         if (outerHit.collider != null)
         {
             blinkPosition = _owner.transform.position;
             blinkPosition += blinkDirection * (outerHit.distance * 0.8f);
-            blinkPosition = CheckInnerWallsOnBlink(blinkPosition, blinkDirection, blinkDistance);
+            //blinkPosition = CheckInnerWallsOnBlink(blinkPosition, blinkDirection, blinkDistance);
         }
 
         _owner.transform.position = blinkPosition;
