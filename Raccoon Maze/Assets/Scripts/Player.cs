@@ -383,7 +383,7 @@ public class Player : MonoBehaviour {
             col.gameObject.GetComponent<SpikeTrap>().TriggerTrap();
         }
 
-        if (col.CompareTag("SpikeTrapActive"))
+        if (col.CompareTag("SpikeTrapActive") || col.CompareTag("Spikes"))
         {
             HP--;
         }

@@ -15,6 +15,7 @@ TagManager:
   - SpikeTrapActive
   - OilSlick
   - OilSlickFire
+  - Spikes
   layers:
   - Default
   - TransparentFX
