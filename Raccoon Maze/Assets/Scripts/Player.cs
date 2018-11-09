@@ -123,19 +123,27 @@ public class Player : MonoBehaviour {
         if (!_inputLock)
         {
             //Player move
-            Move = new Vector3(Input.GetAxis("Joystick" + PlayerNumber + "Axis1"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis2"), 0);
+            Move = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis1"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis2"));
             Move.Normalize();
 
             transform.position += Move * Speed * Time.deltaTime;
 
 
             //Player rotate
-            Vector3 HelpVector = new Vector3(Input.GetAxis("Joystick" + PlayerNumber + "Axis3"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis6"), 0);
+            Vector2 HelpVector = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis3"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis6"));
 
-            if(HelpVector != Vector3.zero)
+            if(HelpVector != Vector2.zero)
             {
-                transform.up = HelpVector;
-                DirectionVector = HelpVector;
+                if(HelpVector.x == 0 && HelpVector.y == -1)
+                {
+                    transform.eulerAngles = new Vector3(0,0,180);
+                }
+                else
+                {
+                    transform.up = HelpVector;
+                }
+                
+                //DirectionVector = HelpVector;
             }
             //DirectionVector.Normalize();
             /*
@@ -200,7 +208,8 @@ public class Player : MonoBehaviour {
 
     public void Ability1()
     {
-        if(_powerUp1 != null)
+        
+        if (_powerUp1 != null)
         {
             _powerUp1.Effect();
             _ability1Timer = 0;
@@ -222,7 +231,8 @@ public class Player : MonoBehaviour {
     */
     public void Ability2()
     {
-
+        //transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+        
         if (_powerUp2 != null)
         {
             _powerUp2.Effect();

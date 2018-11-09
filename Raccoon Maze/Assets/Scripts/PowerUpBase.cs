@@ -20,7 +20,7 @@ public class PowerUpBase : MonoBehaviour {
         _timer = 0;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if(_pickUp)
         {
