@@ -18,9 +18,16 @@ public class MainMenu : MonoBehaviour {
 		
 	}
 
-    public void StartButton()
+    public void PlayButton()
     {
-        
-        SceneManager.LoadScene("TestailuScene");
+        SceneManager.LoadScene("PlayMenu");
+    }
+    public void SettingsButton()
+    {
+        Debug.Log("Settings");
+    }
+    public void ExitButton()
+    {
+        Application.Quit();
     }
 }
