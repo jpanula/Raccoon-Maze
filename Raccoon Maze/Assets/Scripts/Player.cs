@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-    public GameManager Gm;
+    private GameManager _gm;
     public int PlayerNumber;
     public int Speed;
     private int _initialSpeed;
@@ -61,6 +61,7 @@ public class Player : MonoBehaviour {
         _inputLock = false;
         _gamepadControl = false;
         Invulnerable = false;
+        
     }
 
     private void Start ()
@@ -70,6 +71,7 @@ public class Player : MonoBehaviour {
         _moraPosition = Mora.transform.position;
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _collidedParticles = new List<GameObject>();
+        _gm = FindObjectOfType<GameManager>();
         //_powerUps = new List<PowerUpBase>();
         //InitializeDirectionVector();
     }
@@ -82,7 +84,7 @@ public class Player : MonoBehaviour {
         _rb.velocity = new Vector3(0, 0, 0);
         if(HP <= 0)
         {
-            Gm.KillPlayer(gameObject);
+            _gm.KillPlayer(gameObject);
             gameObject.SetActive(false);
             //Destroy(gameObject);
         }
@@ -111,13 +113,13 @@ public class Player : MonoBehaviour {
             _ability2Timer += Time.deltaTime;
         }
         InputManager.CheckGamepadConnection();
-        if (InputManager.GetGamepadControl(PlayerNumber) >= 0)
+        if (InputManager.GetGamepadControl(PlayerNumber - 1) >= 0)
         {
             _gamepadControl = true;
         }
         else
         {
-            _gamepadControl = false;
+            _gamepadControl = true;
         }
         //Debug.Log("P" + PlayerNumber + (_gamepadControl));
         if (!_inputLock)
@@ -129,8 +131,25 @@ public class Player : MonoBehaviour {
             transform.position += Move * Speed * Time.deltaTime;
 
 
+
+            Debug.Log(Input.GetJoystickNames()[PlayerNumber - 1]);
             //Player rotate
-            Vector2 HelpVector = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis3"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis6"));
+            Vector2 HelpVector = new Vector2(0,0);
+            if (Input.GetJoystickNames()[PlayerNumber - 1] == "Wireless Controller")
+            {
+                HelpVector = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis3"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis6"));
+            }
+            else if(Input.GetJoystickNames()[PlayerNumber - 1] == "Controller (Xbox One For Windows)")
+            {
+                HelpVector = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis4"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis5"));
+            }
+/*
+            else
+            {
+                HelpVector = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis5"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis4"));
+            }
+            */
+            
 
             if(HelpVector != Vector2.zero)
             {
@@ -155,19 +174,37 @@ public class Player : MonoBehaviour {
             transform.rotation = Quaternion.AngleAxis(-heading, Vector3.forward);
             */
             
-
-            if (InputManager.GetKeyDown("P" + PlayerNumber + "Melee", _gamepadControl, PlayerNumber.ToString()))
+            if(Input.GetJoystickNames()[PlayerNumber - 1] == "Wireless Controller")
             {
-                Attack();
+                if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button5"))
+                {
+                    Attack();
+                }
+                if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button7"))
+                {
+                    Ability1();
+                }
+                if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button6"))
+                {
+                    Ability2();
+                }
             }
-            if (InputManager.GetKeyDown("P" + PlayerNumber + "Ability1", _gamepadControl, PlayerNumber.ToString()) && _ability1Timer >= _ability1Cooldown)
+            else if(Input.GetJoystickNames()[PlayerNumber - 1] == "Controller (Xbox One For Windows)")
             {
-                Ability1();
+                if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button5"))
+                {
+                    Attack();
+                }
+                if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button10"))
+                {
+                    Ability1();
+                }
+                if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button9"))
+                {
+                    Ability2();
+                }
             }
-            if (InputManager.GetKeyDown("P" + PlayerNumber + "Ability2", _gamepadControl, PlayerNumber.ToString()) && _ability2Timer >= _ability2Cooldown)
-            {
-                Ability2();
-            }
+            
         }
 
         //Destroy(_blinkTrail);

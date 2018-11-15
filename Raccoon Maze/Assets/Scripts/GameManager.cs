@@ -6,7 +6,10 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
-    public List<GameObject> Players;
+    [SerializeField]
+    private List<PlayerSpawner> _playerSpawners;
+    public List<GameObject> PlayerPrefabs;
+    private List<GameObject> Players;
     public GameObject WinLine;
     public GameObject[] PlayerPoints;
     public GameInfo GameInfo;
@@ -17,9 +20,12 @@ public class GameManager : MonoBehaviour {
     private void Awake()
     {
         _winner = false;
+        Players = new List<GameObject>();
     }
     private void Start ()
     {
+        InitializePlayers();
+
         for(int i = 0; i < Players.Count; i++)
         {
             PlayerPoints[Players[i].GetComponent<Player>().PlayerNumber - 1].GetComponent<Text>().text = "Points: " + GameInfo.Wins[Players[i].GetComponent<Player>().PlayerNumber - 1];
@@ -29,11 +35,13 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     private void Update ()
     {
+        
         if (Players.Count <= 1)
         {
             IEnumerator coroutine = WinCheck(1.0f);
             StartCoroutine(coroutine);
         }
+        
         if(Input.GetKeyDown("r"))
         {
             ReStart();
@@ -84,6 +92,15 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    private void InitializePlayers()
+    {
+        for(int i = 0; i < GameInfo.PlayerAmount; i++)
+        {
+            Players.Add(PlayerPrefabs[i]);
+            _playerSpawners[i].SpawnPlayer();
+        }
+    }
+
     public void KillPlayer(GameObject player)
     {
         Players.Remove(player);
@@ -91,7 +108,7 @@ public class GameManager : MonoBehaviour {
 
     public void ReStart()
     {
-        for (int i = 0; i < GameInfo.Wins.Length; i++)
+        for (int i = 0; i < GameInfo.Wins.Count; i++)
         {
             GameInfo.Wins[i] = 0;
         }

@@ -501,7 +501,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771723c4571f5fe4bb513a443ce9b81f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Gm: {fileID: 0}
   PlayerNumber: 1
   Speed: 8
   OilSlickTickTime: 1.5
@@ -509,7 +508,7 @@ MonoBehaviour:
   _direction: 0
   Mora: {fileID: 1816543913668288}
   MoraCollider: {fileID: 0}
-  HP: 190
+  HP: 3
   Projectile: {fileID: 0}
   SpawnPoint: {fileID: 1898266253848026}
   Name: Player1

@@ -51,9 +51,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6325179cb349b64b9b3e051e1f868ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Players:
-  - {fileID: 0}
-  - {fileID: 0}
+  _playerSpawners:
+  - {fileID: 114786700372052352, guid: 2746983fc7f8f014788f697a56b9d695, type: 2}
+  - {fileID: 114867738813757808, guid: 9626c2f1ec9bba54894e3b338a37de65, type: 2}
+  - {fileID: 114056322381706608, guid: 1ea479976309c0d4aafe76169e83a0b1, type: 2}
+  - {fileID: 114271352336523654, guid: fcd5692c69498e04c80530252d4a236f, type: 2}
+  PlayerPrefabs:
+  - {fileID: 1770433142326946, guid: b2cfe18f282b5f141b04acf972b9b45d, type: 2}
+  - {fileID: 1679108508798078, guid: 29d16124d027ed244b8523454ce104aa, type: 2}
+  - {fileID: 1271913567814544, guid: b820408e9cc40c7449ef80a75de5e8ef, type: 2}
+  - {fileID: 1301702594655642, guid: b57065f751b0172478d8580328b18e46, type: 2}
   WinLine: {fileID: 0}
   PlayerPoints:
   - {fileID: 0}

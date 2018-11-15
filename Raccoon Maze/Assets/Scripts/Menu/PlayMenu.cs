@@ -19,11 +19,16 @@ public class PlayMenu : MonoBehaviour {
 
     public void PlayButton(int noPlayers)
     {
-        if(noPlayers <= 4 && noPlayers >= 2)
+        GameInfo.Wins.Clear();
+        if (noPlayers <= 4 && noPlayers >= 2)
         {
             GameInfo.PlayerAmount = noPlayers;
+            for(int i = 0; i < noPlayers; i++)
+            {
+                GameInfo.Wins.Add(0);
+            }
         }
-        //SceneManager.LoadScene("PlayMenu");
+        SceneManager.LoadScene("TestailuScene");
     }
 
     public void BackButton()
