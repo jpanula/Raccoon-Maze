@@ -107,15 +107,17 @@ public class ArcaneMissile : Projectile {
         float dot;
         foreach (Collider2D collider in cols)
         {
-            //Debug.Log("colldieereja" + collider.gameObject);
+            
             characterToCollider = (collider.transform.position - transform.position).normalized;
             //Debug.Log(characterToCollider);
 
+
             dot = Vector3.Dot(characterToCollider, transform.forward);
 
-            //Debug.Log("dot: " + dot + " Cos: " + Mathf.Cos(55) + " charToCol: " + characterToCollider);
-            if (dot >= -Mathf.Cos(_targetAngle))
+            Debug.Log("dot: " + dot + " Cos: " + Mathf.Cos(_targetAngle) + " charToCol: " + characterToCollider);
+            if (dot >= Mathf.Cos(_targetAngle))
             {
+                Debug.Log("colldieereja" + collider.gameObject);
                 //Debug.Log("colldieereja edessä " + collider.gameObject.GetComponent<Player>().Name + " " + Owner);
                 if (collider.gameObject.GetComponent<Player>().Name != Owner)
                 {

@@ -35,7 +35,7 @@ public class Player : MonoBehaviour {
     public string Name;
     private bool _directionLock;
     private GameObject _projectileHit;
-    private bool _gamepadControl;
+    private int _gamepadControl;
     public bool Invulnerable;
     //private List<PowerUpBase> _powerUps;
     private PowerUpBase _powerUp1;
@@ -59,7 +59,7 @@ public class Player : MonoBehaviour {
         _directionLock = false;
         _attack = false;
         _inputLock = false;
-        _gamepadControl = false;
+        _gamepadControl = 0;
         Invulnerable = false;
         
     }
@@ -112,46 +112,50 @@ public class Player : MonoBehaviour {
         {
             _ability2Timer += Time.deltaTime;
         }
+        //Debug.Log(Input.GetJoystickNames()[0]);
+        //Debug.Log(Input.GetJoystickNames()[1]);
         InputManager.CheckGamepadConnection();
+        //Debug.Log(InputManager.GetGamepadControl(PlayerNumber - 1));
         if (InputManager.GetGamepadControl(PlayerNumber - 1) >= 0)
         {
-            _gamepadControl = true;
+            if (Input.GetJoystickNames()[PlayerNumber - 1] == "Wireless Controller")
+            {
+                //Debug.Log("PS4 Player " + PlayerNumber);
+                _gamepadControl = 1;
+            }
+            else if(Input.GetJoystickNames()[PlayerNumber - 1] == "Controller (Xbox One For Windows)")
+            {
+                //Debug.Log("XBox Player " + PlayerNumber);
+                _gamepadControl = 2;
+            }
         }
         else
         {
-            _gamepadControl = true;
+            _gamepadControl = 0;
         }
         //Debug.Log("P" + PlayerNumber + (_gamepadControl));
         if (!_inputLock)
         {
             //Player move
-            Move = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis1"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis2"));
+            Move = new Vector2(InputManager.GetAxis("P" + PlayerNumber.ToString() + "MoveHorizontal", _gamepadControl, PlayerNumber.ToString()), -InputManager.GetAxis("P" + PlayerNumber.ToString() + "MoveVertical", _gamepadControl, PlayerNumber.ToString()));
             Move.Normalize();
 
             transform.position += Move * Speed * Time.deltaTime;
 
 
 
-            Debug.Log(Input.GetJoystickNames()[PlayerNumber - 1]);
+            //Debug.Log(Input.GetJoystickNames()[PlayerNumber - 1]);
             //Player rotate
-            Vector2 HelpVector = new Vector2(0,0);
-            if (Input.GetJoystickNames()[PlayerNumber - 1] == "Wireless Controller")
-            {
-                HelpVector = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis3"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis6"));
-            }
-            else if(Input.GetJoystickNames()[PlayerNumber - 1] == "Controller (Xbox One For Windows)")
-            {
-                HelpVector = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis4"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis5"));
-            }
-/*
-            else
-            {
-                HelpVector = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis5"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis4"));
-            }
-            */
-            
+            Vector2 HelpVector = new Vector2(InputManager.GetAxis("P" + PlayerNumber.ToString() + "DirHorizontal", _gamepadControl, PlayerNumber.ToString()), -InputManager.GetAxis("P" + PlayerNumber.ToString() + "DirVertical", _gamepadControl, PlayerNumber.ToString()));
+            /*
+                        else
+                        {
+                            HelpVector = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis5"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis4"));
+                        }
+                        */
 
-            if(HelpVector != Vector2.zero)
+
+            if (HelpVector != Vector2.zero)
             {
                 if(HelpVector.x == 0 && HelpVector.y == -1)
                 {
@@ -173,38 +177,25 @@ public class Player : MonoBehaviour {
 
             transform.rotation = Quaternion.AngleAxis(-heading, Vector3.forward);
             */
-            
-            if(Input.GetJoystickNames()[PlayerNumber - 1] == "Wireless Controller")
+            /*
+            if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button5"))
             {
-                if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button5"))
-                {
-                    Attack();
-                }
-                if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button7"))
-                {
-                    Ability1();
-                }
-                if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button6"))
-                {
-                    Ability2();
-                }
+                Attack();
             }
-            else if(Input.GetJoystickNames()[PlayerNumber - 1] == "Controller (Xbox One For Windows)")
+            */
+            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Melee", _gamepadControl, PlayerNumber.ToString()))
             {
-                if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button5"))
-                {
-                    Attack();
-                }
-                if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button10"))
-                {
-                    Ability1();
-                }
-                if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button9"))
-                {
-                    Ability2();
-                }
+                Attack();
             }
-            
+            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Ability1", _gamepadControl, PlayerNumber.ToString()))
+            {
+                Ability1();
+            }
+            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Ability2", _gamepadControl, PlayerNumber.ToString()))
+            {
+                Ability2();
+            }
+
         }
 
         //Destroy(_blinkTrail);
