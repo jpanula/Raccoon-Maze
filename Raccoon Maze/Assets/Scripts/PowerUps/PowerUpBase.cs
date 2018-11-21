@@ -13,6 +13,11 @@ public class PowerUpBase : MonoBehaviour {
     private int _powerUpNum;
     [SerializeField]
     protected int _powerUpType;
+    [SerializeField]
+    protected float _cooldown;
+    private float _cooldownTimer;
+    protected bool _readyToUse;
+    private PowerUpSpawner _spawner;
 
     private void Start()
     {
@@ -49,6 +54,7 @@ public class PowerUpBase : MonoBehaviour {
         {
             _owner = player.GetComponent<Player>();
             Disappear();
+            SetSpawner()
             //Effect(true);
         }
     }
@@ -56,11 +62,11 @@ public class PowerUpBase : MonoBehaviour {
     public void Disappear()
     {
         gameObject.GetComponent<MeshRenderer>().enabled = false;
+        gameObject.GetComponent<CircleCollider2D>().enabled = false;
     }
 
     public virtual void Effect()
     {
-        Debug.Log("Väärä paikka");
     }
 
     public int GetPowerUpNum()
@@ -73,6 +79,15 @@ public class PowerUpBase : MonoBehaviour {
         return _powerUpType;
     }
 
+    public float GetCooldown()
+    {
+        return _cooldown;
+    }
+
+    public void SetSpawner(PowerUpSpawner spawner)
+    {
+        _spawner = spawner;
+    }
 
 
 

@@ -41,23 +41,9 @@ public class JumpPowerUp : PowerUpBase {
     
     public override void Effect()
     {
-        /*
-        Vector3 blinkDirection = _owner.Move.normalized;
-        if (blinkDirection.x == 0 && blinkDirection.y == 0)
-        {
-            blinkDirection = _owner.DirectionVector;
-        }
-        CheckWallsOnBlink(blinkDirection);
-        */
         Debug.Log("painallus");
         _jump = true;
         _owner.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         _owner.transform.localScale = new Vector3(0.7f, 0.7f, 1);
-        /*
-        Quaternion help = _owner.transform.rotation;
-        _owner.transform.position = new Vector3(_owner.transform.position.x, _owner.transform.position.y, _jumpSpeed);
-        Debug.Log(help);
-        _owner.transform.rotation = help;
-        */
     }
 }

@@ -28,7 +28,7 @@ public class PlayMenu : MonoBehaviour {
                 GameInfo.Wins.Add(0);
             }
         }
-        SceneManager.LoadScene("TestailuScene");
+        SceneManager.LoadScene("Level1");
     }
 
     public void BackButton()

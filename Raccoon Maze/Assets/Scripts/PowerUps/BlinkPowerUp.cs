@@ -7,7 +7,6 @@ public class BlinkPowerUp : PowerUpBase
     [SerializeField]
     private float blinkDistance;
     [SerializeField]
-    private int _cooldown;
 
     public override void PickUp(GameObject player)
     {
@@ -27,7 +26,7 @@ public class BlinkPowerUp : PowerUpBase
 
     private void CheckWallsOnBlink(Vector3 blinkDirection)
     {
-        float blinkDistance = 4f;
+    
         // Bit shift the index of the layer (8) to get a bit mask
         int layerMask = (1 << 11) | (1 << 12);
 

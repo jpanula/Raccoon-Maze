@@ -32,7 +32,7 @@ TagManager:
   - InnerWall
   - Floor
   - PowerUp
-  - 
+  - OuterWallCollider
   - 
   - 
   - 

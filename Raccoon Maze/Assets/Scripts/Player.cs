@@ -187,11 +187,11 @@ public class Player : MonoBehaviour {
             {
                 Attack();
             }
-            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Ability1", _gamepadControl, PlayerNumber.ToString()))
+            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Ability1", _gamepadControl, PlayerNumber.ToString()) && _ability1Timer >= _ability1Cooldown)
             {
                 Ability1();
             }
-            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Ability2", _gamepadControl, PlayerNumber.ToString()))
+            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Ability2", _gamepadControl, PlayerNumber.ToString()) && _ability2Timer >= _ability2Cooldown)
             {
                 Ability2();
             }
@@ -210,16 +210,18 @@ public class Player : MonoBehaviour {
 
     public bool AddPowerUp(PowerUpBase powerUp)
     {
-        if(powerUp.GetPowerUpType() == 1 && _powerUp1 == null)
+        if(powerUp.GetPowerUpType() == 1)
         {
             _powerUp1 = powerUp;
+            _ability1Cooldown = powerUp.GetCooldown();
             _ability1Timer = _ability1Cooldown;
             return true;
         }
-        else if (powerUp.GetPowerUpType() == 2 && _powerUp2 == null)
+        else if (powerUp.GetPowerUpType() == 2)
         {
             _powerUp2 = powerUp;
-            _ability2Timer = _ability2Cooldown;
+            _ability2Cooldown = powerUp.GetCooldown();
+            _ability2Timer = _ability1Cooldown;
             return true;
         }
         return false;

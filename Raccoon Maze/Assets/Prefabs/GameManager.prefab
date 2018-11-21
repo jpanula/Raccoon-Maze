@@ -52,10 +52,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerSpawners:
-  - {fileID: 114786700372052352, guid: 2746983fc7f8f014788f697a56b9d695, type: 2}
-  - {fileID: 114867738813757808, guid: 9626c2f1ec9bba54894e3b338a37de65, type: 2}
-  - {fileID: 114056322381706608, guid: 1ea479976309c0d4aafe76169e83a0b1, type: 2}
-  - {fileID: 114271352336523654, guid: fcd5692c69498e04c80530252d4a236f, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   PlayerPrefabs:
   - {fileID: 1770433142326946, guid: b2cfe18f282b5f141b04acf972b9b45d, type: 2}
   - {fileID: 1679108508798078, guid: 29d16124d027ed244b8523454ce104aa, type: 2}
@@ -68,3 +68,4 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   GameInfo: {fileID: 11400000, guid: 2d8bf04028052cc48bb2bae1e0f13ae9, type: 2}
+  UIManager: {fileID: 0}

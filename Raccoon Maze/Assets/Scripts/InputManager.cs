@@ -124,8 +124,8 @@ public static class InputManager
             "Axis4",
             "Axis5",
             "Button5",
-            "Button7",
-            "Button6",
+            "Axis10",
+            "Axis9",
             "Button4",
         
             //Player 2
@@ -134,8 +134,8 @@ public static class InputManager
             "Axis4",
             "Axis5",
             "Button5",
-            "Button7",
-            "Button6",
+            "Axis10",
+            "Axis9",
             "Button4",
 
 
@@ -145,8 +145,8 @@ public static class InputManager
             "Axis4",
             "Axis5",
             "Button5",
-            "Button7",
-            "Button6",
+            "Axis10",
+            "Axis9",
             "Button4",
 
             //Player 4
@@ -155,8 +155,8 @@ public static class InputManager
             "Axis4",
             "Axis5",
             "Button5",
-            "Button7",
-            "Button6",
+            "Axis10",
+            "Axis9",
             "Button4",
 
             //MenuMovement
@@ -250,15 +250,16 @@ public static class InputManager
                 gamepadMapping = xboxOneMapping;
             }
 
-            if (gamepadMapping[keyMap].Length == 6)
+            if (gamepadMapping[keyMap].Length == 5 || gamepadMapping[keyMap].Length == 6)
             {
-                if (gamepadMapping[keyMap].Substring(5) == "+")
-                {
-                    if (Input.GetAxis("Joystick" + joystickNum + gamepadMapping[keyMap].Substring(0, 4)) > 0.5f)
+                //if (gamepadMapping[keyMap].Substring(5) == "+")
+                //{
+                    if (Input.GetAxis("Joystick" + joystickNum + gamepadMapping[keyMap]) > 0.5f)
                     {
                         return true;
                     }
-                }
+                //}
+                /*
                 else if (gamepadMapping[keyMap].Substring(5) == "-")
                 {
                     if (Input.GetAxis("Joystick" + joystickNum + gamepadMapping[keyMap].Substring(0, 4)) < -0.5f)
@@ -266,6 +267,7 @@ public static class InputManager
                         return true;
                     }
                 }
+                */
             }
             else
             {

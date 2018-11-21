@@ -9,46 +9,46 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1614136786100278}
+  m_RootGameObject: {fileID: 1117350992267568}
   m_IsPrefabParent: 1
---- !u!1 &1614136786100278
+--- !u!1 &1117350992267568
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4571003581583904}
-  - component: {fileID: 33102139340225564}
-  - component: {fileID: 23012771235977168}
-  - component: {fileID: 58743563485602212}
-  - component: {fileID: 114481510010655720}
-  m_Layer: 0
-  m_Name: PowerUp2
+  - component: {fileID: 4129572572840454}
+  - component: {fileID: 33941298797613104}
+  - component: {fileID: 23960988290633410}
+  - component: {fileID: 58359275836626010}
+  - component: {fileID: 114916217620617368}
+  m_Layer: 14
+  m_Name: ArcaneMissilePowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4571003581583904
+--- !u!4 &4129572572840454
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1614136786100278}
+  m_GameObject: {fileID: 1117350992267568}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.599085, y: 7.6872597, z: 0}
+  m_LocalPosition: {x: 0.54, y: 7.34, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23012771235977168
+--- !u!23 &23960988290633410
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1614136786100278}
+  m_GameObject: {fileID: 1117350992267568}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -58,7 +58,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 87e14c359ee733641bf30b195ef07ff0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,19 +78,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33102139340225564
+--- !u!33 &33941298797613104
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1614136786100278}
+  m_GameObject: {fileID: 1117350992267568}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!58 &58743563485602212
+--- !u!58 &58359275836626010
 CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1614136786100278}
+  m_GameObject: {fileID: 1117350992267568}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -100,21 +100,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &114481510010655720
+--- !u!114 &114916217620617368
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1614136786100278}
+  m_GameObject: {fileID: 1117350992267568}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e74097fd633052429aafb11056cc57e, type: 3}
+  m_Script: {fileID: 11500000, guid: 752845a97c0892543b5215afdca1580e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _owner: {fileID: 0}
   _duration: -1
   _timer: 0
-  _powerUpNum: 2
-  _powerUpType: 2
-  blinkDistance: 4
-  _cooldown: 5
+  _powerUpNum: 3
+  _powerUpType: 1
+  _cooldown: 1
+  Projectile: {fileID: 114946326121165648, guid: 219cca2fff4c6114c89d772144ad3152,
+    type: 2}

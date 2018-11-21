@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour {
     public GameObject[] PlayerPoints;
     public GameInfo GameInfo;
     private bool _winner;
+    [SerializeField]
+    private UIManager UIManager;
 
     // Use this for initialization
 
@@ -52,7 +54,7 @@ public class GameManager : MonoBehaviour {
     private IEnumerator NextRound(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        SceneManager.LoadScene("TestailuScene");
+        SceneManager.LoadScene("Level1");
     }
 
     private IEnumerator WinCheck(float waitTime)
@@ -96,8 +98,8 @@ public class GameManager : MonoBehaviour {
     {
         for(int i = 0; i < GameInfo.PlayerAmount; i++)
         {
-            Players.Add(PlayerPrefabs[i]);
-            _playerSpawners[i].SpawnPlayer();
+            Players.Add(_playerSpawners[i].SpawnPlayer().gameObject);
+            UIManager.AddPlayer();
         }
     }
 
@@ -112,6 +114,6 @@ public class GameManager : MonoBehaviour {
         {
             GameInfo.Wins[i] = 0;
         }
-        SceneManager.LoadScene("TestailuScene");
+        SceneManager.LoadScene("Level1");
     }
 }

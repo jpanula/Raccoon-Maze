@@ -7,7 +7,7 @@ public class ArcaneMissilePowerUp : PowerUpBase
     private Projectile _spawnedProjectile;
     public Projectile Projectile;
     [SerializeField]
-    private float _cooldown;
+    
 
     public override void PickUp(GameObject player)
     {
