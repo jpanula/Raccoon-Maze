@@ -17,6 +17,7 @@ public class PowerUpBase : MonoBehaviour {
     protected float _cooldown;
     private float _cooldownTimer;
     protected bool _readyToUse;
+    [SerializeField]
     private PowerUpSpawner _spawner;
 
     private void Start()
@@ -54,7 +55,8 @@ public class PowerUpBase : MonoBehaviour {
         {
             _owner = player.GetComponent<Player>();
             Disappear();
-            SetSpawner()
+            _spawner.SetSpawnedPowerUp(null);
+            SetSpawner(null);
             //Effect(true);
         }
     }
@@ -86,7 +88,13 @@ public class PowerUpBase : MonoBehaviour {
 
     public void SetSpawner(PowerUpSpawner spawner)
     {
+        Debug.Log("moi");
         _spawner = spawner;
+    }
+
+    public PowerUpSpawner GetSpawner()
+    {
+        return _spawner;
     }
 
 

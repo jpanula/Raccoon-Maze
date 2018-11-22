@@ -7,6 +7,7 @@ public class PowerUpSpawner : MonoBehaviour
 
     [SerializeField]
     private GameObject _powerUp;
+    [SerializeField]
     private GameObject _spawnedPowerUp;
     [SerializeField]
     private float _spawnCooldown;
@@ -15,7 +16,7 @@ public class PowerUpSpawner : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        _spawnedPowerUp = Instantiate(_powerUp, transform.position, transform.rotation);
+        SpawnPowerUp();
     }
 
     // Update is called once per frame
@@ -27,16 +28,23 @@ public class PowerUpSpawner : MonoBehaviour
         }
         else if(_spawnedPowerUp == null)
         {
-            _spawnedPowerUp = Instantiate(_powerUp, transform.position, transform.rotation);
+            SpawnPowerUp();
             _spawnTimer = 0;
         }
     }
 
     public GameObject SpawnPowerUp()
     {
-        return _spawnedPowerUp = Instantiate(_powerUp, transform.position, transform.rotation);
+        _spawnedPowerUp = Instantiate(_powerUp, transform.position, transform.rotation);
+        //Debug.Log(_spawnedPowerUp.GetComponent<PowerUpBase>().GetSpawner());
+        _spawnedPowerUp.GetComponent<PowerUpBase>().SetSpawner(this);
+        //Debug.Log(_spawnedPowerUp.GetComponent<PowerUpBase>().GetSpawner());
+        return _spawnedPowerUp;
     }
 
-
+    public void SetSpawnedPowerUp(GameObject powerUp)
+    {
+        _spawnedPowerUp = powerUp;
+    }
 }
 
