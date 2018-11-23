@@ -63,7 +63,14 @@ public class PowerUpBase : MonoBehaviour {
 
     public void Disappear()
     {
-        gameObject.GetComponent<MeshRenderer>().enabled = false;
+        if(gameObject.GetComponent<MeshRenderer>() != null)
+        {
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
+        }
+        if (gameObject.GetComponent<SpriteRenderer>() != null)
+        {
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
     }
 

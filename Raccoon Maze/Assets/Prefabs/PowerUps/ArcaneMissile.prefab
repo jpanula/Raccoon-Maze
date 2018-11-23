@@ -124,8 +124,8 @@ MonoBehaviour:
   Owner: 
   Explosion: {fileID: 198566862864285590, guid: c554e3a95c2c2a5469b236aa3aebcf3d,
     type: 2}
-  _speed: 15
-  _rotateSpeed: 200
+  _speed: 20
+  _rotateSpeed: 300
   _targetRadius: 10
   _targetAngle: 70
 --- !u!198 &198193659108614716

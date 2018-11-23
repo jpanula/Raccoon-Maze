@@ -27,14 +27,17 @@ public class PowerUpSpawner : MonoBehaviour
     void Update()
     {
         //Debug.Log(Random.Range(0,3));
-        if(_spawnTimer < _spawnCooldown)
+        if(_spawnedPowerUp == null)
         {
-            _spawnTimer += Time.deltaTime;
-        }
-        else if(_spawnedPowerUp == null)
-        {
-            SpawnPowerUp();
-            _spawnTimer = 0;
+            if (_spawnTimer < _spawnCooldown)
+            {
+                _spawnTimer += Time.deltaTime;
+            }
+            else
+            {
+                SpawnPowerUp();
+                _spawnTimer = 0;
+            }
         }
     }
 

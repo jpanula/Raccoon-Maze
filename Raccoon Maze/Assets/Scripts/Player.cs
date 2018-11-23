@@ -221,7 +221,7 @@ public class Player : MonoBehaviour {
         {
             _powerUp2 = powerUp;
             _ability2Cooldown = powerUp.GetCooldown();
-            _ability2Timer = _ability1Cooldown;
+            _ability2Timer = _ability2Cooldown;
             return true;
         }
         return false;
