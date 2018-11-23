@@ -6,7 +6,7 @@ public class PowerUpSpawner : MonoBehaviour
 {
 
     [SerializeField]
-    private GameObject _powerUp;
+    private List<GameObject> _powerUp;
     [SerializeField]
     private GameObject _spawnedPowerUp;
     [SerializeField]
@@ -14,14 +14,19 @@ public class PowerUpSpawner : MonoBehaviour
     private float _spawnTimer;
 
     // Use this for initialization
-    void Start()
+    private void Awake()
     {
         SpawnPowerUp();
+    }
+    void Start()
+    {
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(Random.Range(0,3));
         if(_spawnTimer < _spawnCooldown)
         {
             _spawnTimer += Time.deltaTime;
@@ -35,10 +40,12 @@ public class PowerUpSpawner : MonoBehaviour
 
     public GameObject SpawnPowerUp()
     {
-        _spawnedPowerUp = Instantiate(_powerUp, transform.position, transform.rotation);
+        int random = Random.Range(0, _powerUp.Count);
+        _spawnedPowerUp = Instantiate(_powerUp[random], transform.position, transform.rotation);
         //Debug.Log(_spawnedPowerUp.GetComponent<PowerUpBase>().GetSpawner());
         _spawnedPowerUp.GetComponent<PowerUpBase>().SetSpawner(this);
         //Debug.Log(_spawnedPowerUp.GetComponent<PowerUpBase>().GetSpawner());
+        
         return _spawnedPowerUp;
     }
 
