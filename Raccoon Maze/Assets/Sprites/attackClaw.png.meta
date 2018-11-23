@@ -1,18 +1,12 @@
 fileFormatVersion: 2
-guid: 7a9e6eb8660fa844c9378092f903d46e
+guid: 84c69125760ac6c43892955a9ea8641a
 TextureImporter:
   fileIDToRecycleName:
-    21300000: raccoonBody
-    21300002: raccoonHead
-    21300004: raccoonTailBase
-    21300006: raccoonTorso
-    21300008: raccoonTailLowerMid
-    21300010: raccoonTail1
-    21300012: raccoonTail2
-    21300014: raccoonTailUpperMid
-    21300016: raccoonLeftShoulder
-    21300018: raccoonRightShoulder
-    21300020: raccoonTailTip
+    21300000: attackClaw_0
+    21300002: attackClaw_1
+    21300004: attackClaw_2
+    21300006: attackClaw_3
+    21300008: attackClaw_4
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -126,221 +120,101 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: raccoonBody
+      name: attackClaw_0
       rect:
         serializedVersion: 2
-        x: 55
-        y: 899
-        width: 455
-        height: 764
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 406
+        y: 64
+        width: 171
+        height: 361
+      alignment: 9
+      pivot: {x: 0.31832957, y: 0.05538621}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3cd19e2f36855bf4db0230afc41e1c27
+      spriteID: 127550c1bc6a99f419df86529df90365
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: raccoonHead
+      name: attackClaw_1
       rect:
         serializedVersion: 2
-        x: 700
-        y: 1354
-        width: 411
-        height: 309
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1239
+        y: 63
+        width: 249
+        height: 460
+      alignment: 9
+      pivot: {x: 0.14650938, y: 0.03851801}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 23ed2187fe598fd46b86a8694eaca413
+      spriteID: 567aeea5c5a992142b2fd43d1e5825da
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: raccoonTailBase
+      name: attackClaw_2
       rect:
         serializedVersion: 2
-        x: 1327
-        y: 1434
-        width: 112
-        height: 213
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2049
+        y: 133
+        width: 287
+        height: 606
+      alignment: 9
+      pivot: {x: 0.1211516, y: 0.06426133}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 28e1eabdbee065743bffe13bd12b6a8f
+      spriteID: 140fb9cf1c9cd084184d5c2733d88663
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: raccoonTorso
+      name: attackClaw_3
       rect:
         serializedVersion: 2
-        x: 693
-        y: 642
-        width: 450
-        height: 659
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2719
+        y: 63
+        width: 295
+        height: 766
+      alignment: 9
+      pivot: {x: 0.6579598, y: 0.04712893}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 198cbabfa1da9964493f4052b68c82b7
+      spriteID: 8ec3c7b5ccecbf84e9180ea6ef9a168a
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: raccoonTailLowerMid
+      name: attackClaw_4
       rect:
         serializedVersion: 2
-        x: 1302
-        y: 1070
-        width: 200
-        height: 309
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3301
+        y: 67
+        width: 536
+        height: 174
+      alignment: 9
+      pivot: {x: 0.94434595, y: 0.14292382}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0ec96702f9797254e9e88e86bb776ad4
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: raccoonTail1
-      rect:
-        serializedVersion: 2
-        x: 51
-        y: 36
-        width: 261
-        height: 795
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8cc374a38a2e8564b877a9012f69233d
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: raccoonTail2
-      rect:
-        serializedVersion: 2
-        x: 363
-        y: 36
-        width: 260
-        height: 795
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e7b1417d7d42d044bb3c9b2e5090c3a2
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: raccoonTailUpperMid
-      rect:
-        serializedVersion: 2
-        x: 1276
-        y: 777
-        width: 254
-        height: 230
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 676cc1e2cb2e8114d89287de393298bc
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: raccoonLeftShoulder
-      rect:
-        serializedVersion: 2
-        x: 741
-        y: 200
-        width: 143
-        height: 295
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 26556d9106617d547899cc53dcc4f0c2
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: raccoonRightShoulder
-      rect:
-        serializedVersion: 2
-        x: 1002
-        y: 204
-        width: 143
-        height: 276
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 67b9c7b3230e7d544a622722645dead9
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: raccoonTailTip
-      rect:
-        serializedVersion: 2
-        x: 1270
-        y: 316
-        width: 260
-        height: 367
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 04ff080c11e96e641abb0dc7ef3ec200
+      spriteID: bd90f079867c2aa4b8dbfa1859a7a0af
       vertices: []
       indices: 
       edges: []
@@ -348,7 +222,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: d0ae9b84c2d339f449b3d868f3abf574
+    spriteID: c02ba5339e692224595757bfce745946
     vertices: []
     indices: 
     edges: []
