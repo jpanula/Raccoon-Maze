@@ -1,18 +1,15 @@
 fileFormatVersion: 2
-guid: 7a9e6eb8660fa844c9378092f903d46e
+guid: 2a791588e194e17429911a620278d5be
 TextureImporter:
   fileIDToRecycleName:
-    21300000: raccoonBody
-    21300002: raccoonHead
-    21300004: raccoonTailBase
-    21300006: raccoonTorso
-    21300008: raccoonTailLowerMid
-    21300010: raccoonTail1
-    21300012: raccoonTail2
-    21300014: raccoonTailUpperMid
-    21300016: raccoonLeftShoulder
-    21300018: raccoonRightShoulder
-    21300020: raccoonTailTip
+    21300000: walkAnimation_1
+    21300002: walkAnimation_2
+    21300004: walkAnimation_3
+    21300006: walkAnimation_4
+    21300008: walkAnimation_5
+    21300010: walkAnimation_6
+    21300012: walkAnimation_7
+    21300014: walkAnimation_8
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -126,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: raccoonBody
+      name: walkAnimation_1
       rect:
         serializedVersion: 2
-        x: 55
-        y: 899
-        width: 455
-        height: 764
+        x: 74
+        y: 974
+        width: 456
+        height: 820
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,19 +137,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3cd19e2f36855bf4db0230afc41e1c27
+      spriteID: 2be13161352fbd649a6e67ea64fe5a88
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: raccoonHead
+      name: walkAnimation_2
       rect:
         serializedVersion: 2
-        x: 700
-        y: 1354
-        width: 411
-        height: 309
+        x: 670
+        y: 974
+        width: 451
+        height: 822
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -160,19 +157,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 23ed2187fe598fd46b86a8694eaca413
+      spriteID: 409baff712844964aa8ff63f06fbcb10
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: raccoonTailBase
+      name: walkAnimation_3
       rect:
         serializedVersion: 2
-        x: 1327
-        y: 1434
-        width: 112
-        height: 213
+        x: 1262
+        y: 975
+        width: 451
+        height: 821
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,19 +177,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 28e1eabdbee065743bffe13bd12b6a8f
+      spriteID: e94a1f1929afa1b48897804b9e23b6e1
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: raccoonTorso
+      name: walkAnimation_4
       rect:
         serializedVersion: 2
-        x: 693
-        y: 642
-        width: 450
-        height: 659
+        x: 1860
+        y: 974
+        width: 451
+        height: 822
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -200,19 +197,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 198cbabfa1da9964493f4052b68c82b7
+      spriteID: cc6ae5b68e1f5c84bac99323fa0f96e4
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: raccoonTailLowerMid
+      name: walkAnimation_5
       rect:
         serializedVersion: 2
-        x: 1302
-        y: 1070
-        width: 200
-        height: 309
+        x: 2454
+        y: 974
+        width: 456
+        height: 820
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -220,19 +217,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0ec96702f9797254e9e88e86bb776ad4
+      spriteID: 023771187ee474547bd6814e061d9d4d
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: raccoonTail1
+      name: walkAnimation_6
       rect:
         serializedVersion: 2
-        x: 51
-        y: 36
-        width: 261
-        height: 795
+        x: 3038
+        y: 975
+        width: 471
+        height: 819
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -240,19 +237,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8cc374a38a2e8564b877a9012f69233d
+      spriteID: 8c730804950d6b74aa892715c9d1a39f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: raccoonTail2
+      name: walkAnimation_7
       rect:
         serializedVersion: 2
-        x: 363
-        y: 36
-        width: 260
-        height: 795
+        x: 56
+        y: 89
+        width: 481
+        height: 815
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -260,19 +257,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e7b1417d7d42d044bb3c9b2e5090c3a2
+      spriteID: f624dc2105a933c48af96998693d7ea2
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: raccoonTailUpperMid
+      name: walkAnimation_8
       rect:
         serializedVersion: 2
-        x: 1276
-        y: 777
-        width: 254
-        height: 230
+        x: 658
+        y: 87
+        width: 471
+        height: 819
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -280,67 +277,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 676cc1e2cb2e8114d89287de393298bc
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: raccoonLeftShoulder
-      rect:
-        serializedVersion: 2
-        x: 741
-        y: 200
-        width: 143
-        height: 295
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 26556d9106617d547899cc53dcc4f0c2
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: raccoonRightShoulder
-      rect:
-        serializedVersion: 2
-        x: 1002
-        y: 204
-        width: 143
-        height: 276
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 67b9c7b3230e7d544a622722645dead9
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: raccoonTailTip
-      rect:
-        serializedVersion: 2
-        x: 1270
-        y: 316
-        width: 260
-        height: 367
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 04ff080c11e96e641abb0dc7ef3ec200
+      spriteID: a4a9a174e14bb5f4681842b358550b97
       vertices: []
       indices: 
       edges: []
@@ -348,7 +285,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: d0ae9b84c2d339f449b3d868f3abf574
+    spriteID: 17c3f610fb8bb2942a1d45d73558b851
     vertices: []
     indices: 
     edges: []
