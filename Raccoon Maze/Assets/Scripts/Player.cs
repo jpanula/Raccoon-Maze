@@ -14,7 +14,6 @@ public class Player : MonoBehaviour {
     public Vector3 Move;
     public int _direction;
     private Vector3 _directionVector;
-    public GameObject Mora;
     private float _attackTimer;
     private float _ability1Timer;
     private float _ability1Cooldown;
@@ -22,7 +21,6 @@ public class Player : MonoBehaviour {
     private float _ability2Timer;
     private float _ability2Cooldown;
     private float _baseAbility2Cooldown;
-    private Vector3 _moraPosition;
     private bool _attack;
     private bool _inputLock;
     private Rigidbody2D _rb;
@@ -41,6 +39,8 @@ public class Player : MonoBehaviour {
     private PowerUpBase _powerUp1;
     private PowerUpBase _powerUp2;
     public Vector3 DirectionVector;
+    private Animator _anim;
+    private bool _isJumping;
 
     // Use this for initialization
 
@@ -61,17 +61,19 @@ public class Player : MonoBehaviour {
         _inputLock = false;
         _gamepadControl = 0;
         Invulnerable = false;
-        
+        _isJumping = false;
+
+
     }
 
     private void Start ()
     {
         DirectionVector = transform.up;
         _direction = Mathf.RoundToInt(transform.rotation.z / 45);
-        _moraPosition = Mora.transform.position;
-        _rb = gameObject.GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         _collidedParticles = new List<GameObject>();
         _gm = FindObjectOfType<GameManager>();
+        _anim = GetComponent<Animator>();
         //_powerUps = new List<PowerUpBase>();
         //InitializeDirectionVector();
     }
@@ -88,6 +90,7 @@ public class Player : MonoBehaviour {
             gameObject.SetActive(false);
             //Destroy(gameObject);
         }
+        /*
         if(_attackTimer < 0.2f)
         {
             _attackTimer += Time.deltaTime;
@@ -102,6 +105,7 @@ public class Player : MonoBehaviour {
                 _inputLock = false;
             }
         }
+        */
 
         if (_ability1Timer < _ability1Cooldown)
         {
@@ -142,6 +146,19 @@ public class Player : MonoBehaviour {
 
             transform.position += Move * Speed * Time.deltaTime;
 
+
+            if(_isJumping)
+            {
+                _anim.SetInteger("AnimState", 2);
+            }
+            else if(Move != Vector3.zero)
+            {
+                _anim.SetInteger("AnimState", 1);
+            }
+            else
+            {
+                _anim.SetInteger("AnimState", 0);
+            }
 
 
             //Debug.Log(Input.GetJoystickNames()[PlayerNumber - 1]);
@@ -226,14 +243,16 @@ public class Player : MonoBehaviour {
         }
         return false;
     }
-
+    
     public void Attack()
     {
+        /*
         Mora.GetComponent<BoxCollider2D>().enabled = true;
         Mora.transform.localPosition = new Vector3(0, 1, 0);
         _attackTimer = 0;
         _attack = true;
         _inputLock = true;
+        */
     }
 
     public void Ability1()
@@ -372,6 +391,7 @@ public class Player : MonoBehaviour {
     }
     void OnTriggerEnter2D(Collider2D col)
     {
+        /*
         if(col.CompareTag("Weapon"))
         {
             if(col.gameObject != Mora)
@@ -383,6 +403,7 @@ public class Player : MonoBehaviour {
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
         }
+        */
         if (col.CompareTag("Projectile"))
         {
             //Debug.Log(col.gameObject);
@@ -524,6 +545,16 @@ public class Player : MonoBehaviour {
             }
             
         }
+    }
+
+    public void SetIsJumping(bool value)
+    {
+        _isJumping = value;
+    }
+
+    public bool GetIsJumping()
+    {
+        return _isJumping;
     }
 
     public void ResetAbility2Cooldown()
