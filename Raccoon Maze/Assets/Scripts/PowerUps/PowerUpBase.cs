@@ -19,6 +19,8 @@ public class PowerUpBase : MonoBehaviour {
     protected bool _readyToUse;
     [SerializeField]
     private PowerUpSpawner _spawner;
+    [SerializeField]
+    private ParticleSystem _ps;
 
     private void Start()
     {
@@ -72,6 +74,7 @@ public class PowerUpBase : MonoBehaviour {
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
         }
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
+        _ps.Stop();
     }
 
     public virtual void Effect()

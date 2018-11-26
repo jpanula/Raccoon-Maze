@@ -51,10 +51,38 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void NextLevel()
+    {
+        bool rotation = false;
+        for (int i = 0; i < GameInfo.LevelRotation.Length; i++)
+        {
+            if (!GameInfo.LevelRotation[i])
+            {
+                rotation = true;
+            }
+        }
+        Debug.Log(rotation);
+        if (!rotation)
+        {
+            GameInfo.LevelRotation = new bool[] { false, false, false };
+        }
+        bool help = true;
+        while (help)
+        {
+            int random = Random.Range(0, GameInfo.LevelRotation.Length);
+            if (!GameInfo.LevelRotation[random])
+            {
+                GameInfo.LevelRotation[random] = false;
+                help = false;
+                SceneManager.LoadScene("Level" + (random + 1));
+            }
+        }
+    }
+
     private IEnumerator NextRound(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        SceneManager.LoadScene("Level1");
+        NextLevel();
     }
 
     private IEnumerator WinCheck(float waitTime)
@@ -114,6 +142,6 @@ public class GameManager : MonoBehaviour {
         {
             GameInfo.Wins[i] = 0;
         }
-        SceneManager.LoadScene("Level1");
+        NextLevel();
     }
 }

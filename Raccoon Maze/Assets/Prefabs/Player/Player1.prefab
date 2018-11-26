@@ -201,7 +201,7 @@ Transform:
   m_GameObject: {fileID: 1770433142326946}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 11.163794, y: 6.932974, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4987325139956636}
   - {fileID: 4388177618182454}
@@ -255,7 +255,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.000000461936, y: 0.00000047683716}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -266,7 +266,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.8543247, y: 1.5147188}
   m_EdgeRadius: 0
 --- !u!61 &61796133128139062
 BoxCollider2D:
@@ -280,18 +280,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.000000461936, y: 0.00000047683716}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.91, y: 1.528}
+    newSize: {x: 0.91, y: 1.528}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.8543247, y: 1.5147188}
   m_EdgeRadius: 0
 --- !u!95 &95867987309206846
 Animator:
@@ -438,7 +438,6 @@ MonoBehaviour:
   OilSlickTickTime: 1.5
   Move: {x: 0, y: 0, z: 0}
   _direction: 0
-  Mora: {fileID: 0}
   MoraCollider: {fileID: 0}
   HP: 3
   Projectile: {fileID: 0}

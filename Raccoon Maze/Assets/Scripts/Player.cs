@@ -487,7 +487,7 @@ public class Player : MonoBehaviour {
         {
             if(_projectileHit != null)
             {
-                if(other.gameObject != _projectileHit.GetComponent<Projectile>().GetPs().gameObject)
+                if(other.gameObject != _projectileHit.GetComponent<Projectile>().GetExplosion().gameObject)
                 {
                     if(!Invulnerable)
                     {

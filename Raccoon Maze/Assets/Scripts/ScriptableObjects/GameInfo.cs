@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameInfo", menuName = "ScriptableObjects/Information/GameInfo", order = 1)]
 public class GameInfo : ScriptableObject {
 
+    public bool[] LevelRotation;
     public int PlayerAmount;
     public List<int> Wins;
     public int WinGoal;
@@ -14,6 +15,7 @@ public class GameInfo : ScriptableObject {
     private void Awake()
     {
         Wins = new List<int>();
+        LevelRotation = new bool[] {false, false, false};
         Reset();
     }
 

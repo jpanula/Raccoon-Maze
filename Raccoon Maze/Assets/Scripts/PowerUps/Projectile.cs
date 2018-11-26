@@ -31,6 +31,11 @@ public class Projectile : MonoBehaviour {
         return _ps;
     }
 
+    public ParticleSystem GetExplosion()
+    {
+        return _explosion;
+    }
+
     protected virtual void Update()
     {
         //Debug.Log("update");
