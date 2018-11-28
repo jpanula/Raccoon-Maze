@@ -126,16 +126,19 @@ public class Player : MonoBehaviour {
             {
                 //Debug.Log("PS4 Player " + PlayerNumber);
                 _gamepadControl = 1;
+                Debug.Log(PlayerNumber + " ps4");
             }
             else if(Input.GetJoystickNames()[PlayerNumber - 1] == "Controller (Xbox One For Windows)")
             {
                 //Debug.Log("XBox Player " + PlayerNumber);
                 _gamepadControl = 2;
+                Debug.Log(PlayerNumber + " xbox");
             }
         }
         else
         {
             _gamepadControl = 0;
+            Debug.Log(PlayerNumber + " " + Input.GetJoystickNames()[2]);
         }
         //Debug.Log("P" + PlayerNumber + (_gamepadControl));
         if (!_inputLock)
