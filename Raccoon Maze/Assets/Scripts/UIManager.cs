@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+        /*
 		// Ota ylös aloittavien pelaajien määrä
 		for (int i = 1; i <= _maxPlayers; i++)
 		{
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
 				_startPlayers++;
 			}
 		}
+        */
 	}
 	
 	// Update is called once per frame
@@ -34,7 +36,9 @@ public class UIManager : MonoBehaviour
 			// Haetaan pelaaja ja sen UI
 			GameObject player = FindPlayer(i);
 			Text playerUI = GameObject.Find("P" + i + "UI").GetComponent<Text>();
-			
+
+            //Debug.Log(player);
+
 			// Jos pelaaja on elossa, tai jos pelaaja on ollut pelin alussa olemassa, kirjoitetaan teksti
 			if (player || i <= _startPlayers)
 			{
@@ -47,7 +51,7 @@ public class UIManager : MonoBehaviour
 				{
 					EnablePlayerCooldownPies(i, false);
 				}
-				playerUI.text = BuildString(i);
+				playerUI.text = BuildString(i, player);
 				
 			}
 			// Muuten jätetään tyhjäksi
@@ -59,10 +63,18 @@ public class UIManager : MonoBehaviour
 		}
 	}
 
+    public void AddPlayer()
+    {
+        if(_startPlayers < _maxPlayers)
+        {
+            _startPlayers++;
+        }
+    }
+
 	// Rakentaa pelaajan UI:n tekstin
-	string BuildString(int playerNumber)
+	string BuildString(int playerNumber, GameObject player)
 	{
-		GameObject player = FindPlayer(playerNumber);
+        //Debug.Log("täällä");
 		if (player)
 		{
 			float[] cooldowns = player.GetComponent<Player>().GetAbilityTimers();
@@ -78,7 +90,7 @@ public class UIManager : MonoBehaviour
 	// Etsii pelaajan
 	GameObject FindPlayer(int playerNumber)
 	{
-		return GameObject.Find("Player" + playerNumber);
+		return GameObject.Find("Player" + playerNumber + "(Clone)");
 	}
 	
 	// Päivittää pelaajan cooldown-elementit

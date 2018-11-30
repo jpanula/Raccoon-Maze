@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Name: GameInfo
   m_EditorClassIdentifier: 
   PlayerAmount: 2
-  Wins: 0300000002000000
+  Wins: 0000000001000000
   WinGoal: 3

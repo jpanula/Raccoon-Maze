@@ -6,20 +6,28 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
-    public List<GameObject> Players;
+    [SerializeField]
+    private List<PlayerSpawner> _playerSpawners;
+    public List<GameObject> PlayerPrefabs;
+    private List<GameObject> Players;
     public GameObject WinLine;
     public GameObject[] PlayerPoints;
     public GameInfo GameInfo;
     private bool _winner;
+    [SerializeField]
+    private UIManager UIManager;
 
     // Use this for initialization
 
     private void Awake()
     {
         _winner = false;
+        Players = new List<GameObject>();
     }
     private void Start ()
     {
+        InitializePlayers();
+
         for(int i = 0; i < Players.Count; i++)
         {
             PlayerPoints[Players[i].GetComponent<Player>().PlayerNumber - 1].GetComponent<Text>().text = "Points: " + GameInfo.Wins[Players[i].GetComponent<Player>().PlayerNumber - 1];
@@ -29,11 +37,13 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     private void Update ()
     {
+        
         if (Players.Count <= 1)
         {
             IEnumerator coroutine = WinCheck(1.0f);
             StartCoroutine(coroutine);
         }
+        
         if(Input.GetKeyDown("r"))
         {
             ReStart();
@@ -41,10 +51,38 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void NextLevel()
+    {
+        bool rotation = false;
+        for (int i = 0; i < GameInfo.LevelRotation.Length; i++)
+        {
+            if (!GameInfo.LevelRotation[i])
+            {
+                rotation = true;
+            }
+        }
+        Debug.Log(rotation);
+        if (!rotation)
+        {
+            GameInfo.LevelRotation = new bool[] { false, false, false };
+        }
+        bool help = true;
+        while (help)
+        {
+            int random = Random.Range(0, GameInfo.LevelRotation.Length);
+            if (!GameInfo.LevelRotation[random])
+            {
+                GameInfo.LevelRotation[random] = false;
+                help = false;
+                SceneManager.LoadScene("Level" + (random + 1));
+            }
+        }
+    }
+
     private IEnumerator NextRound(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        SceneManager.LoadScene("TestailuScene");
+        NextLevel();
     }
 
     private IEnumerator WinCheck(float waitTime)
@@ -84,6 +122,15 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    private void InitializePlayers()
+    {
+        for(int i = 0; i < GameInfo.PlayerAmount; i++)
+        {
+            Players.Add(_playerSpawners[i].SpawnPlayer().gameObject);
+            UIManager.AddPlayer();
+        }
+    }
+
     public void KillPlayer(GameObject player)
     {
         Players.Remove(player);
@@ -91,10 +138,10 @@ public class GameManager : MonoBehaviour {
 
     public void ReStart()
     {
-        for (int i = 0; i < GameInfo.Wins.Length; i++)
+        for (int i = 0; i < GameInfo.Wins.Count; i++)
         {
             GameInfo.Wins[i] = 0;
         }
-        SceneManager.LoadScene("TestailuScene");
+        NextLevel();
     }
 }

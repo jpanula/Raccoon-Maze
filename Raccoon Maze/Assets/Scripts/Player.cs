@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-    public GameManager Gm;
+    private GameManager _gm;
     public int PlayerNumber;
     public int Speed;
     private int _initialSpeed;
@@ -14,7 +14,6 @@ public class Player : MonoBehaviour {
     public Vector3 Move;
     public int _direction;
     private Vector3 _directionVector;
-    public GameObject Mora;
     private float _attackTimer;
     private float _ability1Timer;
     private float _ability1Cooldown;
@@ -22,7 +21,6 @@ public class Player : MonoBehaviour {
     private float _ability2Timer;
     private float _ability2Cooldown;
     private float _baseAbility2Cooldown;
-    private Vector3 _moraPosition;
     private bool _attack;
     private bool _inputLock;
     private Rigidbody2D _rb;
@@ -35,12 +33,14 @@ public class Player : MonoBehaviour {
     public string Name;
     private bool _directionLock;
     private GameObject _projectileHit;
-    private bool _gamepadControl;
+    private int _gamepadControl;
     public bool Invulnerable;
     //private List<PowerUpBase> _powerUps;
     private PowerUpBase _powerUp1;
     private PowerUpBase _powerUp2;
     public Vector3 DirectionVector;
+    private Animator _anim;
+    private bool _isJumping;
 
     // Use this for initialization
 
@@ -59,17 +59,21 @@ public class Player : MonoBehaviour {
         _directionLock = false;
         _attack = false;
         _inputLock = false;
-        _gamepadControl = false;
+        _gamepadControl = 0;
         Invulnerable = false;
+        _isJumping = false;
+
+
     }
 
     private void Start ()
     {
         DirectionVector = transform.up;
         _direction = Mathf.RoundToInt(transform.rotation.z / 45);
-        _moraPosition = Mora.transform.position;
-        _rb = gameObject.GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         _collidedParticles = new List<GameObject>();
+        _gm = FindObjectOfType<GameManager>();
+        _anim = GetComponent<Animator>();
         //_powerUps = new List<PowerUpBase>();
         //InitializeDirectionVector();
     }
@@ -82,10 +86,11 @@ public class Player : MonoBehaviour {
         _rb.velocity = new Vector3(0, 0, 0);
         if(HP <= 0)
         {
-            Gm.KillPlayer(gameObject);
+            _gm.KillPlayer(gameObject);
             gameObject.SetActive(false);
             //Destroy(gameObject);
         }
+        /*
         if(_attackTimer < 0.2f)
         {
             _attackTimer += Time.deltaTime;
@@ -100,6 +105,7 @@ public class Player : MonoBehaviour {
                 _inputLock = false;
             }
         }
+        */
 
         if (_ability1Timer < _ability1Cooldown)
         {
@@ -110,29 +116,66 @@ public class Player : MonoBehaviour {
         {
             _ability2Timer += Time.deltaTime;
         }
+        //Debug.Log(Input.GetJoystickNames()[0]);
+        //Debug.Log(Input.GetJoystickNames()[1]);
         InputManager.CheckGamepadConnection();
-        if (InputManager.GetGamepadControl(PlayerNumber) >= 0)
+        //Debug.Log(InputManager.GetGamepadControl(PlayerNumber - 1));
+        if (InputManager.GetGamepadControl(PlayerNumber - 1) >= 0)
         {
-            _gamepadControl = true;
+            if (Input.GetJoystickNames()[PlayerNumber - 1] == "Wireless Controller")
+            {
+                //Debug.Log("PS4 Player " + PlayerNumber);
+                _gamepadControl = 1;
+                Debug.Log(PlayerNumber + " ps4");
+            }
+            else if(Input.GetJoystickNames()[PlayerNumber - 1] == "Controller (Xbox One For Windows)")
+            {
+                //Debug.Log("XBox Player " + PlayerNumber);
+                _gamepadControl = 2;
+                Debug.Log(PlayerNumber + " xbox");
+            }
         }
         else
         {
-            _gamepadControl = false;
+            _gamepadControl = 0;
+            Debug.Log(PlayerNumber + " " + Input.GetJoystickNames()[2]);
         }
         //Debug.Log("P" + PlayerNumber + (_gamepadControl));
         if (!_inputLock)
         {
             //Player move
-            Move = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis1"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis2"));
+            Move = new Vector2(InputManager.GetAxis("P" + PlayerNumber.ToString() + "MoveHorizontal", _gamepadControl, PlayerNumber.ToString()), -InputManager.GetAxis("P" + PlayerNumber.ToString() + "MoveVertical", _gamepadControl, PlayerNumber.ToString()));
             Move.Normalize();
 
             transform.position += Move * Speed * Time.deltaTime;
 
 
-            //Player rotate
-            Vector2 HelpVector = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis3"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis6"));
+            if(_isJumping)
+            {
+                _anim.SetInteger("AnimState", 2);
+            }
+            else if(Move != Vector3.zero)
+            {
+                _anim.SetInteger("AnimState", 1);
+            }
+            else
+            {
+                _anim.SetInteger("AnimState", 0);
+            }
 
-            if(HelpVector != Vector2.zero)
+
+            //Debug.Log(Input.GetJoystickNames()[PlayerNumber - 1]);
+            //Player rotate
+            Vector2 HelpVector = new Vector2(InputManager.GetAxis("P" + PlayerNumber.ToString() + "DirHorizontal", _gamepadControl, PlayerNumber.ToString()), -InputManager.GetAxis("P" + PlayerNumber.ToString() + "DirVertical", _gamepadControl, PlayerNumber.ToString()));
+            /*
+                        else
+                        {
+                            HelpVector = new Vector2(Input.GetAxis("Joystick" + PlayerNumber + "Axis5"), -Input.GetAxis("Joystick" + PlayerNumber + "Axis4"));
+                        }
+                        */
+
+
+            if (HelpVector != Vector2.zero)
             {
                 if(HelpVector.x == 0 && HelpVector.y == -1)
                 {
@@ -154,20 +197,25 @@ public class Player : MonoBehaviour {
 
             transform.rotation = Quaternion.AngleAxis(-heading, Vector3.forward);
             */
-            
-
-            if (InputManager.GetKeyDown("P" + PlayerNumber + "Melee", _gamepadControl, PlayerNumber.ToString()))
+            /*
+            if (Input.GetKeyDown("Joystick" + PlayerNumber.ToString() + "Button5"))
             {
                 Attack();
             }
-            if (InputManager.GetKeyDown("P" + PlayerNumber + "Ability1", _gamepadControl, PlayerNumber.ToString()) && _ability1Timer >= _ability1Cooldown)
+            */
+            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Melee", _gamepadControl, PlayerNumber.ToString()))
+            {
+                Attack();
+            }
+            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Ability1", _gamepadControl, PlayerNumber.ToString()) && _ability1Timer >= _ability1Cooldown)
             {
                 Ability1();
             }
-            if (InputManager.GetKeyDown("P" + PlayerNumber + "Ability2", _gamepadControl, PlayerNumber.ToString()) && _ability2Timer >= _ability2Cooldown)
+            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Ability2", _gamepadControl, PlayerNumber.ToString()) && _ability2Timer >= _ability2Cooldown)
             {
                 Ability2();
             }
+
         }
 
         //Destroy(_blinkTrail);
@@ -182,28 +230,32 @@ public class Player : MonoBehaviour {
 
     public bool AddPowerUp(PowerUpBase powerUp)
     {
-        if(powerUp.GetPowerUpType() == 1 && _powerUp1 == null)
+        if(powerUp.GetPowerUpType() == 1)
         {
             _powerUp1 = powerUp;
+            _ability1Cooldown = powerUp.GetCooldown();
             _ability1Timer = _ability1Cooldown;
             return true;
         }
-        else if (powerUp.GetPowerUpType() == 2 && _powerUp2 == null)
+        else if (powerUp.GetPowerUpType() == 2)
         {
             _powerUp2 = powerUp;
+            _ability2Cooldown = powerUp.GetCooldown();
             _ability2Timer = _ability2Cooldown;
             return true;
         }
         return false;
     }
-
+    
     public void Attack()
     {
+        /*
         Mora.GetComponent<BoxCollider2D>().enabled = true;
         Mora.transform.localPosition = new Vector3(0, 1, 0);
         _attackTimer = 0;
         _attack = true;
         _inputLock = true;
+        */
     }
 
     public void Ability1()
@@ -342,6 +394,7 @@ public class Player : MonoBehaviour {
     }
     void OnTriggerEnter2D(Collider2D col)
     {
+        /*
         if(col.CompareTag("Weapon"))
         {
             if(col.gameObject != Mora)
@@ -353,6 +406,7 @@ public class Player : MonoBehaviour {
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
         }
+        */
         if (col.CompareTag("Projectile"))
         {
             //Debug.Log(col.gameObject);
@@ -436,7 +490,7 @@ public class Player : MonoBehaviour {
         {
             if(_projectileHit != null)
             {
-                if(other.gameObject != _projectileHit.GetComponent<Projectile>().GetPs().gameObject)
+                if(other.gameObject != _projectileHit.GetComponent<Projectile>().GetExplosion().gameObject)
                 {
                     if(!Invulnerable)
                     {
@@ -494,6 +548,16 @@ public class Player : MonoBehaviour {
             }
             
         }
+    }
+
+    public void SetIsJumping(bool value)
+    {
+        _isJumping = value;
+    }
+
+    public bool GetIsJumping()
+    {
+        return _isJumping;
     }
 
     public void ResetAbility2Cooldown()
