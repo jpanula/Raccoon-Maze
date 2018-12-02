@@ -14,8 +14,6 @@ public class GameManager : MonoBehaviour {
     public GameObject[] PlayerPoints;
     public GameInfo GameInfo;
     private bool _winner;
-    [SerializeField]
-    private UIManager UIManager;
 
     // Use this for initialization
 
@@ -30,7 +28,7 @@ public class GameManager : MonoBehaviour {
 
         for(int i = 0; i < Players.Count; i++)
         {
-            PlayerPoints[Players[i].GetComponent<Player>().PlayerNumber - 1].GetComponent<Text>().text = "Points: " + GameInfo.Wins[Players[i].GetComponent<Player>().PlayerNumber - 1];
+            PlayerPoints[Players[i].GetComponent<Player>().PlayerNumber - 1].GetComponent<Text>().text = "P" + (i + 1) + " Points: " + GameInfo.Wins[Players[i].GetComponent<Player>().PlayerNumber - 1];
         }
     }
 
@@ -127,7 +125,6 @@ public class GameManager : MonoBehaviour {
         for(int i = 0; i < GameInfo.PlayerAmount; i++)
         {
             Players.Add(_playerSpawners[i].SpawnPlayer().gameObject);
-            UIManager.AddPlayer();
         }
     }
 
