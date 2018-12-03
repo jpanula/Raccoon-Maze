@@ -486,9 +486,12 @@ public class Player : MonoBehaviour {
         {
             Speed = _initialSpeed / 2;
             _steps = _waterFootsteps;
-            _am.RemoveSound(_footStepIndex);
-            _footStepIndex = -1;
-            _footStepBool = false;
+            if (_footStepIndex > -1)
+            {
+                _am.RemoveSound(_footStepIndex);
+                _footStepIndex = -1;
+                _footStepBool = false; 
+            } 
         }
 
         if (col.CompareTag("Path"))
@@ -523,9 +526,13 @@ public class Player : MonoBehaviour {
         {
             Speed = _initialSpeed;
             _steps = _footsteps;
-            _am.RemoveSound(_footStepIndex);
-            _footStepIndex = -1;
-            _footStepBool = false;
+            if (_footStepIndex > -1)
+            {
+                _am.RemoveSound(_footStepIndex);
+                _footStepIndex = -1;
+                _footStepBool = false;
+            }
+
         }
 
         if (col.CompareTag("OilSlickFire"))

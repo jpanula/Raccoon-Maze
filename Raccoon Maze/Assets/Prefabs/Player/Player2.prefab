@@ -434,6 +434,10 @@ MonoBehaviour:
   Name: Player2
   Invulnerable: 0
   DirectionVector: {x: 0, y: 0, z: 0}
+  _footsteps: {fileID: 8300000, guid: d6cba5363bf9ffb40ae832103dea28db, type: 3}
+  _waterFootsteps: {fileID: 8300000, guid: 17b802b89287e614882839d439b56e67, type: 3}
+  _deathSound: {fileID: 8300000, guid: 50fd020d5399a5840b95d534e0128752, type: 3}
+  _hitSound: {fileID: 8300000, guid: 97026a7b39fda1a42aa560186a587b6d, type: 3}
 --- !u!114 &114718458082565074
 MonoBehaviour:
   m_ObjectHideFlags: 1
