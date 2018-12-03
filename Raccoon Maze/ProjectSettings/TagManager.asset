@@ -16,6 +16,7 @@ TagManager:
   - OilSlick
   - OilSlickFire
   - Spikes
+  - AudioManager
   layers:
   - Default
   - TransparentFX

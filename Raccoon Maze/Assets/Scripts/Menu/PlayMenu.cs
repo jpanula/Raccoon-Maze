@@ -28,7 +28,12 @@ public class PlayMenu : MonoBehaviour {
                 GameInfo.Wins.Add(0);
             }
         }
-        SceneManager.LoadScene("Level1");
+        int random = Random.Range(0, GameInfo.LevelRotation.Length);
+        if (!GameInfo.LevelRotation[random])
+        {
+            GameInfo.LevelRotation[random] = false;
+            SceneManager.LoadScene("Level" + (random + 2));
+        }
     }
 
     public void BackButton()

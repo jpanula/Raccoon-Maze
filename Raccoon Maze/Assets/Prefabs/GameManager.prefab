@@ -68,4 +68,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   GameInfo: {fileID: 11400000, guid: 2d8bf04028052cc48bb2bae1e0f13ae9, type: 2}
-  UIManager: {fileID: 0}
+  _audioManager: {fileID: 0}
+  _music1: {fileID: 8300000, guid: 8babe2a3565759c4ba35b91066a3d5c9, type: 3}
+  _music2: {fileID: 8300000, guid: 3104d4440f5bbb54b81daca93bebadec, type: 3}

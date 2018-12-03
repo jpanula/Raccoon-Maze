@@ -8,9 +8,9 @@ public class SpikeTrap : MonoBehaviour
 
 	public float ActivationTime;
 	public float HoldTime;
-	public Material SpikeTrapMaterial;
-	public Material SpikeTrapActiveMaterial;
-	public Material SpikeTrapTriggeredMaterial;
+	public Sprite SpikeTrapMaterial;
+	public Sprite SpikeTrapActiveMaterial;
+	public Sprite SpikeTrapTriggeredMaterial;
 	private bool _active;
 	private bool _triggered;
 	private float _activationTimer;
@@ -31,13 +31,13 @@ public class SpikeTrap : MonoBehaviour
 	void Update () {
 		if (_triggered)
 		{
-			GetComponent<Renderer>().material = SpikeTrapTriggeredMaterial;
+			GetComponent<SpriteRenderer>().sprite = SpikeTrapTriggeredMaterial;
 			if (_activationTimer <= 0)
 			{
 				_active = true;
 				_triggered = false;
 				_activationTimer = ActivationTime;
-				GetComponent<Renderer>().material = SpikeTrapActiveMaterial;
+                GetComponent<SpriteRenderer>().sprite = SpikeTrapActiveMaterial;
 				collisions = Physics2D.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y), new Vector2(transform.localScale.x, transform.localScale.y), 0);
 				foreach (Collider2D col in collisions)
 				{
@@ -58,7 +58,7 @@ public class SpikeTrap : MonoBehaviour
 				_active = false;
 				_holdTimer = HoldTime;
 				ActivateTrap(false);
-				GetComponent<Renderer>().material = SpikeTrapMaterial;
+                GetComponent<SpriteRenderer>().sprite = SpikeTrapMaterial;
 			}
 
 			_holdTimer -= Time.deltaTime;

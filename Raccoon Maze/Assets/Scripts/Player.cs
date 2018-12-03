@@ -41,6 +41,20 @@ public class Player : MonoBehaviour {
     public Vector3 DirectionVector;
     private Animator _anim;
     private bool _isJumping;
+    private AudioManager _am;
+    [SerializeField]
+    private AudioClip _footsteps;
+    [SerializeField]
+    private AudioClip _waterFootsteps;
+    private AudioClip _steps;
+    private bool _footStepBool;
+    private int _footStepIndex;
+    [SerializeField]
+    private AudioClip _deathSound;
+    private bool _deathBool;
+    [SerializeField]
+    private AudioClip _hitSound;
+    private bool _hitBool;
 
     // Use this for initialization
 
@@ -48,9 +62,13 @@ public class Player : MonoBehaviour {
 
     private void Awake()
     {
+        _steps = _footsteps;
         _initialSpeed = Speed;
         _oilSlickTimer = OilSlickTickTime;
-
+        _deathBool = false;
+        _hitBool = false;
+        _footStepBool = false;
+        _footStepIndex = -1;
         _baseAbility1Cooldown = _ability1Cooldown;
         _baseAbility2Cooldown = _ability2Cooldown;
         _attackTimer = 0;
@@ -74,6 +92,7 @@ public class Player : MonoBehaviour {
         _collidedParticles = new List<GameObject>();
         _gm = FindObjectOfType<GameManager>();
         _anim = GetComponent<Animator>();
+        _am = _gm.GetAudioManager();
         //_powerUps = new List<PowerUpBase>();
         //InitializeDirectionVector();
     }
@@ -84,12 +103,9 @@ public class Player : MonoBehaviour {
 
         //Debug.Log(_powerUp1);
         _rb.velocity = new Vector3(0, 0, 0);
-        if(HP <= 0)
-        {
-            _gm.KillPlayer(gameObject);
-            gameObject.SetActive(false);
-            //Destroy(gameObject);
-        }
+        
+        
+        
         /*
         if(_attackTimer < 0.2f)
         {
@@ -138,7 +154,7 @@ public class Player : MonoBehaviour {
         else
         {
             _gamepadControl = 0;
-            Debug.Log(PlayerNumber + " " + Input.GetJoystickNames()[2]);
+            //Debug.Log(PlayerNumber + " " + Input.GetJoystickNames()[2]);
         }
         //Debug.Log("P" + PlayerNumber + (_gamepadControl));
         if (!_inputLock)
@@ -157,10 +173,23 @@ public class Player : MonoBehaviour {
             else if(Move != Vector3.zero)
             {
                 _anim.SetInteger("AnimState", 1);
+                if(!_footStepBool)
+                {
+                    _footStepIndex = _am.PlaySound(_steps, true);
+                    Debug.Log(_footStepIndex);
+                    _footStepBool = true;
+                }
             }
             else
             {
                 _anim.SetInteger("AnimState", 0);
+                //Debug.Log(_footStepIndex);
+                if(_footStepIndex > -1)
+                {
+                    _am.RemoveSound(_footStepIndex);
+                    _footStepIndex = -1;
+                    _footStepBool = false;
+                }
             }
 
 
@@ -219,6 +248,25 @@ public class Player : MonoBehaviour {
         }
 
         //Destroy(_blinkTrail);
+
+        if (HP <= 0)
+        {
+            if (_footStepIndex > -1)
+            {
+                Debug.Log("poisto");
+                _am.RemoveSound(_footStepIndex);
+                _footStepIndex = -1;
+                _footStepBool = false;
+            }
+            if (!_deathBool)
+            {
+                _am.PlaySound(_deathSound, false);
+                _deathBool = true;
+            }
+            _gm.KillPlayer(gameObject);
+            gameObject.SetActive(false);
+            //Destroy(gameObject);
+        }
 
         _oilSlickTimer -= Time.deltaTime;
         if (_oilSlickTimer <= 0 && _inOilSlickFire)
@@ -418,6 +466,7 @@ public class Player : MonoBehaviour {
                 transform.position = transform.position + (transform.position - col.transform.position).normalized * 0.5f;
                 _projectileHit = col.gameObject;
                 HP--;
+                _am.PlaySound(_hitSound, false);
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
             else if (col.gameObject != _spawnedProjectile.gameObject)
@@ -427,6 +476,7 @@ public class Player : MonoBehaviour {
                 transform.position = transform.position + (transform.position - col.transform.position).normalized * 0.5f;
                 _projectileHit = col.gameObject;
                 HP--;
+                _am.PlaySound(_hitSound, false);
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
 
@@ -435,6 +485,10 @@ public class Player : MonoBehaviour {
         if (col.CompareTag("DeepPuddle") || col.CompareTag("OilSlick"))
         {
             Speed = _initialSpeed / 2;
+            _steps = _waterFootsteps;
+            _am.RemoveSound(_footStepIndex);
+            _footStepIndex = -1;
+            _footStepBool = false;
         }
 
         if (col.CompareTag("Path"))
@@ -450,11 +504,13 @@ public class Player : MonoBehaviour {
         if (col.CompareTag("SpikeTrapActive") || col.CompareTag("Spikes"))
         {
             HP--;
+            _am.PlaySound(_hitSound, false);
         }
 
         if (col.CompareTag("OilSlickFire"))
         {
             Speed = _initialSpeed / 2;
+            _am.PlaySound(_hitSound, false);
             HP--;
             _inOilSlickFire = true;
             _oilSlickTimer = OilSlickTickTime;
@@ -466,6 +522,10 @@ public class Player : MonoBehaviour {
         if (col.CompareTag("DeepPuddle") || col.CompareTag("Path") || col.CompareTag("OilSlick"))
         {
             Speed = _initialSpeed;
+            _steps = _footsteps;
+            _am.RemoveSound(_footStepIndex);
+            _footStepIndex = -1;
+            _footStepBool = false;
         }
 
         if (col.CompareTag("OilSlickFire"))
@@ -495,6 +555,7 @@ public class Player : MonoBehaviour {
                     if(!Invulnerable)
                     {
                         HP--;
+                        _am.PlaySound(_hitSound, false);
                     }
                     _collidedParticles.Add(other.gameObject);
                 }
@@ -504,6 +565,7 @@ public class Player : MonoBehaviour {
                 if (!Invulnerable)
                 {
                     HP--;
+                    _am.PlaySound(_hitSound, false);
                 }
                 _collidedParticles.Add(other.gameObject);
             }

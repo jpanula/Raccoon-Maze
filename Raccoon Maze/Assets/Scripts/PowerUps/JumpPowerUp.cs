@@ -23,7 +23,7 @@ public class JumpPowerUp : PowerUpBase {
 
         if (_owner != null && _owner.GetIsJumping())
         {
-            if(_t < 0.2f)
+            if(_t < 0.5f)
             {
                 _t += Time.deltaTime;
             }

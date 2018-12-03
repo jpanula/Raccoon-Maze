@@ -104,7 +104,7 @@ MonoBehaviour:
   _timer: 0
   _powerUpNum: 2
   _powerUpType: 2
-  _cooldown: 0
+  _cooldown: 3
   _spawner: {fileID: 0}
   _ps: {fileID: 198308760230024150}
   blinkDistance: 4

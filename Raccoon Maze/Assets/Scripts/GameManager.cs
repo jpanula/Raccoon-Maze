@@ -14,6 +14,11 @@ public class GameManager : MonoBehaviour {
     public GameObject[] PlayerPoints;
     public GameInfo GameInfo;
     private bool _winner;
+    private AudioManager _audioManager;
+    [SerializeField]
+    private AudioClip _music1;
+    [SerializeField]
+    private AudioClip _music2;
 
     // Use this for initialization
 
@@ -21,6 +26,7 @@ public class GameManager : MonoBehaviour {
     {
         _winner = false;
         Players = new List<GameObject>();
+        
     }
     private void Start ()
     {
@@ -30,12 +36,17 @@ public class GameManager : MonoBehaviour {
         {
             PlayerPoints[Players[i].GetComponent<Player>().PlayerNumber - 1].GetComponent<Text>().text = "P" + (i + 1) + " Points: " + GameInfo.Wins[Players[i].GetComponent<Player>().PlayerNumber - 1];
         }
+        _audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
+        for (int i = 1; i < _audioManager.GetSourcesLength(); i++)
+        {
+            _audioManager.RemoveSound(i);
+        }
     }
 
     // Update is called once per frame
     private void Update ()
     {
-        
+        MusicLoop();
         if (Players.Count <= 1)
         {
             IEnumerator coroutine = WinCheck(1.0f);
@@ -46,6 +57,22 @@ public class GameManager : MonoBehaviour {
         {
             ReStart();
             GameInfo.Reset();
+        }
+    }
+
+    private void MusicLoop()
+    {
+        
+        if (!GameInfo.InGameMusic)
+        {
+            _audioManager.RemoveSound(0);
+            _audioManager.PlaySound(_music1, false);
+            GameInfo.InGameMusic = true;
+        }
+        else if(!_audioManager.GetSource(0).isPlaying)
+        {
+            _audioManager.RemoveSound(0);
+            _audioManager.PlaySound(_music2, true);
         }
     }
 
@@ -72,7 +99,7 @@ public class GameManager : MonoBehaviour {
             {
                 GameInfo.LevelRotation[random] = false;
                 help = false;
-                SceneManager.LoadScene("Level" + (random + 1));
+                SceneManager.LoadScene("Level" + (random + 2));
             }
         }
     }
@@ -140,5 +167,9 @@ public class GameManager : MonoBehaviour {
             GameInfo.Wins[i] = 0;
         }
         NextLevel();
+    }
+    public AudioManager GetAudioManager()
+    {
+        return _audioManager;
     }
 }

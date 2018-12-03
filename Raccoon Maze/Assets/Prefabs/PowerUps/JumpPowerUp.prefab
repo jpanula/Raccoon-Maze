@@ -104,7 +104,7 @@ MonoBehaviour:
   _timer: 0
   _powerUpNum: 4
   _powerUpType: 2
-  _cooldown: 0
+  _cooldown: 5
   _spawner: {fileID: 0}
   _ps: {fileID: 198441794574580936}
 --- !u!198 &198441794574580936
