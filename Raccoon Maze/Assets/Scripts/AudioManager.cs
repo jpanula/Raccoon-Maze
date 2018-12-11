@@ -61,10 +61,10 @@ public class AudioManager : MonoBehaviour {
 
     public void RemoveSound(int index)
     {
-        Debug.Log(_sources[index].clip);
+        //Debug.Log(_sources[index].clip);
         _sources[index].Stop();
         _sources[index].clip = null;
-        Debug.Log(_sources[index].clip);
+        //Debug.Log(_sources[index].clip);
         
     }
 }

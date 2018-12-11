@@ -6,7 +6,12 @@ public class BlinkPowerUp : PowerUpBase
 {
     [SerializeField]
     private float blinkDistance;
-    [SerializeField]
+
+    protected override void Start()
+    {
+        base.Start();
+        _sound = SoundLibrary.Dash;
+    }
 
     public override void PickUp(GameObject player)
     {
@@ -16,6 +21,7 @@ public class BlinkPowerUp : PowerUpBase
 
     public override void Effect()
     {
+        base.Effect();
         Vector3 blinkDirection = _owner.Move.normalized;
         if (blinkDirection.x == 0 && blinkDirection.y == 0)
         {

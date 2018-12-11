@@ -42,19 +42,14 @@ public class Player : MonoBehaviour {
     private Animator _anim;
     private bool _isJumping;
     private AudioManager _am;
-    [SerializeField]
+
+    private List<AudioClip> _sounds;
+    private List<bool> _soundBools;
     private AudioClip _footsteps;
-    [SerializeField]
     private AudioClip _waterFootsteps;
-    private AudioClip _steps;
-    private bool _footStepBool;
     private int _footStepIndex;
-    [SerializeField]
-    private AudioClip _deathSound;
-    private bool _deathBool;
-    [SerializeField]
-    private AudioClip _hitSound;
-    private bool _hitBool;
+    private AudioClip _steps;
+    public SoundLibrary SoundLibrary;
 
     // Use this for initialization
 
@@ -62,13 +57,10 @@ public class Player : MonoBehaviour {
 
     private void Awake()
     {
-        _steps = _footsteps;
+        _soundBools = new List<bool>();
+        _sounds = new List<AudioClip>();
         _initialSpeed = Speed;
         _oilSlickTimer = OilSlickTickTime;
-        _deathBool = false;
-        _hitBool = false;
-        _footStepBool = false;
-        _footStepIndex = -1;
         _baseAbility1Cooldown = _ability1Cooldown;
         _baseAbility2Cooldown = _ability2Cooldown;
         _attackTimer = 0;
@@ -86,6 +78,7 @@ public class Player : MonoBehaviour {
 
     private void Start ()
     {
+        
         DirectionVector = transform.up;
         _direction = Mathf.RoundToInt(transform.rotation.z / 45);
         _rb = GetComponent<Rigidbody2D>();
@@ -93,6 +86,7 @@ public class Player : MonoBehaviour {
         _gm = FindObjectOfType<GameManager>();
         _anim = GetComponent<Animator>();
         _am = _gm.GetAudioManager();
+        InitializeSoundSystem();
         //_powerUps = new List<PowerUpBase>();
         //InitializeDirectionVector();
     }
@@ -142,13 +136,13 @@ public class Player : MonoBehaviour {
             {
                 //Debug.Log("PS4 Player " + PlayerNumber);
                 _gamepadControl = 1;
-                Debug.Log(PlayerNumber + " ps4");
+                //Debug.Log(PlayerNumber + " ps4");
             }
             else if(Input.GetJoystickNames()[PlayerNumber - 1] == "Controller (Xbox One For Windows)")
             {
                 //Debug.Log("XBox Player " + PlayerNumber);
                 _gamepadControl = 2;
-                Debug.Log(PlayerNumber + " xbox");
+                //Debug.Log(PlayerNumber + " xbox");
             }
         }
         else
@@ -173,11 +167,11 @@ public class Player : MonoBehaviour {
             else if(Move != Vector3.zero)
             {
                 _anim.SetInteger("AnimState", 1);
-                if(!_footStepBool)
+                if(!_soundBools[0])
                 {
                     _footStepIndex = _am.PlaySound(_steps, true);
                     Debug.Log(_footStepIndex);
-                    _footStepBool = true;
+                    _soundBools[0] = true;
                 }
             }
             else
@@ -188,7 +182,7 @@ public class Player : MonoBehaviour {
                 {
                     _am.RemoveSound(_footStepIndex);
                     _footStepIndex = -1;
-                    _footStepBool = false;
+                    _soundBools[0] = false;
                 }
             }
 
@@ -256,12 +250,12 @@ public class Player : MonoBehaviour {
                 Debug.Log("poisto");
                 _am.RemoveSound(_footStepIndex);
                 _footStepIndex = -1;
-                _footStepBool = false;
+                _soundBools[0] = false;
             }
-            if (!_deathBool)
+            if (!_soundBools[1])
             {
-                _am.PlaySound(_deathSound, false);
-                _deathBool = true;
+                _am.PlaySound(_sounds[1], false);
+                _soundBools[1] = true;
             }
             _gm.KillPlayer(gameObject);
             gameObject.SetActive(false);
@@ -276,6 +270,25 @@ public class Player : MonoBehaviour {
         }
     }
 
+    private void InitializeSoundSystem()
+    {
+        Debug.Log("Init");
+        
+        _sounds.Add(SoundLibrary.Footsteps);
+        _sounds.Add(SoundLibrary.Death);
+        _sounds.Add(SoundLibrary.Hit);
+        _sounds.Add(SoundLibrary.PowerUp);
+        _footsteps = SoundLibrary.Footsteps;
+        _waterFootsteps = SoundLibrary.Watersteps;
+        _steps = _sounds[0];
+        for (int i = 0; i < _sounds.Count; i++)
+        {
+            _soundBools.Add(false);
+        }
+        Debug.Log(_soundBools[0]);
+        _footStepIndex = -1;
+    }
+
     public bool AddPowerUp(PowerUpBase powerUp)
     {
         if(powerUp.GetPowerUpType() == 1)
@@ -283,6 +296,7 @@ public class Player : MonoBehaviour {
             _powerUp1 = powerUp;
             _ability1Cooldown = powerUp.GetCooldown();
             _ability1Timer = _ability1Cooldown;
+            _am.PlaySound(_sounds[3], false);
             return true;
         }
         else if (powerUp.GetPowerUpType() == 2)
@@ -290,6 +304,7 @@ public class Player : MonoBehaviour {
             _powerUp2 = powerUp;
             _ability2Cooldown = powerUp.GetCooldown();
             _ability2Timer = _ability2Cooldown;
+            _am.PlaySound(_sounds[3], false);
             return true;
         }
         return false;
@@ -466,7 +481,7 @@ public class Player : MonoBehaviour {
                 transform.position = transform.position + (transform.position - col.transform.position).normalized * 0.5f;
                 _projectileHit = col.gameObject;
                 HP--;
-                _am.PlaySound(_hitSound, false);
+                _am.PlaySound(_sounds[2], false);
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
             else if (col.gameObject != _spawnedProjectile.gameObject)
@@ -476,7 +491,7 @@ public class Player : MonoBehaviour {
                 transform.position = transform.position + (transform.position - col.transform.position).normalized * 0.5f;
                 _projectileHit = col.gameObject;
                 HP--;
-                _am.PlaySound(_hitSound, false);
+                _am.PlaySound(_sounds[2], false);
                 //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
             }
 
@@ -490,7 +505,7 @@ public class Player : MonoBehaviour {
             {
                 _am.RemoveSound(_footStepIndex);
                 _footStepIndex = -1;
-                _footStepBool = false; 
+                _soundBools[0] = false; 
             } 
         }
 
@@ -507,13 +522,13 @@ public class Player : MonoBehaviour {
         if (col.CompareTag("SpikeTrapActive") || col.CompareTag("Spikes"))
         {
             HP--;
-            _am.PlaySound(_hitSound, false);
+            _am.PlaySound(_sounds[2], false);
         }
 
         if (col.CompareTag("OilSlickFire"))
         {
             Speed = _initialSpeed / 2;
-            _am.PlaySound(_hitSound, false);
+            _am.PlaySound(_sounds[2], false);
             HP--;
             _inOilSlickFire = true;
             _oilSlickTimer = OilSlickTickTime;
@@ -530,7 +545,7 @@ public class Player : MonoBehaviour {
             {
                 _am.RemoveSound(_footStepIndex);
                 _footStepIndex = -1;
-                _footStepBool = false;
+                _soundBools[0] = false;
             }
 
         }
@@ -562,7 +577,7 @@ public class Player : MonoBehaviour {
                     if(!Invulnerable)
                     {
                         HP--;
-                        _am.PlaySound(_hitSound, false);
+                        _am.PlaySound(_sounds[2], false);
                     }
                     _collidedParticles.Add(other.gameObject);
                 }
@@ -572,7 +587,7 @@ public class Player : MonoBehaviour {
                 if (!Invulnerable)
                 {
                     HP--;
-                    _am.PlaySound(_hitSound, false);
+                    _am.PlaySound(_sounds[2], false);
                 }
                 _collidedParticles.Add(other.gameObject);
             }

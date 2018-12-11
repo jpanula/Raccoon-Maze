@@ -107,6 +107,7 @@ MonoBehaviour:
   _cooldown: 5
   _spawner: {fileID: 0}
   _ps: {fileID: 198441794574580936}
+  SoundLibrary: {fileID: 11400000, guid: ab541188bd90bcf4096de6aa7eb6937a, type: 2}
 --- !u!198 &198441794574580936
 ParticleSystem:
   m_ObjectHideFlags: 1

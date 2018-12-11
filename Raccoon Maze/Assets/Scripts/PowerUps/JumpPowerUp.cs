@@ -5,19 +5,22 @@ using UnityEngine;
 public class JumpPowerUp : PowerUpBase {
 
     private float _t;
+    
 
 
     private void Awake()
     {
         _t = 0f;
     }
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	protected override void Update ()
+    // Use this for initialization
+    protected override void Start()
+    {
+        base.Start();
+        _sound = SoundLibrary.Jump;
+    }
+
+    // Update is called once per frame
+    protected override void Update ()
     {
         base.Update();
 
@@ -39,6 +42,7 @@ public class JumpPowerUp : PowerUpBase {
     
     public override void Effect()
     {
+        base.Effect();
         Debug.Log("painallus");
         _owner.SetIsJumping(true);
         _owner.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;

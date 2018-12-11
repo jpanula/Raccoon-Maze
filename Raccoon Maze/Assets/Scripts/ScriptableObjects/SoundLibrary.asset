@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3c93773114e9184d8edda3a6c27f032, type: 3}
+  m_Name: SoundLibrary
+  m_EditorClassIdentifier: 
+  Footsteps: {fileID: 8300000, guid: d6cba5363bf9ffb40ae832103dea28db, type: 3}
+  Watersteps: {fileID: 8300000, guid: 17b802b89287e614882839d439b56e67, type: 3}
+  Death: {fileID: 8300000, guid: 50fd020d5399a5840b95d534e0128752, type: 3}
+  Hit: {fileID: 8300000, guid: 97026a7b39fda1a42aa560186a587b6d, type: 3}
+  PowerUp: {fileID: 8300000, guid: 19f9af90cf324d843947a081cef3a4ac, type: 3}
+  Dash: {fileID: 8300000, guid: 9b319a107adbb1646a8d8bb0b1687b6c, type: 3}
+  Jump: {fileID: 8300000, guid: 90adcd1408db04245b4509bd2e799ef1, type: 3}
+  FireballCast: {fileID: 8300000, guid: 56311197172390640a962ae252365ad9, type: 3}
+  FireballHit: {fileID: 8300000, guid: 04a824a0b2c9b8d4ea19a0af0d85e7ea, type: 3}
+  ArcaneMissileCast: {fileID: 8300000, guid: b9b9a9c7eec888c43aa1bdbe85f0bcde, type: 3}
+  ArcaneMissileHit: {fileID: 8300000, guid: e83e590a6553b9e4092011134f6eed60, type: 3}
+  WallCrackles: {fileID: 8300000, guid: 4a8823d559df9624096aa2268f78bf58, type: 3}
+  WallWeaponHit: {fileID: 8300000, guid: 7d96d8365b5fe2140bc300312d73c7c6, type: 3}
+  FireTrap: {fileID: 8300000, guid: c3e524f7db8fbe04f9fd327a357058cc, type: 3}
+  SpikeTrapActivation: {fileID: 8300000, guid: 6af7ede0af334dc4ba45010302f90170, type: 3}
+  SpikeTrapHit: {fileID: 8300000, guid: 15107488ac46962439e5ed47523b4a12, type: 3}
+  SpikeTrapUp: {fileID: 8300000, guid: def8ecab512f65342bdb9b879c89e259, type: 3}
+  MenuClick: {fileID: 8300000, guid: 60dd8e4b82e096d42986c5506cb3addd, type: 3}
+  MenuScroll: {fileID: 8300000, guid: 7ce5a59408028a840aad88005fa911e4, type: 3}
+  MenuMusic: {fileID: 8300000, guid: f1a7cd3465808cc4d941e5a0332cd1ba, type: 3}
+  LevelStartMusic: {fileID: 8300000, guid: 8babe2a3565759c4ba35b91066a3d5c9, type: 3}
+  FourPlayerMusic: {fileID: 8300000, guid: fad6e1660ed635446b95cc9105ea51e2, type: 3}
+  ThreePlayerMusic: {fileID: 8300000, guid: 3104d4440f5bbb54b81daca93bebadec, type: 3}
+  TwoPlayerMusic: {fileID: 8300000, guid: 74a9a85ed7380d742a778623e3f6c3c5, type: 3}

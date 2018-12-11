@@ -22,10 +22,17 @@ public class PowerUpBase : MonoBehaviour {
     [SerializeField]
     private ParticleSystem _ps;
 
-    private void Start()
+    protected AudioClip _sound;
+    [SerializeField]
+    protected SoundLibrary SoundLibrary;
+    protected AudioManager _am;
+
+
+    protected virtual void Start()
     {
         _pickUp = false;
         _timer = 0;
+        _am = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     protected virtual void Update()
@@ -79,6 +86,7 @@ public class PowerUpBase : MonoBehaviour {
 
     public virtual void Effect()
     {
+        _am.PlaySound(_sound, false);
     }
 
     public int GetPowerUpNum()
