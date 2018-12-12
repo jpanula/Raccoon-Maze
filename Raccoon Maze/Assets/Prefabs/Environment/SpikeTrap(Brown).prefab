@@ -85,6 +85,7 @@ MonoBehaviour:
     type: 3}
   SpikeTrapTriggeredMaterial: {fileID: 21300000, guid: a6c2e4d688d2396469839aa44be26e5a,
     type: 3}
+  SoundLibrary: {fileID: 11400000, guid: ab541188bd90bcf4096de6aa7eb6937a, type: 2}
 --- !u!212 &212265953532247588
 SpriteRenderer:
   m_ObjectHideFlags: 1

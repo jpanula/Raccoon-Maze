@@ -6,6 +6,12 @@ public class Fireball : Projectile {
 
     public ParticleSystem Explosion;
 
+    protected override void Start()
+    {
+        base.Start();
+        _explosionSound = SoundLibrary.FireballHit;
+    }
+
     protected override void Hit()
     {
         base.Hit();

@@ -32,7 +32,7 @@ public class ArcaneMissile : Projectile {
         base.Start();
         //_player = GameObject.Find("Player2");
         _targeting = true;
-        
+        _explosionSound = SoundLibrary.ArcaneMissileHit;
     }
 
     protected override void Update()

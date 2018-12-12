@@ -122,6 +122,7 @@ MonoBehaviour:
   _ps: {fileID: 198193659108614716}
   _particleDestructionTime: 0.5
   Owner: 
+  SoundLibrary: {fileID: 11400000, guid: ab541188bd90bcf4096de6aa7eb6937a, type: 2}
   Explosion: {fileID: 198566862864285590, guid: c554e3a95c2c2a5469b236aa3aebcf3d,
     type: 2}
   _speed: 20

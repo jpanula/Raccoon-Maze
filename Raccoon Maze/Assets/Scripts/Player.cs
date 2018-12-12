@@ -278,6 +278,7 @@ public class Player : MonoBehaviour {
         _sounds.Add(SoundLibrary.Death);
         _sounds.Add(SoundLibrary.Hit);
         _sounds.Add(SoundLibrary.PowerUp);
+        _sounds.Add(SoundLibrary.SpikeTrapHit);
         _footsteps = SoundLibrary.Footsteps;
         _waterFootsteps = SoundLibrary.Watersteps;
         _steps = _sounds[0];
@@ -522,7 +523,12 @@ public class Player : MonoBehaviour {
         if (col.CompareTag("SpikeTrapActive") || col.CompareTag("Spikes"))
         {
             HP--;
-            _am.PlaySound(_sounds[2], false);
+            if(!_soundBools[4])
+            {
+                _am.PlaySound(_sounds[4], false);
+                _soundBools[4] = true;
+            }
+            
         }
 
         if (col.CompareTag("OilSlickFire"))
@@ -554,6 +560,12 @@ public class Player : MonoBehaviour {
         {
             Speed = _initialSpeed;
             _inOilSlickFire = false;
+        }
+
+        if (col.CompareTag("SpikeTrapActive") || col.CompareTag("Spikes") || col.CompareTag("SpikeTrap"))
+        {
+            Debug.Log("trap falseks");
+            _soundBools[4] = false;
         }
     }
 
@@ -592,6 +604,7 @@ public class Player : MonoBehaviour {
                 _collidedParticles.Add(other.gameObject);
             }
         }
+        
     }
 
     public float[] GetAbilityTimers()

@@ -18,9 +18,15 @@ public class Projectile : MonoBehaviour {
     public string Owner;
     private string[] _nonCollidingTags = {"Path", "DeepPuddle", "SpikeTrap", "SpikeTrapActive", "OilSlick", "OilSlickFire"};
 
+    protected AudioClip _explosionSound;
+    [SerializeField]
+    protected SoundLibrary SoundLibrary;
+    protected AudioManager _am;
+
     protected virtual void Start()
     {
         _particleTimer = -1f;
+        _am = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
         //var em = FireballParticle.emission;
         //em.enabled = false;
         //_emissionTimer = 0;
@@ -71,5 +77,9 @@ public class Projectile : MonoBehaviour {
     protected virtual void Hit()
     {
         _particleTimer = 0;
+        if (_explosion == null)
+        {
+            _am.PlaySound(_explosionSound, false);
+        }
     }
 }

@@ -439,7 +439,7 @@ MonoBehaviour:
   Move: {x: 0, y: 0, z: 0}
   _direction: 0
   MoraCollider: {fileID: 0}
-  HP: 3
+  HP: 5
   Projectile: {fileID: 0}
   SpawnPoint: {fileID: 1898266253848026}
   Name: Player1

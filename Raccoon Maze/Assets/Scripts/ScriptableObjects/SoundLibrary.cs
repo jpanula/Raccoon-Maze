@@ -11,6 +11,7 @@ public class SoundLibrary : ScriptableObject
     public AudioClip Death;
     public AudioClip Hit;
     public AudioClip PowerUp;
+    public AudioClip SpikeTrapHit;
 
     public AudioClip Dash;
     public AudioClip Jump;
@@ -26,7 +27,6 @@ public class SoundLibrary : ScriptableObject
 
     public AudioClip FireTrap;
     public AudioClip SpikeTrapActivation;
-    public AudioClip SpikeTrapHit;
     public AudioClip SpikeTrapUp;
 
     public AudioClip MenuClick;

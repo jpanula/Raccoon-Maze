@@ -11,7 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e3c253f07cde8346858795f1b3aee80, type: 3}
   m_Name: GameInfo
   m_EditorClassIdentifier: 
-  LevelRotation: 00000000
+  LevelRotation: 000000
   PlayerAmount: 2
-  Wins: 
-  WinGoal: 3
+  Wins: 0200000000000000
+  WinGoal: 5
+  InGameMusic: 1

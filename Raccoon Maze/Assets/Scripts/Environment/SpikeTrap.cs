@@ -16,25 +16,47 @@ public class SpikeTrap : MonoBehaviour
 	private float _activationTimer;
 	private float _holdTimer;
 	private Collider2D[] collisions;
-	
-	
-	// Use this for initialization
-	void Start ()
+    private AudioClip _activationSound;
+    private AudioClip _triggerSound;
+    private bool _activationBool;
+    private bool _triggerBool;
+    [SerializeField]
+    private SoundLibrary SoundLibrary;
+    private AudioManager _am;
+
+    // Use this for initialization
+    void Start ()
 	{
 		_triggered = false;
 		_active = false;
 		_activationTimer = ActivationTime;
 		_holdTimer = HoldTime;
-	}
+        _am = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
+        _activationSound = SoundLibrary.SpikeTrapUp;
+        _triggerSound = SoundLibrary.SpikeTrapActivation;
+        _activationBool = false;
+        _triggerBool = false;
+    }
 	
 	// Update is called once per frame
 	void Update () {
 		if (_triggered)
 		{
 			GetComponent<SpriteRenderer>().sprite = SpikeTrapTriggeredMaterial;
-			if (_activationTimer <= 0)
+            if(!_triggerBool)
+            {
+                _triggerBool = true;
+                _am.PlaySound(_triggerSound, false);
+            }
+            if (_activationTimer <= 0)
 			{
-				_active = true;
+                if (!_activationBool)
+                {
+                    _activationBool = true;
+                    _am.PlaySound(_activationSound, false);
+                }
+                
+                _active = true;
 				_triggered = false;
 				_activationTimer = ActivationTime;
                 GetComponent<SpriteRenderer>().sprite = SpikeTrapActiveMaterial;
@@ -53,13 +75,15 @@ public class SpikeTrap : MonoBehaviour
 		if (_active)
 		{
 			ActivateTrap(true);
-			if (_holdTimer <= 0)
+            if (_holdTimer <= 0)
 			{
 				_active = false;
 				_holdTimer = HoldTime;
 				ActivateTrap(false);
                 GetComponent<SpriteRenderer>().sprite = SpikeTrapMaterial;
-			}
+                _activationBool = false;
+                _triggerBool = false;
+            }
 
 			_holdTimer -= Time.deltaTime;
 		}

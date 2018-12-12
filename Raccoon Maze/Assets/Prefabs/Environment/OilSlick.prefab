@@ -188,6 +188,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9b626076f43dfbf46b16b9368c912391, type: 3}
   - {fileID: 21300000, guid: f58d1e84a89b8b4438d0f7f4734a9d60, type: 3}
   _flames: {fileID: 1490581223750898}
+  SoundLibrary: {fileID: 11400000, guid: ab541188bd90bcf4096de6aa7eb6937a, type: 2}
 --- !u!212 &212282829487384006
 SpriteRenderer:
   m_ObjectHideFlags: 1

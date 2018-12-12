@@ -16,9 +16,13 @@ public class GameManager : MonoBehaviour {
     private bool _winner;
     private AudioManager _audioManager;
     [SerializeField]
-    private AudioClip _music1;
+    private AudioClip _startMusic;
     [SerializeField]
-    private AudioClip _music2;
+    private AudioClip _fourPlayerMusic;
+    [SerializeField]
+    private AudioClip _threePlayerMusic;
+    [SerializeField]
+    private AudioClip _twoPlayerMusic;
 
     // Use this for initialization
 
@@ -62,17 +66,38 @@ public class GameManager : MonoBehaviour {
 
     private void MusicLoop()
     {
-        
+        int closer = 0;
         if (!GameInfo.InGameMusic)
         {
             _audioManager.RemoveSound(0);
-            _audioManager.PlaySound(_music1, false);
+            _audioManager.PlaySound(_startMusic, false);
             GameInfo.InGameMusic = true;
         }
         else if(!_audioManager.GetSource(0).isPlaying)
         {
             _audioManager.RemoveSound(0);
-            _audioManager.PlaySound(_music2, true);
+            for(int i = 0; i < GameInfo.Wins.Count; i++)
+            {
+                if (GameInfo.Wins[i] >= GameInfo.WinGoal - 1)
+                {
+                    _audioManager.PlaySound(_twoPlayerMusic, false);
+                    i = GameInfo.Wins.Count;
+                    closer = 2;
+                }
+                else if (GameInfo.Wins[i] >= GameInfo.WinGoal - 2)
+                {
+                    closer = 1;
+                }
+                
+            }
+            if (closer == 1)
+            {
+                _audioManager.PlaySound(_threePlayerMusic, false);
+            }
+            else if(closer == 0) 
+            {
+                _audioManager.PlaySound(_fourPlayerMusic, false);
+            }
         }
     }
 

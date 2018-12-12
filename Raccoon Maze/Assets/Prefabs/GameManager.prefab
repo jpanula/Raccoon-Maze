@@ -68,6 +68,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   GameInfo: {fileID: 11400000, guid: 2d8bf04028052cc48bb2bae1e0f13ae9, type: 2}
-  _audioManager: {fileID: 0}
-  _music1: {fileID: 8300000, guid: 8babe2a3565759c4ba35b91066a3d5c9, type: 3}
-  _music2: {fileID: 8300000, guid: 3104d4440f5bbb54b81daca93bebadec, type: 3}
+  _startMusic: {fileID: 8300000, guid: 8babe2a3565759c4ba35b91066a3d5c9, type: 3}
+  _fourPlayerMusic: {fileID: 8300000, guid: fad6e1660ed635446b95cc9105ea51e2, type: 3}
+  _threePlayerMusic: {fileID: 8300000, guid: 3104d4440f5bbb54b81daca93bebadec, type: 3}
+  _twoPlayerMusic: {fileID: 8300000, guid: 74a9a85ed7380d742a778623e3f6c3c5, type: 3}
