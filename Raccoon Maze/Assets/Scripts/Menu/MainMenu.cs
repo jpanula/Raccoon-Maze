@@ -7,14 +7,21 @@ public class MainMenu : MonoBehaviour {
 
     public GameInfo GameInfo;
     private AudioManager _audioManager;
-    [SerializeField]
     private AudioClip _music1;
+    private AudioClip _hoverSound;
+    private AudioClip _clickSound;
+    [SerializeField]
+    private SoundLibrary _soundLibrary;
+    
 
     // Use this for initialization
     void Start ()
     {
         GameInfo.Reset();
         _audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
+        _music1 = _soundLibrary.MenuMusic;
+        _hoverSound = _soundLibrary.MenuScroll;
+        _clickSound = _soundLibrary.MenuClick;
         MusicLoop();
     }
 	
@@ -43,5 +50,15 @@ public class MainMenu : MonoBehaviour {
     public void ExitButton()
     {
         Application.Quit();
+    }
+
+    public void HoverSound()
+    {
+        _audioManager.PlaySound(_hoverSound, false);
+    }
+
+    public void ClickSound()
+    {
+        _audioManager.PlaySound(_clickSound, false);
     }
 }

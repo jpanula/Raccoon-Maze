@@ -10,18 +10,43 @@ public class BreakableWall : MonoBehaviour
 
     private List<GameObject> _collidedParticles;
 
+    [SerializeField]
+
+    private Sprite _crackedWall;
+    private AudioClip _crackSound;
+    private bool _crackBool;
+    private AudioClip _destroySound;
+    [SerializeField]
+    private SoundLibrary SoundLibrary;
+    private AudioManager _am;
+
+
     // Use this for initialization
     void Start ()
 	{
         _collidedParticles = new List<GameObject>();
+        _am = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
+        _crackSound = SoundLibrary.WallCrackles;
+        _destroySound = SoundLibrary.WallWeaponHit;
+        _crackBool = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
 		if (_health <= 0)
 		{
-			Destroy(gameObject);
+            _am.PlaySound(_destroySound, false);
+            Destroy(gameObject);
 		}
+        else if(_health == 1)
+        {
+            GetComponent<SpriteRenderer>().sprite = _crackedWall;
+            if(!_crackBool)
+            {
+                _am.PlaySound(_crackSound, false);
+                _crackBool = true;
+            }
+        }
 	}
 
     /*
@@ -61,6 +86,5 @@ public class BreakableWall : MonoBehaviour
             _health--;
         }
         _collidedParticles.Add(other.gameObject);
-
     }
 }

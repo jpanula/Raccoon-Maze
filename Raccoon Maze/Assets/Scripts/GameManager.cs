@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour {
                     i = GameInfo.Wins.Count;
                     closer = 2;
                 }
-                else if (GameInfo.Wins[i] >= GameInfo.WinGoal - 2)
+                else if (GameInfo.Wins[i] >= GameInfo.WinGoal - 3)
                 {
                     closer = 1;
                 }

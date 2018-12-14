@@ -104,7 +104,7 @@ MonoBehaviour:
   _timer: 0
   _powerUpNum: 4
   _powerUpType: 2
-  _cooldown: 5
+  _cooldown: 2
   _spawner: {fileID: 0}
   _ps: {fileID: 198441794574580936}
   SoundLibrary: {fileID: 11400000, guid: ab541188bd90bcf4096de6aa7eb6937a, type: 2}
