@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour {
         for(int i = 0; i < Players.Count; i++)
         {
             PlayerPoints[Players[i].GetComponent<Player>().PlayerNumber - 1].GetComponent<Text>().text = "P" + (i + 1) + " Points: " + GameInfo.Wins[Players[i].GetComponent<Player>().PlayerNumber - 1];
+            PlayerPoints[Players[i].GetComponent<Player>().PlayerNumber - 1].GetComponent<Text>().fontSize = 25;
         }
         _audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
         for (int i = 1; i < _audioManager.GetSourcesLength(); i++)
@@ -146,7 +147,8 @@ public class GameManager : MonoBehaviour {
                 if (!_winner)
                 {
                     GameInfo.Wins[PNum]++;
-                    PlayerPoints[PNum].GetComponent<Text>().text = "Points: " + GameInfo.Wins[PNum];
+                    PlayerPoints[PNum].GetComponent<Text>().text = "P" + (PNum + 1) + " Points: " + GameInfo.Wins[PNum];
+                    PlayerPoints[PNum].GetComponent<Text>().fontSize = 30;
                     _winner = true;
                     //Players[0].GetComponent<Player>().Invulnerable = true;
 
