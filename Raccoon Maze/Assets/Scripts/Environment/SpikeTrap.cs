@@ -23,6 +23,8 @@ public class SpikeTrap : MonoBehaviour
     [SerializeField]
     private SoundLibrary SoundLibrary;
     private AudioManager _am;
+    [SerializeField]
+    private GameObject _killBox;
 
     // Use this for initialization
     void Start ()
@@ -65,7 +67,7 @@ public class SpikeTrap : MonoBehaviour
 				{
 					if (col.gameObject.GetComponent<Player>())
 					{
-						col.gameObject.GetComponent<Player>().HP--;
+						//col.gameObject.GetComponent<Player>().HP--;
 					}
 				}
 			}
@@ -91,15 +93,17 @@ public class SpikeTrap : MonoBehaviour
 
 	void ActivateTrap(bool activated)
 	{
-		if (activated)
-		{
-			gameObject.tag = "SpikeTrapActive";
-		}
-		else
-		{
-			gameObject.tag = "SpikeTrap";
-		}
-	}
+        if (activated)
+        {
+            _killBox.SetActive(true);
+            gameObject.tag = "SpikeTrapActive";
+        }
+        else
+        {
+            _killBox.SetActive(false);
+            gameObject.tag = "SpikeTrap";
+        }
+    }
 
 	public void TriggerTrap()
 	{

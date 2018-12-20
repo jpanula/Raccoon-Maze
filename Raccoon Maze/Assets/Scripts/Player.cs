@@ -266,6 +266,7 @@ public class Player : MonoBehaviour {
         if (_oilSlickTimer <= 0 && _inOilSlickFire)
         {
             HP--;
+            Debug.Log("öljy");
             _oilSlickTimer = OilSlickTickTime;
         }
     }
@@ -520,9 +521,11 @@ public class Player : MonoBehaviour {
             col.gameObject.GetComponent<SpikeTrap>().TriggerTrap();
         }
 
-        if (col.CompareTag("SpikeTrapActive") || col.CompareTag("Spikes"))
+        if (col.CompareTag("Spikes"))
         {
+
             HP--;
+
             if(!_soundBools[4])
             {
                 _am.PlaySound(_sounds[4], false);
@@ -564,7 +567,6 @@ public class Player : MonoBehaviour {
 
         if (col.CompareTag("SpikeTrapActive") || col.CompareTag("Spikes") || col.CompareTag("SpikeTrap"))
         {
-            Debug.Log("trap falseks");
             _soundBools[4] = false;
         }
     }

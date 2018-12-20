@@ -13,6 +13,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelRotation: 000000
   PlayerAmount: 2
-  Wins: 0200000000000000
+  Wins: 0100000003000000
   WinGoal: 5
   InGameMusic: 1

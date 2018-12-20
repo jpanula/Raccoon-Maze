@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
     private List<PlayerSpawner> _playerSpawners;
     public List<GameObject> PlayerPrefabs;
     private List<GameObject> Players;
+    public GameObject Win;
     public GameObject WinLine;
     public GameObject[] PlayerPoints;
     public GameInfo GameInfo;
@@ -36,7 +37,9 @@ public class GameManager : MonoBehaviour {
     {
         InitializePlayers();
 
-        for(int i = 0; i < Players.Count; i++)
+        Win.SetActive(false);
+
+        for (int i = 0; i < Players.Count; i++)
         {
             PlayerPoints[Players[i].GetComponent<Player>().PlayerNumber - 1].GetComponent<Text>().text = "P" + (i + 1) + " Points: " + GameInfo.Wins[Players[i].GetComponent<Player>().PlayerNumber - 1];
             PlayerPoints[Players[i].GetComponent<Player>().PlayerNumber - 1].GetComponent<Text>().fontSize = 25;
@@ -163,7 +166,7 @@ public class GameManager : MonoBehaviour {
             else
             {
                 Players[0].GetComponent<Player>().Invulnerable = true;
-                WinLine.SetActive(true);
+                Win.SetActive(true);
                 WinLine.GetComponent<Text>().text = "Player " + (PNum + 1) + " wins!";
             }
         }
@@ -193,7 +196,7 @@ public class GameManager : MonoBehaviour {
         {
             GameInfo.Wins[i] = 0;
         }
-        NextLevel();
+        SceneManager.LoadScene("MainMenu");
     }
     public AudioManager GetAudioManager()
     {

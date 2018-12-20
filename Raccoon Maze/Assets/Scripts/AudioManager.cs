@@ -11,10 +11,18 @@ public class AudioManager : MonoBehaviour {
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+
+        
     }
     void Start () {
-		
+		if(GameObject.FindGameObjectsWithTag("AudioManager").Length > 1)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(this.gameObject);
+        }
 	}
 	
 	// Update is called once per frame
