@@ -237,8 +237,8 @@ public static class InputManager
         //Debug.Log(keyMap.Length);
         //Debug.Log(keyMap.Substring(4));
         Dictionary<string, string> gamepadMapping = new Dictionary<string, string>();
-        
 
+        
         if (joystickControl > 0)
         {
             if (joystickControl == 1)
@@ -249,13 +249,15 @@ public static class InputManager
             {
                 gamepadMapping = xboxOneMapping;
             }
-
+            //Debug.Log("Joystick" + joystickNum + gamepadMapping[keyMap]);
             if (gamepadMapping[keyMap].Length == 5 || gamepadMapping[keyMap].Length == 6)
             {
                 //if (gamepadMapping[keyMap].Substring(5) == "+")
                 //{
-                    if (Input.GetAxis("Joystick" + joystickNum + gamepadMapping[keyMap]) > 0.5f)
+                //Debug.Log(Input.GetAxis("Joystick" + joystickNum + gamepadMapping[keyMap]));
+                if (Input.GetAxis("Joystick" + joystickNum + gamepadMapping[keyMap]) > 0.1f)
                     {
+                        //Debug.Log("trigger");
                         return true;
                     }
                 //}
@@ -372,14 +374,14 @@ public static class InputManager
             {
                 if (gamepadMapping[keyMap].Substring(5) == "+")
                 {
-                    if (Input.GetAxis("Joystick" + joystickNum + gamepadMapping[keyMap].Substring(0, 5)) > 0.5f)
+                    if (Input.GetAxis("Joystick" + joystickNum + gamepadMapping[keyMap].Substring(0, 5)) > 0.1f)
                     {
                         return true;
                     }
                 }
                 else if (gamepadMapping[keyMap].Substring(5) == "-")
                 {
-                    if (Input.GetAxis("Joystick" + joystickNum + gamepadMapping[keyMap].Substring(0, 5)) < -0.5f)
+                    if (Input.GetAxis("Joystick" + joystickNum + gamepadMapping[keyMap].Substring(0, 5)) < -0.1f)
                     {
                         return true;
                     }
@@ -579,26 +581,25 @@ public static class InputManager
             
             if (temp.Length - 1 >= i)
             {
+                Debug.Log("controller " + i  + " " + temp[i]);
                 //Debug.Log(temp[i] + " ---- " + j);
                 //Debug.Log(i + " connected?");
                 if (string.IsNullOrEmpty(temp[i]))
                 {
                     //Debug.Log("yes");
-                    SetGamepadsConnected(false, i);
-                    GamepadControl[j] = -1;
+                    //SetGamepadsConnected(false, i);
                     //Debug.Log(j);
                     //Debug.Log("ohjain irti " + i);
                 }
                 else
                 {
                     //Debug.Log("no");
-                    SetGamepadsConnected(true, i);
+                    //SetGamepadsConnected(true, i);
                     GamepadControl[j] = i;
+                    j++;
                     //Debug.Log(j);
                     //Debug.Log("ohjain kiinni " + i);
                 }
-                j++;
-
             }
 
 
@@ -632,6 +633,10 @@ public static class InputManager
             //*/
             //}
         }
+        Debug.Log("P1 " + GamepadControl[0]);
+        Debug.Log("P2 " + GamepadControl[1]);
+        Debug.Log("P3 " + GamepadControl[2]);
+        Debug.Log("P4 " + GamepadControl[3]);
     }
 
     public static void ResetGamepadControl()

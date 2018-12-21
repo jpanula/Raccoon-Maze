@@ -51,6 +51,9 @@ public class Player : MonoBehaviour {
     private AudioClip _steps;
     public SoundLibrary SoundLibrary;
 
+    private string _gamepadNum;
+    private int _gamepadNumInt;
+
     // Use this for initialization
 
 
@@ -72,6 +75,7 @@ public class Player : MonoBehaviour {
         _gamepadControl = 0;
         Invulnerable = false;
         _isJumping = false;
+        
 
 
     }
@@ -87,6 +91,11 @@ public class Player : MonoBehaviour {
         _anim = GetComponent<Animator>();
         _am = _gm.GetAudioManager();
         InitializeSoundSystem();
+        InputManager.CheckGamepadConnection();
+        _gamepadNumInt = InputManager.GetGamepadControl(PlayerNumber - 1);
+        _gamepadNum = (_gamepadNumInt + 1).ToString();
+        
+        
         //_powerUps = new List<PowerUpBase>();
         //InitializeDirectionVector();
     }
@@ -130,31 +139,24 @@ public class Player : MonoBehaviour {
         //Debug.Log(Input.GetJoystickNames()[1]);
         InputManager.CheckGamepadConnection();
         //Debug.Log(InputManager.GetGamepadControl(PlayerNumber - 1));
-        if (InputManager.GetGamepadControl(PlayerNumber - 1) >= 0)
-        {
-            if (Input.GetJoystickNames()[PlayerNumber - 1] == "Wireless Controller")
+        if (Input.GetJoystickNames()[_gamepadNumInt] == "Wireless Controller")
             {
                 //Debug.Log("PS4 Player " + PlayerNumber);
                 _gamepadControl = 1;
                 //Debug.Log(PlayerNumber + " ps4");
             }
-            else if(Input.GetJoystickNames()[PlayerNumber - 1] == "Controller (Xbox One For Windows)")
+            else if(Input.GetJoystickNames()[_gamepadNumInt] == "Controller (Xbox One For Windows)" || Input.GetJoystickNames()[_gamepadNumInt] == "Controller (XBOX 360 For Windows)")
             {
                 //Debug.Log("XBox Player " + PlayerNumber);
                 _gamepadControl = 2;
                 //Debug.Log(PlayerNumber + " xbox");
             }
-        }
-        else
-        {
-            _gamepadControl = 0;
-            //Debug.Log(PlayerNumber + " " + Input.GetJoystickNames()[2]);
-        }
         //Debug.Log("P" + PlayerNumber + (_gamepadControl));
+        Debug.Log(PlayerNumber + " " + _gamepadNum);
         if (!_inputLock)
         {
             //Player move
-            Move = new Vector2(InputManager.GetAxis("P" + PlayerNumber.ToString() + "MoveHorizontal", _gamepadControl, PlayerNumber.ToString()), -InputManager.GetAxis("P" + PlayerNumber.ToString() + "MoveVertical", _gamepadControl, PlayerNumber.ToString()));
+            Move = new Vector2(InputManager.GetAxis("P" + PlayerNumber.ToString() + "MoveHorizontal", _gamepadControl, _gamepadNum), -InputManager.GetAxis("P" + PlayerNumber.ToString() + "MoveVertical", _gamepadControl, _gamepadNum));
             Move.Normalize();
 
             transform.position += Move * Speed * Time.deltaTime;
@@ -189,7 +191,7 @@ public class Player : MonoBehaviour {
 
             //Debug.Log(Input.GetJoystickNames()[PlayerNumber - 1]);
             //Player rotate
-            Vector2 HelpVector = new Vector2(InputManager.GetAxis("P" + PlayerNumber.ToString() + "DirHorizontal", _gamepadControl, PlayerNumber.ToString()), -InputManager.GetAxis("P" + PlayerNumber.ToString() + "DirVertical", _gamepadControl, PlayerNumber.ToString()));
+            Vector2 HelpVector = new Vector2(InputManager.GetAxis("P" + PlayerNumber.ToString() + "DirHorizontal", _gamepadControl, _gamepadNum), -InputManager.GetAxis("P" + PlayerNumber.ToString() + "DirVertical", _gamepadControl, _gamepadNum));
             /*
                         else
                         {
@@ -226,15 +228,15 @@ public class Player : MonoBehaviour {
                 Attack();
             }
             */
-            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Melee", _gamepadControl, PlayerNumber.ToString()))
+            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Melee", _gamepadControl, _gamepadNum))
             {
                 Attack();
             }
-            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Ability1", _gamepadControl, PlayerNumber.ToString()) && _ability1Timer >= _ability1Cooldown)
+            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Ability1", _gamepadControl, _gamepadNum) && _ability1Timer >= _ability1Cooldown)
             {
                 Ability1();
             }
-            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Ability2", _gamepadControl, PlayerNumber.ToString()) && _ability2Timer >= _ability2Cooldown)
+            if (InputManager.GetKeyDown("P" + PlayerNumber.ToString() + "Ability2", _gamepadControl, _gamepadNum) && _ability2Timer >= _ability2Cooldown)
             {
                 Ability2();
             }
@@ -247,7 +249,6 @@ public class Player : MonoBehaviour {
         {
             if (_footStepIndex > -1)
             {
-                Debug.Log("poisto");
                 _am.RemoveSound(_footStepIndex);
                 _footStepIndex = -1;
                 _soundBools[0] = false;
@@ -266,14 +267,12 @@ public class Player : MonoBehaviour {
         if (_oilSlickTimer <= 0 && _inOilSlickFire)
         {
             HP--;
-            Debug.Log("öljy");
             _oilSlickTimer = OilSlickTickTime;
         }
     }
 
     private void InitializeSoundSystem()
     {
-        Debug.Log("Init");
         
         _sounds.Add(SoundLibrary.Footsteps);
         _sounds.Add(SoundLibrary.Death);
